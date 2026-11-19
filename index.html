@@ -1918,6 +1918,11 @@ const Install = (() => {
   addEventListener("hashchange", () => { if (location.hash === "#instalar") open(); });
   refresh();
   if (location.hash === "#instalar") setTimeout(open, 400);
+  if (location.hash === "#borrar-reto"){        // limpia en este dispositivo la marca del reto de hoy (el servidor sigue mandando)
+    const a = store("rmq-retos") || {}; delete a[Reto.day()]; store("rmq-retos", a); store("rmq-reto-prog", null);
+    history.replaceState(null, "", location.pathname + location.search);
+    setTimeout(() => { Reto.refresh(); toast("Reto de hoy reiniciado en este dispositivo"); }, 600);
+  }
   if (location.hash === "#reto") setTimeout(() => $("reto-box").scrollIntoView({behavior: "smooth", block: "center"}), 400);
   return {open, close, refresh};
 })();
