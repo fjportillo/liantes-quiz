@@ -153,6 +153,24 @@
   table.hof th{font-family:"Red Hat Display";font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--line);font-weight:700}
   table.hof th.r, table.hof td.r{text-align:right}
   table.hof td.medal{font-size:20px;width:36px;text-align:center}
+  table.hof td.nmc{width:100%;max-width:0}
+  table.hof .nm1{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  table.hof .nm1 .plink{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
+  table.hof .sub{display:none;font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  table.hof .sub .grid-s{font-size:10px;letter-spacing:0}
+  table.hof td.s{white-space:nowrap}
+  .tabs .ts{display:none}
+  .tabs button{white-space:nowrap}
+  .champ-row .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  @media (max-width:560px){
+    .tabs .tl{display:none} .tabs .ts{display:inline}
+    .tabs button{font-size:12px;letter-spacing:.5px;padding:11px 4px}
+    .mob-hide{display:none}
+    table.hof .sub{display:block}
+    table.hof td{padding-top:9px;padding-bottom:9px}
+    table.hof td.medal{width:30px;font-size:18px}
+    table.hof td.s{font-size:17px}
+  }
   table.hof tr.top1 td{color:#ffd76a} table.hof tr.top2 td{color:#d7d9e0} table.hof tr.top3 td{color:#e2a36b}
   .empty{text-align:center;color:var(--muted);padding:26px 8px}
   .mypos{background:#000;border:1px solid var(--line);padding:14px;text-align:center;margin-top:6px}
@@ -530,10 +548,10 @@
     <h2 class="hof-title">Hall of Fame</h2>
     <div class="hof-sub" id="hof-sub">Las leyendas Liantes</div>
     <div class="tabs" role="tablist">
-      <button id="tab-reto" role="tab">📅 Reto de hoy</button>
-      <button id="tab-total" class="on" role="tab">Ranking del mes</button>
-      <button id="tab-best" role="tab">Mejores partidas</button>
-      <button id="tab-champs" role="tab">👑 Campeones</button>
+      <button id="tab-reto" role="tab">📅 <span class="tl">Reto de hoy</span><span class="ts">Hoy</span></button>
+      <button id="tab-total" class="on" role="tab">🏆 <span class="tl">Ranking del mes</span><span class="ts">Mes</span></button>
+      <button id="tab-best" role="tab">⭐ <span class="tl">Mejores partidas</span><span class="ts">Top</span></button>
+      <button id="tab-champs" role="tab">👑 <span class="tl">Campeones</span><span class="ts">Reyes</span></button>
     </div>
     <div id="hof-body" class="table-wrap"></div>
     <div class="actions">
@@ -1227,18 +1245,18 @@ async function renderHof(){
   try{
     if (hofTab === "reto"){
       const rows = HOF.online ? (await HOF.retoHoy()).slice(0, 50) : [];
-      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="xs-hide">Resultado</th><th class="r">Aciertos</th><th class="r">Puntos</th></tr></thead><tbody>` +
-        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${plink(g.name, g.key)}</td><td class="grid-s xs-hide">${esc(g.grid)}</td><td class="r">${g.ok}/${g.total}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>`
+      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="mob-hide">Resultado</th><th class="r mob-hide">Aciertos</th><th class="r">Puntos</th></tr></thead><tbody>` +
+        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td>${ncell(g.name, g.key, `${g.ok}/${g.total} · <span class="grid-s">${esc(g.grid)}</span>`)}<td class="grid-s mob-hide">${esc(g.grid)}</td><td class="r mob-hide">${g.ok}/${g.total}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>`
         : `<div class="empty">${HOF.online ? "Nadie ha jugado todavía el reto de hoy. ¡Sé el primero! 📅" : "El ranking del reto necesita el Hall of Fame compartido."}</div>`;
     } else if (hofTab === "total"){
       const rows = (await HOF.totals()).slice(0, 25);
-      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r xs-hide">Partidas</th><th class="r">Aciertos</th><th class="r">Puntos</th></tr></thead><tbody>` +
-        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${plink(p.name, p.key)}</td><td class="r xs-hide">${p.games}</td><td class="r">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}</td></tr>`).join("") + `</tbody></table>`
+      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r mob-hide">Partidas</th><th class="r mob-hide">Aciertos</th><th class="r">Puntos</th></tr></thead><tbody>` +
+        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td>${ncell(p.name, p.key, `${Math.round(p.ok/p.total*100)}% aciertos · ${p.games} ${p.games === 1 ? "partida" : "partidas"}`)}<td class="r mob-hide">${p.games}</td><td class="r mob-hide">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}</td></tr>`).join("") + `</tbody></table>`
         : `<div class="empty">Nuevo mes, ranking a cero. ¡Juega y sé el primer Liante de ${mes}! 🤘</div>`;
     } else if (hofTab === "best"){
       const rows = await HOF.best();
-      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r">Aciertos</th><th class="r xs-hide">Fecha</th><th class="r">Puntos</th></tr></thead><tbody>` +
-        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${plink(g.name)}</td><td class="r">${g.ok}/${g.total}</td><td class="r xs-hide">${new Date(g.t).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit",timeZone:"Europe/Madrid"})}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>`
+      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r mob-hide">Aciertos</th><th class="r mob-hide">Fecha</th><th class="r">Puntos</th></tr></thead><tbody>` +
+        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td>${ncell(g.name, null, `${g.ok}/${g.total} aciertos · ${new Date(g.t).toLocaleDateString("es-ES",{day:"numeric",month:"short",timeZone:"Europe/Madrid"})}`)}<td class="r mob-hide">${g.ok}/${g.total}</td><td class="r mob-hide">${new Date(g.t).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit",timeZone:"Europe/Madrid"})}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>`
         : `<div class="empty">Aún no hay partidas este mes. ¡Estrénalo! 🤘</div>`;
     } else {
       const months = await HOF.champions();
@@ -1253,6 +1271,7 @@ async function renderHof(){
     $("hof-body").innerHTML = `<div class="err">No se pudo cargar el Hall of Fame. Comprueba la conexión e inténtalo de nuevo.</div>`;
   }
 }
+function ncell(name, key, sub){ return `<td class="nmc"><div class="nm1">${plink(name, key)}</div><div class="sub">${sub}</div></td>`; }
 function plink(name, key){ return HOF.online ? `<button class="plink" type="button" data-pkey="${esc(key || norm(name))}" data-pname="${esc(name)}">${esc(name)}</button>` : esc(name); }
 $("hof-body").addEventListener("click", e => { const b = e.target.closest("[data-pkey]"); if (b) Profile.open(b.dataset.pkey, b.dataset.pname, "scr-hof"); });
 let hofReturn = "scr-start";
