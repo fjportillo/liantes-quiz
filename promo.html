@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1a1a1a">
+<link rel="icon" type="image/png" href="logo.png">
+<title>Publicación del día · Liantes Quiz Metalero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Rubik+Dirt&family=Red+Hat+Display:wght@400;700;800;900&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#111112;--panel:#1d1e20;--line:#313236;--text:#F2F2EC;--muted:#9a9a94;--blue:#5b6cf0;--blue2:#9aa5ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",system-ui,sans-serif}
+  main{max-width:720px;margin:0 auto;padding:22px 16px 60px}
+  h1{font-family:"Red Hat Display";font-weight:900;font-size:24px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+  .tabs{display:flex;border:1px solid var(--line);margin-bottom:12px}
+  .tabs button{flex:1;appearance:none;border:0;background:#000;color:var(--muted);font-family:"Red Hat Display";font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:11px;cursor:pointer}
+  .tabs button.on{background:var(--text);color:#111}
+  .prev{background:#000;border:1px solid var(--line);display:flex;justify-content:center}
+  .prev img{max-width:100%;max-height:70vh;display:block}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 22px}
+  .btn{flex:1;min-width:150px;appearance:none;border:0;cursor:pointer;font-family:"Red Hat Display";font-weight:800;letter-spacing:1.5px;text-transform:uppercase;background:var(--text);color:#111;padding:13px 14px;font-size:13px}
+  .btn:hover{background:var(--blue);color:#fff}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+  h2{font-family:"Red Hat Display";font-weight:900;font-size:18px;margin:6px 0 8px}
+  textarea{width:100%;min-height:190px;background:#F5F8FB;color:#111;border:0;padding:12px;font:15px/1.45 "DM Sans",sans-serif;resize:vertical}
+  .tip{font-size:13px;color:var(--muted);border-left:3px solid var(--blue);padding:8px 12px;background:#161719;margin-top:18px;line-height:1.5}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--text);color:#111;padding:10px 18px;font-family:"Red Hat Display";font-weight:800;display:none}
+  a{color:var(--blue2)}
+</style>
+</head>
+<body>
+<main>
+  <h1>📣 Publicación del día</h1>
+  <p class="sub" id="sub">Preparando…</p>
+
+  <div class="tabs"><button id="t-feed" class="on">Publicación (4:5)</button><button id="t-story">Historia (9:16)</button></div>
+  <div class="prev"><img id="img" alt="Imagen promocional del reto diario"></div>
+  <div class="row">
+    <button class="btn" id="b-share">📤 Compartir imagen</button>
+    <button class="btn ghost" id="b-down">⬇️ Descargar imagen</button>
+  </div>
+
+  <h2>Texto para la publicación</h2>
+  <textarea id="txt"></textarea>
+  <div class="row">
+    <button class="btn" id="b-copy">📋 Copiar texto</button>
+    <button class="btn ghost" id="b-short">✂️ Versión corta</button>
+  </div>
+
+  <p class="tip">Consejo: publica la imagen de «Publicación» en tu perfil o página y la de «Historia» en las historias de Instagram y Facebook (añade el sticker de enlace con la dirección del quiz). En los grupos, mejor una vez por semana y siguiendo sus normas.</p>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = "https://zfrwdqenyvtuvjvbxcwo.supabase.co";
+const SUPABASE_KEY = "sb_publishable_arztBfRZYNWnpV8A7zCTBg_M2il4O0B";
+const SITE = "https://fjportillo.github.io/liantes-quiz/";
+const EPOCH = "2026-11-19";
+const $ = id => document.getElementById(id);
+
+const day = (ts = Date.now()) => new Intl.DateTimeFormat("en-CA", {timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit"}).format(ts);
+const today = day(), yesterday = day(Date.now() - 86400000 * (1));
+const num = d => Math.round((Date.parse(d) - Date.parse(EPOCH)) / 86400000) + 1;
+const N = num(today);
+const longDate = new Date().toLocaleDateString("es-ES", {weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Madrid"});
+const dow = new Date(today + "T12:00:00").getDay();
+
+// Frases que van rotando para no repetir siempre lo mismo
+const HOOKS = [
+  "¿Te sabes los clásicos o solo los coros? 🎸",
+  "Sin trampas y sin Google: solo tú y tu memoria metalera. 🤘",
+  "Hoy toca demostrar quién sabe de verdad de rock, metal y punk. 💀",
+  "¿Serás el Liante del día? 👑",
+  "Calienta la garganta y saca los cuernos: nuevo reto. 🤘",
+  "Del hair metal al punk rock español: ¿cuánto controlas? 🎶",
+  "Nuevo día, nuevo reto metalero. ¿Te atreves? 🔥"
+];
+const TAILS = [
+  "Comparte tu resultado y reta a tu banda. 🟩🟥",
+  "Gana quien más sepa… y quien conteste más rápido. ⏱️",
+  "Comparte tu cuadro 🟩🟥 y a ver quién de tus colegas lo supera.",
+];
+let winner = null, players = 0, format = "feed", short = false, file = null, url = null;
+
+function text(){
+  const hook = HOOKS[N % HOOKS.length], tail = TAILS[N % TAILS.length];
+  const w = winner ? `👑 Ayer ganó ${winner.nombre} con ${winner.aciertos}/${winner.total} y ${winner.puntos} puntos${players > 1 ? ` (jugaron ${players} liantes)` : ""}. ¿Le quitas el trono?` : "";
+  if (short) return `📅 Reto diario #${N} del Liantes Quiz Metalero ya disponible. ${hook}\n👉 ${SITE}`;
+  return [`📅 RETO DIARIO #${N} YA DISPONIBLE`, "", hook, "", "10 preguntas de rock, heavy metal y punk · las mismas para todos · una sola oportunidad al día.", w ? "\n" + w : "", "", tail, "", `👉 Juega aquí: ${SITE}`, "", "#LiantesMetaleros #LiantesQuiz #HeavyMetal #Rock #Punk #Badalona"].join("\n").replace(/\n{3,}/g, "\n\n");
+}
+
+const logo = new Image(); logo.src = "logo.png";
+let readyP = null;
+function ready(){ return readyP || (readyP = readyOnce()); }
+async function readyOnce(){
+  try{ await Promise.race([Promise.all(['400 100px "Rubik Dirt"', '900 60px "Red Hat Display"', '800 40px "Red Hat Display"', '700 30px "Red Hat Display"', '40px "Noto Color Emoji"'].map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 3000))]); }catch(e){}
+  if (!logo.complete) await new Promise(r => { logo.onload = logo.onerror = r; setTimeout(r, 2500); });
+}
+function sp(x, px){ if ("letterSpacing" in x) x.letterSpacing = px + "px"; }
+function fit(x, t, w, size, fam, max){ do { x.font = `${w} ${size}px ${fam}`; size -= 2; } while (x.measureText(t).width > max && size > 14); }
+
+function draw(){
+  const W = 1080, H = format === "story" ? 1920 : 1350, off = format === "story" ? 230 : 0;
+  const c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
+  x.fillStyle = "#111112"; x.fillRect(0, 0, W, H);
+  let g = x.createRadialGradient(W / 2, 640 + off, 60, W / 2, 640 + off, 900); g.addColorStop(0, "rgba(91,108,240,.38)"); g.addColorStop(1, "rgba(91,108,240,0)");
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  // cuadros decorativos tipo resultado
+  const cols = ["#3ccf7e", "#ef4b4f", "#3ccf7e", "#3ccf7e", "#3a3b40", "#3ccf7e", "#ef4b4f", "#3ccf7e", "#3ccf7e", "#3ccf7e"];
+  const L = format === "story" ? 300 : 200;      // en historias el logo arriba del todo y más grande
+  x.fillStyle = "#fff"; x.fillRect(0, 0, W, 46);
+  x.fillStyle = "#000"; x.fillRect(W / 2 - L / 2, 0, L, L);
+  if (logo.naturalWidth){ const k = Math.min(L / logo.naturalWidth, L / logo.naturalHeight), lw = logo.naturalWidth * k, lh = logo.naturalHeight * k; x.drawImage(logo, W / 2 - lw / 2, L / 2 - lh / 2, lw, lh); }
+  x.textAlign = "center";
+  sp(x, 6); x.fillStyle = "#8f8f8b"; x.font = '400 150px "Rubik Dirt", cursive'; x.fillText("LIANTES", W / 2, off + 352);
+  sp(x, 12); x.font = '900 54px "Red Hat Display", sans-serif';
+  const a = "QUIZ ", b = "METALERO", wa = x.measureText(a).width, wb = x.measureText(b).width, sx = W / 2 - (wa + wb) / 2;
+  x.textAlign = "left"; x.fillStyle = "#F2F2EC"; x.fillText(a, sx, off + 422); x.fillStyle = "#9aa5ff"; x.fillText(b, sx + wa, off + 422); x.textAlign = "center";
+  // etiqueta
+  sp(x, 4); x.font = '800 34px "Red Hat Display", sans-serif';
+  const tag = "RETO DIARIO #" + N, tw = x.measureText(tag).width + 60;
+  x.fillStyle = "#5b6cf0"; x.fillRect(W / 2 - tw / 2, off + 480, tw, 70); x.fillStyle = "#fff";
+  x.font = '800 34px "Red Hat Display", sans-serif, "Noto Color Emoji"'; x.fillText(tag, W / 2, off + 528);
+  sp(x, 2); x.fillStyle = "#9a9a94"; x.font = '700 30px "Red Hat Display", sans-serif'; x.fillText(longDate.toUpperCase(), W / 2, off + 610);
+  sp(x, 2); x.fillStyle = "#F2F2EC"; x.font = '400 150px "Rubik Dirt", cursive'; x.fillText("YA", W / 2, off + 770); x.fillText("DISPONIBLE", W / 2, off + 905);
+  const sz = 64, gap = 12, gx = W / 2 - (10 * sz + 9 * gap) / 2;
+  cols.forEach((cl, i) => { x.fillStyle = cl; x.fillRect(gx + i * (sz + gap), off + 960, sz, sz); });
+  sp(x, 1); x.fillStyle = "#F2F2EC"; fit(x, "10 preguntas · las mismas para todos · 1 oportunidad", 800, 36, '"Red Hat Display", sans-serif', W - 120);
+  x.fillText("10 preguntas · las mismas para todos · 1 oportunidad", W / 2, off + 1095);
+  if (winner){
+    const wt = `👑 Ayer ganó ${winner.nombre} · ${winner.puntos} pts`;
+    x.fillStyle = "#ffd76a"; fit(x, wt, 800, 36, '"Red Hat Display", sans-serif, "Noto Color Emoji"', W - 120); x.fillText(wt, W / 2, off + 1160);
+  } else {
+    x.fillStyle = "#ffd76a"; x.font = '800 36px "Red Hat Display", sans-serif, "Noto Color Emoji"'; x.fillText("¿Serás el Liante del día? 👑", W / 2, off + 1160);
+  }
+  x.fillStyle = "#5b6cf0"; x.fillRect(0, H - 96, W, 96);
+  sp(x, 2); x.fillStyle = "#fff"; x.font = '900 34px "Red Hat Display", sans-serif'; x.fillText("¿TE ATREVES?  fjportillo.github.io/liantes-quiz", W / 2, H - 36);
+  if (format === "story"){ sp(x, 3); x.fillStyle = "#9a9a94"; x.font = '700 30px "Red Hat Display", sans-serif'; x.fillText("👆 TOCA EL ENLACE Y JUEGA", W / 2, H - 170); }
+  return c;
+}
+
+async function render(){
+  await ready();
+  const c = draw();
+  const blob = await new Promise(r => c.toBlob(r, "image/png"));
+  if (url) URL.revokeObjectURL(url);
+  url = URL.createObjectURL(blob);
+  file = new File([blob], `liantes-reto-${N}-${format}.png`, {type: "image/png"});
+  $("img").src = url;
+  $("b-share").style.display = navigator.canShare && navigator.canShare({files: [file]}) ? "" : "none";
+}
+function toast(m){ const t = $("toast"); t.textContent = m; t.style.display = "block"; clearTimeout(toast.t); toast.t = setTimeout(() => t.style.display = "none", 2500); }
+
+$("t-feed").onclick = () => { format = "feed"; $("t-feed").classList.add("on"); $("t-story").classList.remove("on"); render(); };
+$("t-story").onclick = () => { format = "story"; $("t-story").classList.add("on"); $("t-feed").classList.remove("on"); render(); };
+$("b-down").onclick = () => { const a = document.createElement("a"); a.href = url; a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); };
+$("b-share").onclick = async () => { try{ await navigator.share({files: [file], text: $("txt").value}); }catch(e){} };
+$("b-copy").onclick = async () => { try{ await navigator.clipboard.writeText($("txt").value); toast("¡Texto copiado! 🤘"); }catch(e){ $("txt").select(); document.execCommand("copy"); toast("Texto copiado"); } };
+$("b-short").onclick = () => { short = !short; $("b-short").textContent = short ? "📝 Versión completa" : "✂️ Versión corta"; $("txt").value = text(); };
+
+(async () => {
+  $("sub").textContent = `Reto diario #${N} · ${longDate}`;
+  try{
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/retos?select=nombre,puntos,aciertos,total&fecha=eq.${yesterday}&order=puntos.desc,creado.asc&limit=500`, {headers: {apikey: SUPABASE_KEY}});
+    if (r.ok){ const rows = await r.json(); players = rows.length; winner = rows[0] || null; }
+  }catch(e){}
+  $("txt").value = text();
+  render();
+})();
+</script>
+</body>
+</html>
