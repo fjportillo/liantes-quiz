@@ -47,6 +47,17 @@
   .lang-sw button+button{border-left:1px solid #3a3b40}
   .lang-sw button.on{background:var(--text);color:#111}
   .lang-sw button:hover:not(.on){color:var(--text)}
+  /* Móvil: solo se ve el idioma activo; al tocarlo se despliegan los otros dos */
+  @media (max-width:640px){
+    .lang-sw{top:9px;transform:none;flex-direction:column;background:#1a1a1a;right:max(10px,env(safe-area-inset-right))}
+    .lang-sw button{padding:7px 10px;min-width:52px;text-align:left}
+    .lang-sw button+button{border-left:0;border-top:1px solid #3a3b40}
+    .lang-sw button:not(.on){display:none}
+    .lang-sw.open button:not(.on){display:block}
+    .lang-sw button.on{order:-1}
+    .lang-sw button.on::after{content:" ▾";font-size:10px}
+    .lang-sw.open button.on::after{content:" ▴"}
+  }
   nav.menu{background:#1a1a1a;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 34px;padding:56px 16px 16px;font-family:Roboto,sans-serif;font-size:14px}
   nav.menu a{color:var(--text);text-decoration:none;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid transparent}
   nav.menu a:hover{border-color:var(--text)}
@@ -801,10 +812,13 @@ document.documentElement.lang = LANG;
   [["data-t-ph", "placeholder"], ["data-t-title", "title"], ["data-t-aria", "aria-label"], ["data-t-alt", "alt"]].forEach(([a, attr]) =>
     document.querySelectorAll(`[${a}]`).forEach(el => el.setAttribute(attr, T(el.getAttribute(attr)))));
 })();
+document.addEventListener("click", e => { if (!e.target.closest("#lang-sw")) document.getElementById("lang-sw").classList.remove("open"); });
 document.querySelectorAll("#lang-sw [data-lang]").forEach(b => {
   b.classList.toggle("on", b.dataset.lang === LANG);
   b.addEventListener("click", async () => {
-    const l = b.dataset.lang; if (l === LANG) return;
+    const l = b.dataset.lang;
+    if (l === LANG){ if (matchMedia("(max-width:640px)").matches) $("lang-sw").classList.toggle("open"); return; }
+    $("lang-sw").classList.remove("open");
     if (typeof game !== "undefined" && game && !$("scr-game").classList.contains("hidden") &&
         !(await askConfirm(T("¿Cambiar de idioma?"), T("Se perderá la partida en curso."), T("Cambiar"), T("Seguir jugando"), true))) return;
     try{ localStorage.setItem("rmq-lang", JSON.stringify(l)); }catch(e){}
