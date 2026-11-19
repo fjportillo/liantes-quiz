@@ -152,6 +152,18 @@
   .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:20px;z-index:50}
   .modal .box{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--bad);max-width:400px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
   .modal h4{margin:0 0 8px;font-family:"Red Hat Display";font-weight:900;font-size:22px}
+  .report-link{appearance:none;background:transparent;border:0;color:var(--muted);font-family:"DM Sans";font-size:13px;text-decoration:underline;cursor:pointer;padding:6px 0;margin-top:4px;text-align:left}
+  .report-link:hover{color:#ffc439}
+  .report-link.sm{font-size:12px;margin-top:6px;padding:2px 0}
+  .modal .rep-box{max-width:480px;border-top-color:#ffc439}
+  .rep-q{color:var(--text) !important;font-weight:600;font-size:15px}
+  .rep-reasons{display:grid;gap:8px;margin-bottom:12px}
+  .rep-reasons label{display:flex;gap:10px;align-items:flex-start;font-family:"DM Sans";font-size:14px;color:var(--text);text-transform:none;letter-spacing:0;margin:0;font-weight:400;cursor:pointer;
+    background:#131415;border:1px solid var(--line);padding:10px 12px}
+  .rep-reasons input{width:auto;margin-top:2px;accent-color:#ffc439}
+  #rep-comment{width:100%;min-height:80px;resize:vertical;background:#F5F8FB;color:#1a1a1a;border:0;padding:10px 12px;font-family:"DM Sans";font-size:15px;margin-bottom:10px}
+  .rep-msg{min-height:20px;font-size:14px;margin-bottom:8px}
+  .rep-msg.ok{color:var(--ok)} .rep-msg.bad{color:var(--bad)}
   .modal p{margin:0 0 18px;color:var(--muted);line-height:1.45}
   .modal .actions{margin-top:0}
   .btn.danger{background:var(--bad);color:#fff}
@@ -387,6 +399,7 @@
       <div class="visual hidden" id="visual"></div>
       <div class="answers" id="answers"></div>
       <div class="feedback" id="feedback"></div>
+      <button class="report-link hidden" id="btn-report" type="button">⚠️ ¿Ves algún error en esta pregunta? Repórtalo</button>
       <div class="next"><button id="btn-cancel" class="btn link sm" title="Abandonar (Esc)">✕ Abandonar</button><button id="btn-next" class="btn hidden">Siguiente</button></div>
     </div>
   </section>
@@ -437,6 +450,25 @@
         <button id="modal-ok" class="btn danger"></button>
         <button id="modal-no" class="btn ghost">Seguir jugando</button>
       </div>
+    </div>
+  </div>
+</div>
+<div class="modal hidden" id="rep-modal" role="dialog" aria-modal="true" aria-labelledby="rep-title">
+  <div class="box rep-box">
+    <h4 id="rep-title">⚠️ Reportar pregunta</h4>
+    <p class="rep-q" id="rep-q"></p>
+    <div class="rep-reasons" id="rep-reasons">
+      <label><input type="radio" name="rep" value="respuesta_erronea"> La respuesta marcada como correcta es errónea</label>
+      <label><input type="radio" name="rep" value="varias_correctas"> Hay más de una respuesta correcta</label>
+      <label><input type="radio" name="rep" value="desactualizada"> El dato está desactualizado</label>
+      <label><input type="radio" name="rep" value="mal_escrita"> Está mal escrita o no se entiende</label>
+      <label><input type="radio" name="rep" value="otro"> Otro motivo</label>
+    </div>
+    <textarea id="rep-comment" maxlength="300" placeholder="Cuéntanos qué está mal (opcional). Ej.: el disco salió en 1984, no en 1983."></textarea>
+    <div class="rep-msg" id="rep-msg"></div>
+    <div class="actions">
+      <button id="rep-send" class="btn">Enviar</button>
+      <button id="rep-cancel" class="btn ghost">Cancelar</button>
     </div>
   </div>
 </div>
@@ -626,6 +658,7 @@ function renderQuestion(){
   $("answers").querySelectorAll(".ans").forEach(b => b.addEventListener("click", () => answer(+b.dataset.k)));
   $("feedback").textContent = ""; $("feedback").className = "feedback";
   $("btn-next").classList.add("hidden");
+  $("btn-report").classList.add("hidden");
   $("qcard").classList.remove("pop"); void $("qcard").offsetWidth; $("qcard").classList.add("pop");
   startTimer();
 }
@@ -652,7 +685,7 @@ function answer(k){
   } else {
     game.streak = 0;
     if (k >= 0) btns[k].classList.add("wrong");
-    game.misses.push({q: q.q, vis: q.vis, c: q.c, y: k >= 0 ? q.options[k] : "Sin respuesta (tiempo agotado)"});
+    game.misses.push({qref: q, q: q.q, vis: q.vis, c: q.c, y: k >= 0 ? q.options[k] : "Sin respuesta (tiempo agotado)"});
     fb.textContent = k < 0 ? "¡Se acabó el tiempo!" : "¡Fallo!";
     fb.className = "feedback bad";
     $("qcard").classList.remove("shake"); void $("qcard").offsetWidth; $("qcard").classList.add("shake");
@@ -662,6 +695,7 @@ function answer(k){
   const last = game.i === game.list.length - 1;
   $("btn-next").textContent = last ? "Ver resultado" : "Siguiente";
   $("btn-next").classList.remove("hidden");
+  $("btn-report").classList.toggle("hidden", !Report.on);
   $("btn-next").focus({preventScroll:true});
 }
 
@@ -702,7 +736,8 @@ function finish(){
   })();
   $("review-wrap").classList.toggle("hidden", !game.misses.length);
   $("review").innerHTML = game.misses.map(m =>
-    `<div class="rv"><div class="q">${esc(m.q)}</div>${m.vis && !/\.(png|jpe?g|webp|gif|avif)$|^(https?:|img\/)/i.test(m.vis) ? `<div class="vis">${esc(m.vis)}</div>` : ""}<div class="a">✔ ${esc(m.c)}</div><div class="y">✘ ${esc(m.y)}</div></div>`).join("");
+    `<div class="rv"><div class="q">${esc(m.q)}</div>${m.vis && !/\.(png|jpe?g|webp|gif|avif)$|^(https?:|img\/)/i.test(m.vis) ? `<div class="vis">${esc(m.vis)}</div>` : ""}<div class="a">✔ ${esc(m.c)}</div><div class="y">✘ ${esc(m.y)}</div><button class="report-link sm" data-rep="${game.misses.indexOf(m)}" type="button">⚠️ Reportar error</button></div>`).join("");
+  $("review").querySelectorAll("[data-rep]").forEach(b => b.addEventListener("click", () => Report.open(game.misses[+b.dataset.rep].qref)));
   show("scr-end");
 }
 
@@ -724,6 +759,45 @@ const Stats = (() => {
   // una "visita" por pestaña/sesión
   try{ if (!sessionStorage.getItem("rmq-visit")){ sessionStorage.setItem("rmq-visit", "1"); track("visita"); } }catch(e){ track("visita"); }
   return {track};
+})();
+
+/* ---------- Reportar errores en preguntas ---------- */
+const Report = (() => {
+  const on = !!(SUPABASE_URL && SUPABASE_KEY);
+  let current = null;
+  function open(q){
+    if (!q) return;
+    current = q;
+    if (game && game.answered !== game.i) clearInterval(timerId);
+    $("rep-q").textContent = q.q + (q.vis && !/^img\//.test(q.vis) ? "  " + q.vis : "") + "  →  " + q.c;
+    document.querySelectorAll('#rep-reasons input').forEach(i => i.checked = false);
+    $("rep-comment").value = ""; $("rep-msg").textContent = ""; $("rep-msg").className = "rep-msg";
+    $("rep-send").disabled = false;
+    $("rep-modal").classList.remove("hidden"); document.body.classList.add("modal-open");
+  }
+  function close(){ $("rep-modal").classList.add("hidden"); document.body.classList.remove("modal-open"); current = null; }
+  async function send(){
+    const sel = document.querySelector('#rep-reasons input:checked');
+    if (!sel){ $("rep-msg").textContent = "Elige un motivo, por favor."; $("rep-msg").className = "rep-msg bad"; return; }
+    $("rep-send").disabled = true;
+    try{
+      const h = {apikey: SUPABASE_KEY, "Content-Type": "application/json", Prefer: "return=minimal"};
+      if (SUPABASE_KEY.startsWith("eyJ")) h.Authorization = "Bearer " + SUPABASE_KEY;
+      const res = await fetch(SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/reportes", {method: "POST", headers: h,
+        body: JSON.stringify({pregunta: current.q.slice(0, 300), visual: (current.vis || "").slice(0, 60), respuesta_correcta: current.c.slice(0, 150),
+          categoria: (current.cat || "").slice(0, 40), motivo: sel.value, comentario: $("rep-comment").value.trim().slice(0, 300)})});
+      if (!res.ok) throw new Error(res.status);
+      $("rep-msg").textContent = "¡Gracias! Lo revisaremos en la próxima renovación de preguntas 🤘"; $("rep-msg").className = "rep-msg ok";
+      setTimeout(close, 1400);
+    }catch(e){
+      $("rep-msg").textContent = "No se pudo enviar. Inténtalo más tarde."; $("rep-msg").className = "rep-msg bad"; $("rep-send").disabled = false;
+    }
+  }
+  $("rep-send").addEventListener("click", send);
+  $("rep-cancel").addEventListener("click", close);
+  $("rep-modal").addEventListener("click", e => { if (e.target.id === "rep-modal") close(); });
+  $("btn-report").addEventListener("click", () => game && open(game.list[game.i]));
+  return {on, open, close};
 })();
 
 /* ---------- Hall of Fame mensual + campeones ---------- */
@@ -893,6 +967,7 @@ function resumeTimer(secs){
 
 document.addEventListener("keydown", e => {
   if (!$("modal").classList.contains("hidden")){ if (e.key === "Escape") closeModal(false); return; }
+  if (!$("rep-modal").classList.contains("hidden")){ if (e.key === "Escape") Report.close(); return; }
   if ($("scr-game").classList.contains("hidden") || !game) return;
   if (e.key === "Escape"){ cancelGame(); return; }
   const k = ["1","2","3","4"].indexOf(e.key);
