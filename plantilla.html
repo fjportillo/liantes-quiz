@@ -215,6 +215,7 @@
   #pin-name{width:100%;margin-bottom:10px;font-size:17px}
   .login-h{font-family:"Red Hat Display";font-weight:900;text-transform:uppercase;letter-spacing:1px;margin:0 0 6px;font-size:22px}
   .login-sub{color:var(--muted);font-size:14px;margin:0 0 14px;line-height:1.45}
+  .login-new{font-size:13px;line-height:1.45;margin:0 0 14px;padding:10px 12px;border-left:3px solid var(--blue2);background:rgba(91,108,240,.1)}
   .login-msg{font-size:14px;margin:12px 0 4px;line-height:1.45}
   #scr-login .pin-in{letter-spacing:8px;font-size:22px;text-align:center}
   #l-back{display:block;margin:12px auto 0}
@@ -482,6 +483,7 @@
   <section id="scr-login" class="card hidden">
     <h2 class="login-h" data-t>🤘 Entra para jugar</h2>
     <p class="login-sub" data-t>Tu nombre de Liante y un PIN de 4 cifras protegen tus puntos en el ranking.</p>
+    <p class="login-new" id="l-new" data-t>🆕 ¿Primera vez? Escribe el nombre con el que quieres aparecer en el ranking y pulsa «Continuar»: te pediremos que crees tu PIN.</p>
     <form id="login-form" autocomplete="on" novalidate>
       <label for="l-name" data-t>Tu nombre</label>
       <input id="l-name" name="username" maxlength="24" placeholder="Tu nombre de Liante" data-t-ph autocomplete="username">
@@ -1072,7 +1074,7 @@ const Login = (() => {
   let step = "name", estado = null, busy = false;
   const err = m => { $("l-err").textContent = m; $("l-err").classList.toggle("hidden", !m); };
   function reset(){
-    step = "name"; estado = null; err("");
+    step = "name"; estado = null; err(""); $("l-new").classList.remove("hidden");
     $("l-name").disabled = false; $("l-pins").classList.add("hidden"); $("l-back").classList.add("hidden");
     $("l-pin1").value = ""; $("l-pin2").value = ""; $("l-go").textContent = T("Continuar");
     if (!$("l-name").value) $("l-name").value = (store("rmq-opts") || {}).name || "";
@@ -1080,7 +1082,7 @@ const Login = (() => {
   }
   function askPin(){
     const name = $("l-name").value.trim(), crear = estado !== "con_pin";
-    step = "pin"; $("l-name").disabled = true;
+    step = "pin"; $("l-name").disabled = true; $("l-new").classList.add("hidden");
     $("l-pins").classList.remove("hidden"); $("l-back").classList.remove("hidden");
     $("l-pin2-wrap").classList.toggle("hidden", !crear);
     $("l-pin1-lab").textContent = crear ? T("Crea tu PIN de 4 cifras") : T("PIN");
