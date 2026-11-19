@@ -148,7 +148,12 @@
   footer .shop{display:inline-block;background:#000;color:#fff;text-decoration:none;font-family:"Red Hat Display";font-size:13px;padding:10px 16px;border:1px solid var(--line);margin-bottom:14px}
   footer .shop:hover{background:var(--blue)}
   /* ---------- Botón flotante "Invítame a algo" ---------- */
-  .tip{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:45;
+  .fabbar{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;pointer-events:none;
+    padding:0 max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
+  .fabbar > *{pointer-events:auto}
+  .fabbar .tip{margin-left:auto}
+  body.playing .fabbar, body.modal-open .fabbar{display:none}
+  .tip{position:relative;
     display:flex;align-items:center;gap:8px;background:#161618;border:1px solid rgba(255,196,57,.55);border-radius:999px;padding:6px;
     box-shadow:0 10px 30px rgba(0,0,0,.6);font-family:"Red Hat Display"}
   .tip-toggle{appearance:none;border:0;background:transparent;color:#ffc439;font-family:"Red Hat Display";font-weight:800;font-size:14px;
@@ -161,7 +166,26 @@
   .tip .amt:hover{filter:brightness(1.07);transform:translateY(-1px)} .tip .amt:active{transform:translateY(1px)}
   .tip-toggle .chev{font-size:11px;opacity:.8;transition:transform .2s}
   body.playing .tip, body.modal-open .tip{display:none}
+  .join{
+    display:inline-flex;align-items:center;gap:8px;min-height:54px;padding:8px 18px;border-radius:999px;text-decoration:none;
+    background:var(--text);color:#1a1a1a;font-family:"Red Hat Display";font-weight:900;font-size:14px;letter-spacing:.3px;
+    box-shadow:0 10px 30px rgba(0,0,0,.6);border:2px solid #1a1a1a;transition:transform .1s,background .15s,color .15s}
+  .join .sk{font-size:1.3em}
+  .join:hover{background:var(--blue);color:#fff}
+  .join:active{transform:translateY(1px)}
+  body.playing .join, body.modal-open .join{display:none}
+  @media (max-width:400px){ .join{padding:8px 14px;font-size:13px} .tip-toggle{font-size:13px;padding:8px 6px} }
+  @media (hover:none){ .join:hover{background:var(--text);color:#1a1a1a} }
   /* En pantallas pequeñas se muestra plegado; al tocarlo se despliegan los importes */
+  @media (max-width:759px){
+    .fabbar{background:linear-gradient(180deg,rgba(17,17,18,0),rgba(17,17,18,.92) 30%);padding-top:18px;padding-bottom:max(10px,env(safe-area-inset-bottom));align-items:center}
+    .join{min-height:46px}
+    .tip{padding:3px}
+    .tip-toggle{min-height:38px}
+    .tip.open .tip-amts{position:absolute;right:0;bottom:calc(100% + 8px);background:#161618;border:1px solid rgba(255,196,57,.55);border-radius:18px;padding:8px;min-width:150px;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+    .tip.open{flex-direction:row !important;border-radius:999px !important;padding:3px !important}
+    .wrap{padding-bottom:70px}
+  }
   @media (max-width:1099px){
     .tip:not(.open) .tip-amts{display:none}
     .tip.open{flex-direction:column;align-items:stretch;border-radius:18px;padding:8px}
@@ -397,9 +421,12 @@
     </div>
   </div>
 </div>
+<div class="fabbar" id="fabbar">
+<a class="join" id="join" href="https://docs.google.com/forms/d/18MqYXiKw-VQP9Fv5CIg65BsEJQxG1R-H9hxU1ywAfBQ/viewform" target="_blank" rel="noopener" title="Hazte socio de la Associació Liantes Metaleros"><span class="sk">💀</span> Hazte socio</a>
 <div class="tip hidden" id="tip" role="complementary" aria-label="Invítame a algo">
   <button class="tip-toggle" id="tip-toggle" aria-expanded="false" aria-controls="tip-amts"><span class="cup">🍺</span> Invítame a algo <span class="chev">▲</span></button>
   <div class="tip-amts" id="tip-amts"></div>
+</div>
 </div>
 <footer>
   <div class="social">
@@ -409,6 +436,7 @@
   </div>
   <p class="motto">Hagamos entre todos una Vida mejor.</p>
   <p><button class="deco-toggle" id="deco-toggle"></button></p>
+  <p><a class="web-link" href="https://docs.google.com/forms/d/18MqYXiKw-VQP9Fv5CIg65BsEJQxG1R-H9hxU1ywAfBQ/viewform" target="_blank" rel="noopener">🤘 Hazte socio de Liantes Metaleros</a></p>
   <p><a class="web-link" href="https://liantesmetaleros.com" target="_blank" rel="noopener">💀 liantesmetaleros.com</a></p>
   <p>UP LIANTES METALEROS 🤘</p>
 </footer>
