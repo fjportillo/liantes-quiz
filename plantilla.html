@@ -172,6 +172,9 @@
   }
   @media (min-width:1100px){ .tip-toggle{cursor:default} .tip-toggle .chev{display:none} }
   @media (prefers-reduced-motion:reduce){ .tip .cup{animation:none} }
+  .logo-slot{text-decoration:none}
+  footer .web-link{display:inline-block;color:var(--text);font-family:"Red Hat Display";font-weight:700;font-size:15px;text-decoration:none;border-bottom:1px solid var(--muted);padding:6px 2px}
+  footer .web-link:hover{color:var(--blue2);border-color:var(--blue2)}
   footer p{margin:6px 0;color:var(--muted);font-size:13px}
   footer .motto{font-family:"Red Hat Display";font-weight:700;color:var(--text)}
   @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
@@ -273,7 +276,7 @@
 </head>
 <body>
 <header>
-  <div class="topbar"><div class="logo-slot" id="logo-slot"><span id="logo-txt">LIANTES<br>QUIZ</span><img src="logo.png" alt="Liantes Metaleros" style="display:none" onload="this.style.display='block';document.getElementById('logo-txt').remove()" onerror="this.remove()"></div></div>
+  <div class="topbar"><a class="logo-slot" id="logo-slot" href="https://liantesmetaleros.com" target="_blank" rel="noopener" title="Web de Liantes Metaleros"><span id="logo-txt">LIANTES<br>QUIZ</span><img src="logo.png" alt="Liantes Metaleros" style="display:none" onload="this.style.display='block';document.getElementById('logo-txt').remove()" onerror="this.remove()"></a></div>
   <div class="menu-space" aria-hidden="true"></div>
 </header>
 <div id="fest-banner" class="fest-banner hidden" role="note"><span id="fest-text"></span><button id="fest-close" aria-label="Ocultar aviso">×</button></div>
@@ -401,6 +404,7 @@
 <footer>
   <p class="motto">Hagamos entre todos una Vida mejor.</p>
   <p><button class="deco-toggle" id="deco-toggle"></button></p>
+  <p><a class="web-link" href="https://liantesmetaleros.com" target="_blank" rel="noopener">💀 liantesmetaleros.com</a></p>
   <p>UP LIANTES METALEROS 🤘</p>
 </footer>
 
