@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1a1a1a">
 <title>Liantes Quiz Metalero</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -143,6 +144,96 @@
   .shake{animation:shake .25s 2}
   @keyframes pop{0%{transform:scale(.97);opacity:0}100%{transform:scale(1);opacity:1}}
   .pop{animation:pop .22s ease-out}
+
+  /* =================== RESPONSIVE =================== */
+  body{display:flex;flex-direction:column}
+  .wrap{width:100%;flex:1 0 auto}
+  html{-webkit-text-size-adjust:100%}
+  body{min-height:100dvh}
+  button,a,.ans{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .btn{min-height:48px}
+  .ans{min-height:56px}
+  .card{padding:clamp(16px,4vw,28px)}
+  .wrap{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+  footer{padding-bottom:calc(34px + env(safe-area-inset-bottom))}
+  .timer svg{width:100%;height:100%}
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media (hover:none){
+    .ans:hover:not(:disabled){border-color:var(--line);background:#131415}
+    .btn:hover{background:var(--text);color:#1a1a1a}
+    .btn.ghost:hover{background:#000;color:var(--text);border-color:var(--line)}
+    .btn.link:hover{background:transparent;color:var(--muted);border-color:var(--line)}
+    .btn.danger:hover{background:var(--bad);color:#fff}
+    nav.menu a:hover{border-color:transparent}
+  }
+  /* Tablets y escritorio */
+  @media (min-width:760px){
+    .answers{grid-template-columns:1fr 1fr}
+    .ans{min-height:72px}
+    .wrap{max-width:860px}
+  }
+  @media (min-width:1200px){
+    .wrap{max-width:920px}
+    .question{font-size:30px}
+  }
+  /* Móviles */
+  @media (max-width:560px){
+    nav.menu{gap:4px 18px;font-size:12.5px;padding:52px 12px 12px}
+    .hero{padding-top:18px}
+    .tag{font-size:13px;margin:8px 0 18px}
+    .hud{gap:6px}
+    .hud .pill{font-size:12px;padding:6px 8px;letter-spacing:.5px}
+    .timer{flex-basis:54px;height:54px}
+    .timer .num{font-size:19px}
+    .qhead{gap:12px}
+    .ans{font-size:16px;padding:12px 14px;gap:12px}
+    .ans .k{flex-basis:28px;height:28px}
+    .stats{gap:6px}
+    .stat{padding:10px 4px}
+    .stat b{font-size:21px}
+    .actions{flex-direction:column}
+    .actions .btn{width:100%}
+    .next{flex-wrap:wrap}
+    .next .btn:not(.link){flex:1}
+    table.hof{font-size:14px}
+    .modal{place-items:end center;padding:0}
+    .modal .box{max-width:none;border-left:0;border-right:0;border-bottom:0;padding-bottom:calc(22px + env(safe-area-inset-bottom))}
+  }
+  @media (max-width:400px){
+    .xs-hide{display:none}
+    .hud .pill .lbl{display:none}
+  }
+  /* Durante la partida, en pantallas pequeñas o bajas, se oculta la cabecera para ver la pregunta entera */
+  @media (max-width:900px), (max-height:820px){
+    body.playing header, body.playing .hero, body.playing .tag, body.playing .fest-banner{display:none}
+    body.playing .wrap{padding-top:max(14px,env(safe-area-inset-top))}
+  }
+  /* Móvil en horizontal */
+  @media (max-height:500px) and (orientation:landscape){
+    nav.menu{display:none}
+    .topbar{height:20px}
+    .logo-slot{display:none}
+    h1.logo{font-size:48px}
+    .hero .sub{font-size:20px}
+    .answers{grid-template-columns:1fr 1fr;gap:8px}
+    .ans{min-height:48px;padding:10px 12px}
+  }
+
+  /* =================== DECORACIÓN DE TEMPORADA =================== */
+  #deco-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40}
+  body.playing #deco-canvas{opacity:.45}
+  .fest-banner{text-align:center;font-family:"Red Hat Display";font-weight:800;font-size:clamp(13px,3.4vw,16px);letter-spacing:.5px;
+    padding:10px 44px 10px 16px;color:#fff;position:relative;background:linear-gradient(90deg,var(--deco1,#5b6cf0),var(--deco2,#9aa5ff))}
+  .fest-banner button{position:absolute;right:6px;top:50%;transform:translateY(-50%);appearance:none;border:0;background:rgba(0,0,0,.25);color:#fff;
+    width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1}
+  .hero{position:relative}
+  .hero .deco{position:absolute;top:8px;font-size:clamp(28px,7vw,52px);line-height:1;pointer-events:none;filter:drop-shadow(0 4px 10px rgba(0,0,0,.6));animation:sway 3.5s ease-in-out infinite}
+  .hero .deco{top:44px}
+  .hero .deco.l{left:max(8px,calc(50% - 390px))} .hero .deco.r{right:max(8px,calc(50% - 390px));animation-delay:-1.7s}
+  @media (max-width:560px){ .hero .deco{top:auto;bottom:0;font-size:28px} .hero .deco.l{left:10px} .hero .deco.r{right:10px} }
+  @keyframes sway{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(8deg) translateY(-6px)}}
+  .deco-toggle{appearance:none;background:transparent;border:1px solid var(--line);color:var(--muted);font-family:"DM Sans";font-size:12px;padding:8px 12px;margin-top:12px;cursor:pointer}
+  @media (prefers-reduced-motion:reduce){ .hero .deco{animation:none} #deco-canvas{display:none} }
 </style>
 </head>
 <body>
@@ -155,7 +246,9 @@
     <a href="https://liantesmetaleros.com/galeria" target="_blank" rel="noopener">Galería</a>
   </nav>
 </header>
+<div id="fest-banner" class="fest-banner hidden" role="note"><span id="fest-text"></span><button id="fest-close" aria-label="Ocultar aviso">×</button></div>
 <div class="hero">
+  <span class="deco l hidden" id="deco-l" aria-hidden="true"></span><span class="deco r hidden" id="deco-r" aria-hidden="true"></span>
   <div class="pre">Asociación sin ánimo de lucro · Badalona</div>
   <h1 class="logo">LIANTES</h1>
   <div class="sub">Quiz <span>Metalero</span></div>
@@ -198,9 +291,9 @@
   <!-- JUEGO -->
   <section id="scr-game" class="hidden">
     <div class="hud">
-      <span class="pill">Pregunta <b id="h-idx">1</b>/<span id="h-total">10</span></span>
-      <span class="pill" id="h-streak-wrap">Racha <b id="h-streak">0</b></span>
-      <span class="pill">Puntos <b id="h-score">0</b></span>
+      <span class="pill"><span class="lbl">Pregunta </span><b id="h-idx">1</b>/<span id="h-total">10</span></span>
+      <span class="pill" id="h-streak-wrap">🔥<span class="lbl"> Racha</span> <b id="h-streak">0</b></span>
+      <span class="pill"><span class="lbl">Puntos </span><b id="h-score">0</b></span>
     </div>
     <div class="bar"><i id="progress"></i></div>
     <div class="card" id="qcard">
@@ -212,7 +305,7 @@
             <circle cx="32" cy="32" r="28" fill="none" stroke="#000" stroke-width="6"/>
             <circle id="tring" cx="32" cy="32" r="28" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round"
               stroke-dasharray="175.93" stroke-dashoffset="0"/>
-            <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#9aa5ff"/><stop offset="1" stop-color="#5b6cf0"/></linearGradient></defs>
+            <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" style="stop-color:var(--blue2)"/><stop offset="1" style="stop-color:var(--blue)"/></linearGradient></defs>
           </svg>
           <div class="num" id="tnum">20</div>
         </div>
@@ -253,7 +346,7 @@
       <button id="tab-total" class="on" role="tab">Puntos acumulados</button>
       <button id="tab-best" role="tab">Mejores partidas</button>
     </div>
-    <div id="hof-body"></div>
+    <div id="hof-body" class="table-wrap"></div>
     <div class="actions">
       <button id="btn-hof-back" class="btn">Volver</button>
       <button id="btn-hof-reset" class="btn link">Borrar Hall of Fame</button>
@@ -279,6 +372,7 @@
     <a href="https://www.youtube.com/@liantesmetaleros" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg></a>
   </div>
   <p class="motto">Hagamos entre todos una Vida mejor.</p>
+  <p><button class="deco-toggle" id="deco-toggle"></button></p>
   <p><a href="https://liantesmetaleros.com" target="_blank" rel="noopener">liantesmetaleros.com</a> · UP LIANTES METALEROS 🤘</p>
 </footer>
 
@@ -389,7 +483,7 @@ function fillCategories(){
 
 function esc(s){ return s.replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
 
-function show(id){ ["scr-start","scr-game","scr-end","scr-hof"].forEach(s => $(s).classList.toggle("hidden", s !== id)); window.scrollTo(0,0); }
+function show(id){ ["scr-start","scr-game","scr-end","scr-hof"].forEach(s => $(s).classList.toggle("hidden", s !== id)); document.body.classList.toggle("playing", id === "scr-game"); window.scrollTo(0,0); }
 
 function store(key, val){ try{ if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); }catch(e){ return null; } }
 
@@ -576,12 +670,12 @@ async function renderHof(){
   try{
     if (hofTab === "total"){
       const rows = (await HOF.totals()).slice(0, 25);
-      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r">Partidas</th><th class="r">Aciertos</th><th class="r">Puntos</th></tr></thead><tbody>` +
-        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(p.name)}</td><td class="r">${p.games}</td><td class="r">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}</td></tr>`).join("") + `</tbody></table>` : "";
+      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r xs-hide">Partidas</th><th class="r">Aciertos</th><th class="r">Puntos</th></tr></thead><tbody>` +
+        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(p.name)}</td><td class="r xs-hide">${p.games}</td><td class="r">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}</td></tr>`).join("") + `</tbody></table>` : "";
     } else {
       const rows = await HOF.best();
-      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r">Aciertos</th><th class="r">Fecha</th><th class="r">Puntos</th></tr></thead><tbody>` +
-        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(g.name)}</td><td class="r">${g.ok}/${g.total}</td><td class="r">${new Date(g.t).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit"})}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>` : "";
+      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r">Aciertos</th><th class="r xs-hide">Fecha</th><th class="r">Puntos</th></tr></thead><tbody>` +
+        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(g.name)}</td><td class="r">${g.ok}/${g.total}</td><td class="r xs-hide">${new Date(g.t).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit"})}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>` : "";
     }
     $("hof-body").innerHTML = html || `<div class="empty">Todavía no hay leyendas. ¡Juega una partida y estrena el Hall of Fame! 🤘</div>`;
     if (!HOF.online && await HOF.count()) $("btn-hof-reset").classList.remove("hidden");
@@ -657,6 +751,170 @@ $("btn-hof-reset").addEventListener("click", async () => {
   }
 });
 $("name").addEventListener("keydown", e => { if (e.key === "Enter") startGame(); });
+
+
+/* =====================================================================
+   DECORACIÓN AUTOMÁTICA SEGÚN ESTACIÓN Y FESTIVIDADES (hora de Madrid)
+   Para previsualizar un tema: añade #tema-NOMBRE a la dirección, p. ej.
+   #tema-halloween, #tema-navidad, #tema-dimoni, #tema-santjordi,
+   #tema-carnaval, #tema-rock, #tema-aniversario, #tema-santjoan,
+   #tema-sanvalentin, #tema-nochevieja, #tema-reyes, #tema-primavera,
+   #tema-verano, #tema-otono, #tema-invierno, #tema-ninguno
+   ===================================================================== */
+const Deco = (() => {
+  function madridDate(){
+    const p = new Intl.DateTimeFormat("en-CA", {timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit"}).formatToParts(new Date());
+    const g = k => +p.find(x => x.type === k).value;
+    return {y: g("year"), m: g("month"), d: g("day")};
+  }
+  function easter(y){ // algoritmo de Meeus
+    const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),
+      h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),
+      mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;
+    return Date.UTC(y, mo-1, da);
+  }
+  const DAY = 86400000;
+  const THEMES = {
+    dimoni:     {fx:"embers",   emojis:["😈","🔥"], c1:"#c2260f", c2:"#ff8a1f", text:"🔥 Festes de Maig de Badalona: ¡que crema el Dimoni! 😈🤘"},
+    santjordi:  {fx:"emoji",    emojis:["🌹","📚","🌹"], c1:"#b3162f", c2:"#ff6b81", text:"🌹 ¡Feliz Sant Jordi! Una rosa, un libro… y un buen disco 📚🤘"},
+    rock:       {fx:"emoji",    emojis:["🎸","🤘","🥁","🎤"], c1:"#b8860b", c2:"#ffd34d", text:"🎸 13 de julio: ¡Feliz Día Mundial del Rock! 🤘"},
+    aniversario:{fx:"confetti", emojis:["💀","🍺"], c1:"#5b6cf0", c2:"#9aa5ff", text:""},
+    santjoan:   {fx:"fireworks",emojis:["🎆","🔥"], c1:"#d9480f", c2:"#ffb347", text:"🎆 Revetlla de Sant Joan: ¡noche de fuego, petardos y metal! 🔥"},
+    halloween:  {fx:"bats",     emojis:["🎃","🦇"], c1:"#d35400", c2:"#ff9f43", text:"🎃 Halloween metalero: ¿truco o riff? 🦇"},
+    navidad:    {fx:"snow",     emojis:["🎄","🎅"], c1:"#a4161a", c2:"#e5383b", text:"🎄 ¡Feliz Navidad metalera de parte de los Liantes! 🤘"},
+    nochevieja: {fx:"fireworks",emojis:["🥂","🎆"], c1:"#8a6d1d", c2:"#e9c46a", text:""},
+    reyes:      {fx:"snow",     emojis:["👑","🎁"], c1:"#7b2cbf", c2:"#c77dff", text:"👑 Reyes Magos: este año pide vinilos y entradas de conciertos 🎁"},
+    carnaval:   {fx:"confetti", emojis:["🎭","🎉"], c1:"#9d4edd", c2:"#f72585", text:"🎭 ¡Carnaval! Disfrázate de tu rockero favorito 🤘"},
+    sanvalentin:{fx:"emoji",    emojis:["🖤","🤘","🖤"], c1:"#7a0f2e", c2:"#e5383b", text:"🖤 San Valentín: amor eterno al metal 🤘"},
+    primavera:  {fx:"emoji",    emojis:["🌸","🌼"], soft:true, c1:"#2d6a4f", c2:"#74c69d", text:"🌸 Primavera Liante: temporada de conciertos y quedadas"},
+    verano:     {fx:"embers",   emojis:["☀️","🍺"], soft:true, c1:"#e85d04", c2:"#ffba08", text:"☀️ Verano de festivales: ¡hidrátate y headbanguea! 🤘"},
+    otono:      {fx:"emoji",    emojis:["🍂","🍁"], soft:true, c1:"#9c4a1a", c2:"#e09f3e", text:"🍂 Otoño metalero: vuelven las salas y los conciertos"},
+    invierno:   {fx:"snow",     emojis:["❄️","☕"], soft:true, c1:"#1d4e89", c2:"#7fb3ff", text:"❄️ Invierno Liante: abrígate con una chupa de cuero 🤘"},
+  };
+  function pick(){
+    const h = (location.hash.match(/tema-([a-z]+)/) || [])[1] || (new URLSearchParams(location.search).get("tema") || "");
+    if (h === "ninguno") return null;
+    if (THEMES[h]) return h;
+    const {y, m, d} = madridDate(), md = m * 100 + d, today = Date.UTC(y, m-1, d);
+    if (md >= 509 && md <= 511) return "dimoni";
+    if (md >= 422 && md <= 423) return "santjordi";
+    if (md >= 712 && md <= 714) return "rock";
+    if (md === 308) return "aniversario";
+    if (md >= 622 && md <= 624) return "santjoan";
+    if (md === 213 || md === 214) return "sanvalentin";
+    if (md >= 1020 && md <= 1102) return "halloween";
+    if (md === 1231 || md === 101) return "nochevieja";
+    if (md >= 105 && md <= 106) return "reyes";
+    if (md >= 1201 || md <= 104) return "navidad";
+    const e = easter(y);
+    if (today >= e - 52*DAY && today <= e - 47*DAY) return "carnaval";
+    if (md >= 320 && md <= 620) return "primavera";
+    if (md >= 621 && md <= 922) return "verano";
+    if (md >= 923 && md <= 1220) return "otono";
+    return "invierno";
+  }
+  function bannerText(name){
+    const {y, m} = madridDate();
+    if (name === "aniversario") return `💀 ¡Aniversario Liantes Metaleros! ${y - 2021} ${y - 2021 === 1 ? "año" : "años"} liándola desde el 8-3-2021 🍺 UP LIANTES!`;
+    if (name === "nochevieja") return `🥂 ¡Feliz ${m === 12 ? y + 1 : y} metalero! Que el año venga cargado de riffs 🎆`;
+    return THEMES[name].text;
+  }
+
+  /* ---------- Partículas ---------- */
+  let raf = 0, canvas, ctx, parts = [], fxName = "", emojis = [], W = 0, H = 0, dpr = 1, last = 0, bursts = [];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const CONF = ["#ff595e","#ffca3a","#8ac926","#1982c4","#6a4c93","#f72585","#ffffff"];
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function count(soft){
+    const base = Math.round(Math.min(90, Math.max(18, W * H / 16000)));
+    return soft ? Math.round(base * 0.45) : base;
+  }
+  function make(initial){
+    const p = {x: rnd(0, W), y: initial ? rnd(0, H) : -20, r: rnd(0, Math.PI * 2), vr: rnd(-0.02, 0.02), t: rnd(0, 1000)};
+    switch (fxName){
+      case "snow":     Object.assign(p, {s: rnd(1.2, 3.6), vy: rnd(0.3, 1.1), vx: rnd(-0.3, 0.3), a: rnd(0.4, 0.9)}); break;
+      case "embers":   Object.assign(p, {y: initial ? rnd(0, H) : H + 10, s: rnd(1, 3), vy: -rnd(0.4, 1.4), vx: rnd(-0.3, 0.3), a: rnd(0.5, 1), hue: rnd(10, 45)}); break;
+      case "confetti": Object.assign(p, {s: rnd(5, 9), vy: rnd(0.8, 2), vx: rnd(-0.6, 0.6), a: 0.9, col: CONF[Math.floor(Math.random() * CONF.length)]}); break;
+      case "bats":     Object.assign(p, {x: initial ? rnd(0, W) : (Math.random() < .5 ? -30 : W + 30), y: rnd(20, H * 0.7), s: rnd(16, 28), dir: 0, a: rnd(0.6, 0.95)}); p.dir = p.x < W / 2 ? 1 : -1; p.vx = p.dir * rnd(0.8, 2); break;
+      default:         Object.assign(p, {s: rnd(14, 24), vy: rnd(0.5, 1.3), vx: rnd(-0.4, 0.4), a: rnd(0.6, 0.95), e: emojis[Math.floor(Math.random() * emojis.length)]});
+    }
+    return p;
+  }
+  function burst(){
+    const x = rnd(W * 0.15, W * 0.85), y = rnd(H * 0.1, H * 0.5), hue = rnd(0, 360), n = 46;
+    for (let i = 0; i < n; i++){ const ang = (i / n) * Math.PI * 2, sp = rnd(1.5, 3.8);
+      bursts.push({x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, life: 1, hue: hue + rnd(-20, 20)}); }
+  }
+  function frame(ts){
+    raf = requestAnimationFrame(frame);
+    const dt = Math.min(3, (ts - last) / 16.67 || 1); last = ts;
+    ctx.clearRect(0, 0, W, H);
+    if (fxName === "fireworks"){
+      if (Math.random() < 0.025 * dt) burst();
+      for (const b of bursts){ b.x += b.vx * dt; b.y += b.vy * dt; b.vy += 0.04 * dt; b.vx *= 0.985; b.life -= 0.012 * dt;
+        ctx.globalAlpha = Math.max(0, b.life); ctx.fillStyle = `hsl(${b.hue},100%,62%)`; ctx.beginPath(); ctx.arc(b.x, b.y, 2.2, 0, 7); ctx.fill(); }
+      bursts = bursts.filter(b => b.life > 0);
+    }
+    for (const p of parts){
+      p.t += dt; p.r += p.vr * dt;
+      if (fxName === "bats"){ p.x += p.vx * dt; p.y += Math.sin(p.t / 12) * 0.9;
+        if (p.x < -40 || p.x > W + 40) Object.assign(p, make(false));
+        ctx.globalAlpha = p.a; ctx.font = `${p.s}px serif`; ctx.save(); ctx.translate(p.x, p.y); ctx.scale(p.dir, 1); ctx.fillText("🦇", 0, 0); ctx.restore(); continue; }
+      p.x += (p.vx + Math.sin(p.t / 40) * 0.3) * dt; p.y += p.vy * dt;
+      if (p.y > H + 30 || p.y < -40 || p.x < -40 || p.x > W + 40) Object.assign(p, make(false));
+      ctx.globalAlpha = p.a;
+      if (fxName === "snow"){ ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 7); ctx.fill(); }
+      else if (fxName === "embers"){ ctx.fillStyle = `hsl(${p.hue},100%,60%)`; ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 8; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 7); ctx.fill(); ctx.shadowBlur = 0; }
+      else if (fxName === "confetti"){ ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.col; ctx.fillRect(-p.s/2, -p.s/4, p.s, p.s/2); ctx.restore(); }
+      else { ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.font = `${p.s}px serif`; ctx.textAlign = "center"; ctx.fillText(p.e, 0, 0); ctx.restore(); }
+    }
+    ctx.globalAlpha = 1;
+  }
+  function stop(){ cancelAnimationFrame(raf); raf = 0; parts = []; bursts = []; if (ctx) ctx.clearRect(0, 0, W, H); }
+  function start(theme){
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!canvas){ canvas = document.createElement("canvas"); canvas.id = "deco-canvas"; canvas.setAttribute("aria-hidden", "true");
+      document.body.appendChild(canvas); ctx = canvas.getContext("2d"); addEventListener("resize", () => { if (raf){ resize(); } }); }
+    fxName = theme.fx; emojis = theme.emojis; resize();
+    parts = fxName === "fireworks" ? [] : Array.from({length: fxName === "bats" ? Math.max(4, Math.round(count(theme.soft) / 8)) : count(theme.soft)}, () => make(true));
+    last = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden){ cancelAnimationFrame(raf); raf = 0; }
+    else if (current && enabled() && !raf && canvas){ last = performance.now(); raf = requestAnimationFrame(frame); }
+  });
+
+  /* ---------- Aplicar ---------- */
+  let current = null;
+  const enabled = () => store("rmq-deco") !== false;
+  function apply(){
+    const name = pick(); current = name ? {name, ...THEMES[name]} : null;
+    const on = enabled() && current;
+    stop();
+    $("fest-banner").classList.add("hidden"); $("deco-l").classList.add("hidden"); $("deco-r").classList.add("hidden");
+    document.documentElement.style.removeProperty("--blue"); document.documentElement.style.removeProperty("--blue2");
+    $("deco-toggle").classList.toggle("hidden", !current);
+    $("deco-toggle").textContent = on ? "✨ Decoración de temporada: activada (tocar para quitar)" : "✨ Decoración de temporada: desactivada (tocar para activar)";
+    if (!on) return;
+    const t = current;
+    document.documentElement.style.setProperty("--deco1", t.c1); document.documentElement.style.setProperty("--deco2", t.c2);
+    if (!t.soft){ document.documentElement.style.setProperty("--blue", t.c1); document.documentElement.style.setProperty("--blue2", t.c2); }
+    const dismissed = store("rmq-banner-off");
+    if (dismissed !== t.name + madridDate().y){ $("fest-text").textContent = bannerText(t.name); $("fest-banner").classList.remove("hidden"); }
+    $("deco-l").textContent = t.emojis[0]; $("deco-r").textContent = t.emojis[1] || t.emojis[0];
+    $("deco-l").classList.remove("hidden"); $("deco-r").classList.remove("hidden");
+    start(t);
+  }
+  $("fest-close").addEventListener("click", () => { if (current) store("rmq-banner-off", current.name + madridDate().y); $("fest-banner").classList.add("hidden"); });
+  $("deco-toggle").addEventListener("click", () => { store("rmq-deco", !enabled()); apply(); });
+  addEventListener("hashchange", apply);
+  return {apply, pick};
+})();
+Deco.apply();
 
 (async () => {
   $("btn-start").disabled = true;

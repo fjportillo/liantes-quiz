@@ -25,3 +25,7 @@ python3 -c "import json;t=open('plantilla.html',encoding='utf-8').read();c=open(
 
 ## Renovación semanal (viernes 00:00, Madrid)
 Se añaden preguntas nuevas en todas las categorías y se retiran las más antiguas según la columna `alta`.
+
+## Decoración automática
+La web se decora sola según la fecha (hora de Madrid): Festes de Maig de Badalona (Cremada del Dimoni, 9-11 may), Sant Jordi (22-23 abr), Día Mundial del Rock (12-14 jul), aniversario de Liantes (8 mar), Sant Joan (22-24 jun), San Valentín (13-14 feb), Carnaval (calculado cada año), Halloween (20 oct-2 nov), Navidad (1 dic-4 ene), Nochevieja/Año Nuevo, Reyes (5-6 ene) y, el resto del año, la estación.
+Para previsualizar un tema: añadir `#tema-halloween` (o `navidad`, `dimoni`, `santjordi`, `carnaval`, `rock`, `aniversario`, `santjoan`, `sanvalentin`, `nochevieja`, `reyes`, `primavera`, `verano`, `otono`, `invierno`, `ninguno`) al final de la dirección.
