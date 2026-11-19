@@ -128,18 +128,19 @@ grant execute on function public.perfil(text), public.norm_clave(text) to anon, 
 -- 5) Estadísticas: nuevos tipos de evento (compartir resultado, imagen, perfil) y su resumen diario
 alter table public.eventos drop constraint if exists eventos_tipo_check;
 alter table public.eventos add constraint eventos_tipo_check
-  check (tipo in ('visita','inicio','fin','abandono','compartir','imagen','perfil'));
+  check (tipo in ('visita','inicio','fin','abandono','compartir','imagen','perfil','instalar'));
 
 create or replace view public.stats_novedades as
 select d.dia,
   coalesce(e.compartidos, 0) as compartidos, coalesce(e.imagenes, 0) as imagenes, coalesce(e.perfiles, 0) as perfiles,
-  coalesce(r.retos, 0) as retos_jugados, r.mejor_reto, r.ganador_reto
+  coalesce(r.retos, 0) as retos_jugados, r.mejor_reto, r.ganador_reto, coalesce(e.instalaciones, 0) as instalaciones
 from (select (creado at time zone 'Europe/Madrid')::date as dia from public.eventos
       union select fecha from public.retos) d
 left join (select (creado at time zone 'Europe/Madrid')::date as dia,
       count(*) filter (where tipo = 'compartir') as compartidos,
       count(*) filter (where tipo = 'imagen')    as imagenes,
-      count(*) filter (where tipo = 'perfil')    as perfiles
+      count(*) filter (where tipo = 'perfil')    as perfiles,
+      count(*) filter (where tipo = 'instalar')  as instalaciones
     from public.eventos group by 1) e on e.dia = d.dia
 left join (select fecha as dia, count(*) as retos, max(puntos) as mejor_reto,
       (array_agg(nombre order by puntos desc, creado))[1] as ganador_reto

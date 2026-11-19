@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#1a1a1a">
 <link rel="icon" type="image/png" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Liantes Quiz">
 <meta name="description" content="Concurso de preguntas de rock, heavy metal y punk de Liantes Metaleros. ¿Cuánto sabes?">
 <meta property="og:title" content="Liantes Quiz Metalero 🤘">
 <meta property="og:description" content="¿Cuánto sabes de rock, metal, punk y de los Liantes? Juega y entra en el Hall of Fame.">
@@ -364,6 +369,21 @@
   .sh.ig svg{fill:#e1306c}.sh.fb svg{fill:#1877f2}.sh.wa svg{fill:#25d366}
   .sh-help{font-size:12px;color:var(--muted);margin:10px 0 0;min-height:16px;text-align:center}
   .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--text);color:#111;padding:10px 18px;font-family:"Red Hat Display";font-weight:800;z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+  /* Instalar app */
+  .install-link{display:block;width:100%;margin-top:12px;appearance:none;cursor:pointer;background:linear-gradient(135deg,#1c1f3a,#131415);border:1px solid var(--blue);color:var(--text);padding:12px 10px;font-family:"Red Hat Display";font-weight:900;font-size:15px;letter-spacing:.5px;text-align:center}
+  .install-link small{display:block;font-weight:600;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+  .install-link:hover{border-color:var(--blue2);color:var(--blue2)}
+  .modal .inst-box{max-width:440px;border-top-color:var(--blue2)}
+  .inst-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:6px}
+  .inst-head img{flex:0 0 64px;border:1px solid var(--line)}
+  .inst-head p{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
+  .inst-steps{margin:14px 0 0;padding:0;list-style:none;counter-reset:st}
+  .inst-steps li{counter-increment:st;position:relative;padding:8px 0 8px 40px;font-size:14px;line-height:1.4;border-top:1px solid var(--line)}
+  .inst-steps li::before{content:counter(st);position:absolute;left:0;top:7px;width:28px;height:28px;display:grid;place-items:center;background:var(--text);color:#111;font-family:"Red Hat Display";font-weight:900}
+  .inst-steps b{color:var(--blue2)}
+  .inst-qr{display:flex;gap:14px;align-items:center;margin-top:14px;font-size:13px;color:var(--muted)}
+  .inst-qr #inst-qr{background:#fff;padding:8px;flex:0 0 auto}
+  .inst-qr #inst-qr img,.inst-qr #inst-qr canvas{display:block}
   /* Perfil */
   .prof-head{text-align:center}
   .prof-av{width:76px;height:76px;margin:0 auto 8px;display:grid;place-items:center;background:#000;border:2px solid var(--blue2);font-family:"Rubik Dirt",cursive;font-size:38px;color:var(--text)}
@@ -442,6 +462,7 @@
       <a href="jugar.html">📱 Tengo un código de sala</a>
       <a href="evento.html">📺 Modo evento (jugar en grupo)</a>
     </div>
+    <button id="btn-install" class="install-link hidden" type="button">📲 Descarga la app en tu móvil <small>gratis · sin tiendas · 1 toque</small></button>
     <div id="start-err" class="err hidden"></div>
     <div id="champ" class="champ hidden"></div>
     <div id="source" class="source">Cargando preguntas…</div>
@@ -574,6 +595,16 @@
   </div>
 </div>
 <div class="toast hidden" id="toast" role="status"></div>
+<div class="modal hidden" id="inst-modal" role="dialog" aria-modal="true" aria-labelledby="inst-title">
+  <div class="box inst-box">
+    <div class="inst-head"><img src="icons/icon-192.png" alt="" width="64" height="64"><div><h4 id="inst-title">Liantes Quiz en tu móvil</h4><p>Se instala como una app: icono en tu pantalla de inicio, pantalla completa y funciona sin conexión. Gratis y sin pasar por ninguna tienda.</p></div></div>
+    <div id="inst-body"></div>
+    <div class="actions">
+      <button id="inst-go" class="btn hidden">📲 Instalar ahora</button>
+      <button id="inst-close" class="btn ghost">Cerrar</button>
+    </div>
+  </div>
+</div>
 <div class="modal hidden" id="rep-modal" role="dialog" aria-modal="true" aria-labelledby="rep-title">
   <div class="box rep-box">
     <h4 id="rep-title">⚠️ Reportar pregunta</h4>
@@ -609,6 +640,7 @@
   <p class="motto">Hagamos entre todos una Vida mejor.</p>
   <p><button class="deco-toggle" id="deco-toggle"></button></p>
   <p><a class="web-link" href="https://docs.google.com/forms/d/18MqYXiKw-VQP9Fv5CIg65BsEJQxG1R-H9hxU1ywAfBQ/viewform" target="_blank" rel="noopener">🤘 Hazte socio de Liantes Metaleros</a></p>
+  <p class="foot-install hidden" id="foot-install-p"><a class="web-link" href="#instalar" id="foot-install">📲 Descarga la app Liantes Quiz</a></p>
   <p><a class="web-link" href="https://liantesmetaleros.com" target="_blank" rel="noopener">💀 liantesmetaleros.com</a></p>
   <p>UP LIANTES METALEROS 🤘</p>
   <p class="small muted" style="font-size:11px;opacity:.7">Esta web recoge estadísticas anónimas de uso, sin cookies ni datos personales.</p>
@@ -1273,6 +1305,7 @@ document.addEventListener("keydown", e => {
   if (!$("rep-modal").classList.contains("hidden")){ if (e.key === "Escape") Report.close(); return; }
   if (!$("pin-modal").classList.contains("hidden")){ if (e.key === "Escape") pinClose({action: "cancel"}); return; }
   if (!$("img-modal").classList.contains("hidden")){ if (e.key === "Escape") ShareImg.close(); return; }
+  if (!$("inst-modal").classList.contains("hidden")){ if (e.key === "Escape") Install.close(); return; }
   if ($("scr-game").classList.contains("hidden") || !game) return;
   if (e.key === "Escape"){ cancelGame(); return; }
   const k = ["1","2","3","4"].indexOf(e.key);
@@ -1811,6 +1844,82 @@ const Profile = (() => {
     }
   }
   return {open, back: () => { show(from); if (from === "scr-hof") renderHof(); }, render};
+})();
+
+
+/* =====================================================================
+   INSTALAR COMO APP (PWA): botón, instrucciones y enlace directo #instalar
+   ===================================================================== */
+const Install = (() => {
+  const INSTALL_URL = SITE_URL + "#instalar";
+  const ua = navigator.userAgent;
+  const ios = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const android = /android/i.test(ua);
+  const mobile = ios || android || matchMedia("(pointer:coarse)").matches;
+  const inFrame = (() => { try{ return window.top !== window.self; }catch(e){ return true; } })();
+  const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  let deferred = null;
+
+  if ("serviceWorker" in navigator && location.protocol === "https:" && !inFrame)
+    addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(e => console.warn("SW", e)));
+
+  function refresh(){
+    const show = !standalone() && !inFrame;
+    $("btn-install").classList.toggle("hidden", !show);
+    $("foot-install-p").classList.toggle("hidden", !show);
+  }
+  addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; refresh(); });
+  addEventListener("appinstalled", () => { deferred = null; close(); refresh(); toast("¡App instalada! Búscala en tu pantalla de inicio 🤘"); Stats.track("instalar", {dificultad: ios ? "ios" : android ? "android" : "escritorio"}); });
+
+  function steps(){
+    if (deferred) return `<ul class="inst-steps"><li>Pulsa <b>Instalar ahora</b> y confirma.</li><li>Abre <b>Liantes Quiz</b> desde tu pantalla de inicio. ¡Listo! 🤘</li></ul>`;
+    if (ios) return `<ul class="inst-steps">
+        <li>Abre esta página en <b>Safari</b> (o Chrome).</li>
+        <li>Toca el botón <b>Compartir</b> <span aria-hidden="true">⬆️</span> (el cuadrado con la flecha, abajo o arriba).</li>
+        <li>Baja y elige <b>«Añadir a pantalla de inicio»</b>.</li>
+        <li>Pulsa <b>Añadir</b>. Tendrás el icono de Liantes Quiz junto a tus apps.</li></ul>`;
+    if (android) return `<ul class="inst-steps">
+        <li>Abre esta página en <b>Chrome</b>.</li>
+        <li>Toca el menú <b>⋮</b> (arriba a la derecha).</li>
+        <li>Elige <b>«Instalar aplicación»</b> o <b>«Añadir a pantalla de inicio»</b>.</li>
+        <li>Confirma y abre Liantes Quiz desde tu pantalla de inicio.</li></ul>`;
+    return `<ul class="inst-steps">
+        <li>En el <b>móvil</b>: escanea el código QR y sigue los pasos que aparecen.</li>
+        <li>En este <b>ordenador</b> (Chrome o Edge): pulsa el icono de instalar <b>⊕</b> en la barra de direcciones o el menú <b>⋮ › Instalar Liantes Quiz</b>.</li></ul>
+      <div class="inst-qr"><div id="inst-qr"></div><div>Escanea con la cámara del móvil para abrir el quiz e instalarlo.<br><b style="color:var(--text)">${esc(INSTALL_URL.replace(/^https:\/\//, ""))}</b></div></div>`;
+  }
+  function qr(){
+    const el = $("inst-qr"); if (!el) return;
+    const make = () => { el.innerHTML = ""; new QRCode(el, {text: INSTALL_URL, width: 120, height: 120, correctLevel: QRCode.CorrectLevel.M}); };
+    if (window.QRCode) return make();
+    const sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+    sc.onload = make; sc.onerror = () => { el.remove(); }; document.head.appendChild(sc);
+  }
+  function open(){
+    if (standalone()){ toast("Ya estás usando la app 🤘"); return; }
+    $("inst-body").innerHTML = steps();
+    $("inst-go").classList.toggle("hidden", !deferred);
+    $("inst-modal").classList.remove("hidden"); document.body.classList.add("modal-open");
+    if (!mobile && !deferred) qr();
+  }
+  function close(){ $("inst-modal").classList.add("hidden"); document.body.classList.remove("modal-open"); if (location.hash === "#instalar") history.replaceState(null, "", location.pathname + location.search); }
+  async function go(){
+    if (!deferred) return;
+    deferred.prompt();
+    const r = await deferred.userChoice.catch(() => null);
+    deferred = null;
+    if (r && r.outcome === "accepted") close(); else { $("inst-go").classList.add("hidden"); $("inst-body").innerHTML = steps(); }
+  }
+  $("btn-install").addEventListener("click", open);
+  $("foot-install").addEventListener("click", e => { e.preventDefault(); open(); });
+  $("inst-close").addEventListener("click", close);
+  $("inst-go").addEventListener("click", go);
+  $("inst-modal").addEventListener("click", e => { if (e.target.id === "inst-modal") close(); });
+  addEventListener("hashchange", () => { if (location.hash === "#instalar") open(); });
+  refresh();
+  if (location.hash === "#instalar") setTimeout(open, 400);
+  if (location.hash === "#reto") setTimeout(() => $("reto-box").scrollIntoView({behavior: "smooth", block: "center"}), 400);
+  return {open, close, refresh};
 })();
 
 (async () => {

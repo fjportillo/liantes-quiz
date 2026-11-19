@@ -12,6 +12,7 @@ Web: https://fjportillo.github.io/liantes-quiz/
 - `hall_of_fame_mensual.sql`, `estadisticas.sql`, `reportes.sql`, `evento.sql`, `pin.sql` — ranking mensual, estadísticas, reportes de errores, modo evento y PIN
 - `retos_perfil.sql` — reto diario (10 preguntas iguales para todos cada día, una partida por jugador) y perfiles de jugador con logros
 - `promo.html` — publicación del día para redes (imagen 4:5 y 9:16 + texto listo para copiar): https://fjportillo.github.io/liantes-quiz/promo.html
+- `manifest.webmanifest`, `sw.js`, `icons/` — app instalable (PWA): icono en el móvil y juego sin conexión. Enlace directo para instalar: https://fjportillo.github.io/liantes-quiz/#instalar. Si cambias archivos que guarda el sw.js, sube el número de CACHE para forzar la actualización.
 
 ## Formato de `preguntas.csv`
 `pregunta,correcta,incorrecta1,incorrecta2,incorrecta3,categoria,dificultad,alta,visual`

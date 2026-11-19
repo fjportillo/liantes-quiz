@@ -1,0 +1,23 @@
+{
+  "name": "Liantes Quiz Metalero",
+  "short_name": "Liantes Quiz",
+  "description": "Concurso de preguntas de rock, heavy metal y punk de Liantes Metaleros. Reto diario, Hall of Fame y modo evento.",
+  "lang": "es",
+  "id": "./",
+  "start_url": "./?app=1",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111112",
+  "theme_color": "#1a1a1a",
+  "categories": ["games", "music", "entertainment"],
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Reto diario", "short_name": "Reto", "url": "./?app=1#reto", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Modo evento", "short_name": "Evento", "url": "./evento.html", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+  ]
+}
