@@ -444,6 +444,7 @@
   <p><a class="web-link" href="https://docs.google.com/forms/d/18MqYXiKw-VQP9Fv5CIg65BsEJQxG1R-H9hxU1ywAfBQ/viewform" target="_blank" rel="noopener">🤘 Hazte socio de Liantes Metaleros</a></p>
   <p><a class="web-link" href="https://liantesmetaleros.com" target="_blank" rel="noopener">💀 liantesmetaleros.com</a></p>
   <p>UP LIANTES METALEROS 🤘</p>
+  <p class="small muted" style="font-size:11px;opacity:.7">Esta web recoge estadísticas anónimas de uso, sin cookies ni datos personales.</p>
 </footer>
 
 <script>
@@ -584,8 +585,9 @@ function startGame(){
   store("rmq-seen", [...nowSeen].slice(-3000));
   store("rmq-opts", {name, cat, diff, n});
   game = { name, list: pool.map(q => ({...q, options: shuffle([q.c, ...q.wrong])})),
-           i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [] };
+           i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [], cat, diff };
   $("h-total").textContent = game.list.length;
+  Stats.track("inicio", {categoria: cat, dificultad: diff, preguntas: game.list.length});
   show("scr-game");
   renderQuestion();
 }
@@ -657,6 +659,7 @@ function next(){
 function finish(){
   $("progress").style.width = "100%";
   const total = game.list.length, pct = Math.round(game.ok / total * 100);
+  Stats.track("fin", {categoria: game.cat, dificultad: game.diff, preguntas: total, aciertos: game.ok, puntos: game.score});
   $("final-score").textContent = game.score;
   $("st-ok").textContent = `${game.ok}/${total}`;
   $("st-pct").textContent = pct + "%";
@@ -690,6 +693,25 @@ function finish(){
 }
 
 /* ---------- Hall of Fame ---------- */
+/* ---------- Estadísticas anónimas de uso (sin cookies ni datos personales) ---------- */
+const Stats = (() => {
+  const on = !!(SUPABASE_URL && SUPABASE_KEY);
+  const device = () => innerWidth < 760 ? "movil" : innerWidth < 1100 ? "tablet" : "escritorio";
+  function track(tipo, d = {}){
+    if (!on) return;
+    try{
+      const h = {apikey: SUPABASE_KEY, "Content-Type": "application/json", Prefer: "return=minimal"};
+      if (SUPABASE_KEY.startsWith("eyJ")) h.Authorization = "Bearer " + SUPABASE_KEY;
+      fetch(SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/eventos", {method: "POST", keepalive: true, headers: h,
+        body: JSON.stringify({tipo, dispositivo: device(), categoria: (d.categoria || "").slice(0, 40), dificultad: d.dificultad || "",
+          preguntas: d.preguntas ?? null, aciertos: d.aciertos ?? null, puntos: d.puntos ?? null})}).catch(() => {});
+    }catch(e){}
+  }
+  // una "visita" por pestaña/sesión
+  try{ if (!sessionStorage.getItem("rmq-visit")){ sessionStorage.setItem("rmq-visit", "1"); track("visita"); } }catch(e){ track("visita"); }
+  return {track};
+})();
+
 const HOF = (() => {
   const online = !!(SUPABASE_URL && SUPABASE_KEY);
   const base = SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/";
@@ -789,7 +811,7 @@ async function cancelGame(){
   const ok = await askConfirm("¿Abandonar la partida?",
     `Llevas ${game.score} puntos en ${game.i + (wasRunning ? 0 : 1)} de ${game.list.length} preguntas. Si abandonas, esta partida no contará para el Hall of Fame.`,
     "Sí, abandonar", "Seguir jugando");
-  if (ok){ clearInterval(timerId); game = null; show("scr-start"); }
+  if (ok){ clearInterval(timerId); Stats.track("abandono", {categoria: game.cat, dificultad: game.diff, preguntas: game.list.length, aciertos: game.ok, puntos: game.score}); game = null; show("scr-start"); }
   else if (wasRunning) resumeTimer(game.pausedLeft);
 }
 function resumeTimer(secs){
