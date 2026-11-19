@@ -145,3 +145,9 @@ left join (select fecha as dia, count(*) as retos, max(puntos) as mejor_reto,
       (array_agg(nombre order by puntos desc, creado))[1] as ganador_reto
     from public.retos group by 1) r on r.dia = d.dia;
 grant select on public.stats_novedades to anon, authenticated;
+
+-- Veces que se ha compartido el resultado, por red social (instagram, facebook, whatsapp, x, copiar, descargar, mas)
+create or replace view public.stats_compartir as
+select (creado at time zone 'Europe/Madrid')::date as dia, coalesce(nullif(dificultad, ''), 'texto') as red, count(*) as veces
+from public.eventos where tipo = 'compartir' group by 1, 2;
+grant select on public.stats_compartir to anon, authenticated;

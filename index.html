@@ -356,7 +356,13 @@
   /* Imagen */
   .modal .img-box{max-width:440px;border-top-color:var(--blue2);max-height:94vh;overflow:auto}
   .img-box img{width:100%;display:block;border:1px solid var(--line);background:#000}
-  .img-box .actions{margin-top:14px}
+  .img-box .actions{margin-top:10px}
+  .share-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+  .sh{appearance:none;cursor:pointer;background:#131415;border:1px solid var(--line);color:var(--text);padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:5px;font-family:"Red Hat Display";font-weight:800;font-size:12px}
+  .sh svg{width:24px;height:24px;fill:currentColor}.sh b{font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:21px;line-height:24px;font-weight:400}
+  .sh:hover{border-color:var(--blue2)}
+  .sh.ig svg{fill:#e1306c}.sh.fb svg{fill:#1877f2}.sh.wa svg{fill:#25d366}
+  .sh-help{font-size:12px;color:var(--muted);margin:10px 0 0;min-height:16px;text-align:center}
   .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--text);color:#111;padding:10px 18px;font-family:"Red Hat Display";font-weight:800;z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.5)}
   /* Perfil */
   .prof-head{text-align:center}
@@ -484,8 +490,7 @@
     <div class="reto-grid big-grid hidden" id="end-grid"></div>
     <div class="mypos" id="mypos"></div>
     <div class="share-row">
-      <button id="btn-share-text" class="btn hidden">📤 Compartir resultado</button>
-      <button id="btn-share-img" class="btn">📸 Compartir imagen</button>
+      <button id="btn-share-img" class="btn">📤 Compartir en redes</button>
     </div>
     <div class="actions">
       <button id="btn-again" class="btn">Jugar otra vez</button>
@@ -555,11 +560,17 @@
   <div class="box img-box">
     <h4 id="img-title">📸 Tu resultado</h4>
     <img id="img-prev" alt="Tarjeta con tu resultado">
-    <div class="actions">
-      <button id="img-share" class="btn">📤 Compartir</button>
-      <button id="img-down" class="btn ghost">⬇️ Descargar</button>
-      <button id="img-close" class="btn link">Cerrar</button>
+    <div class="share-grid">
+      <button class="sh ig" data-net="instagram" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4 6.2 6.2 0 000-12.4zM12 16a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.9 1.4 1.4 0 000-2.9z"/></svg><span>Instagram</span></button>
+      <button class="sh fb" data-net="facebook" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12a12 12 0 10-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0024 12z"/></svg><span>Facebook</span></button>
+      <button class="sh wa" data-net="whatsapp" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0a12 12 0 00-10.4 18L0 24l6.2-1.6A12 12 0 1012 0zm0 21.8a9.8 9.8 0 01-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1112 21.8zm5.4-7.3c-.3-.2-1.8-.9-2-1s-.5-.1-.7.1-.8 1-1 1.2-.4.2-.7.1a8 8 0 01-2.4-1.5 9 9 0 01-1.6-2c-.2-.3 0-.5.1-.6l.5-.6.3-.5v-.5l-1-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 00-.8.4 3.3 3.3 0 00-1 2.5 5.8 5.8 0 001.2 3 13 13 0 005 4.4c.7.3 1.3.5 1.7.6a4.2 4.2 0 001.9.1 3.1 3.1 0 002-1.4 2.5 2.5 0 00.2-1.4c-.1-.1-.3-.2-.6-.3z"/></svg><span>WhatsApp</span></button>
+      <button class="sh xx" data-net="x" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.2 2.3h3.4l-7.4 8.4 8.7 11.5h-6.8l-5.3-7-6.1 7H1.3l7.9-9L.9 2.3h7l4.8 6.4 5.5-6.4zm-1.2 17.9h1.9L7 4.2H5z"/></svg><span>X</span></button>
+      <button class="sh" data-net="copiar" type="button"><b>📋</b><span>Copiar texto</span></button>
+      <button class="sh" data-net="descargar" type="button"><b>⬇️</b><span>Descargar</span></button>
+      <button class="sh more hidden" data-net="mas" type="button"><b>📱</b><span>Más apps</span></button>
     </div>
+    <p class="sh-help" id="sh-help"></p>
+    <div class="actions"><button id="img-close" class="btn ghost">Cerrar</button></div>
   </div>
 </div>
 <div class="toast hidden" id="toast" role="status"></div>
@@ -966,7 +977,6 @@ function finish(){
   if (isReto){ Reto.saveDone(game.result); Reto.refresh(); }
   $("end-grid").textContent = isReto ? game.grid.join("") : "";
   $("end-grid").classList.toggle("hidden", !isReto);
-  $("btn-share-text").classList.toggle("hidden", !isReto);
   $("btn-again").classList.toggle("hidden", isReto);
   if (isReto) $("verdict").textContent = `📅 Reto diario ${game.num} · ` + $("verdict").textContent;
   $("mypos").textContent = "Guardando en el Hall of Fame…";
@@ -1274,10 +1284,9 @@ document.addEventListener("keydown", e => {
 
 $("btn-start").addEventListener("click", () => tryStart());
 $("btn-reto").addEventListener("click", () => tryStart("reto"));
-$("btn-reto-share").addEventListener("click", () => Reto.shareText(Reto.today()));
+$("btn-reto-share").addEventListener("click", () => { const r = Reto.today(); if (r && !r.abandoned) ShareImg.open(r, $("btn-reto-share")); });
 $("btn-reto-rank").addEventListener("click", () => { hofTab = "reto"; openHof("scr-start"); });
-$("btn-share-text").addEventListener("click", () => Reto.shareText(game && game.result));
-$("btn-share-img").addEventListener("click", () => game && game.result && ShareImg.open(game.result));
+$("btn-share-img").addEventListener("click", () => game && game.result && ShareImg.open(game.result, $("btn-share-img")));
 $("btn-prof-start").addEventListener("click", () => {
   const name = $("name").value.trim();
   if (!name){ alertPin("Escribe tu nombre (o entra con tu PIN) para ver tu perfil."); $("name").focus(); return; }
@@ -1304,8 +1313,7 @@ $("btn-hof-reset").addEventListener("click", async () => {
 });
 $("name").addEventListener("keydown", e => { if (e.key === "Enter") tryStart(); });
 $("img-close").addEventListener("click", () => ShareImg.close());
-$("img-share").addEventListener("click", () => ShareImg.share());
-$("img-down").addEventListener("click", () => ShareImg.download());
+document.querySelectorAll("#img-modal [data-net]").forEach(b => b.addEventListener("click", () => ShareImg.to(b.dataset.net)));
 $("img-modal").addEventListener("click", e => { if (e.target.id === "img-modal") ShareImg.close(); });
 
 
@@ -1581,16 +1589,11 @@ const Reto = (() => {
     if (resumed) toast("Seguimos con tu reto donde lo dejaste");
   }
   const gridStr = g => (Array.isArray(g) ? g : [...(g || "")]).join("");
-  function today(){ const key = norm($("name").value.trim()), r = mine(day(), key); return r ? {...r, num: num(), name: $("name").value.trim()} : null; }
-  async function shareText(r){
-    if (!r || r.abandoned) return;
-    const text = `🤘 Liantes Quiz Metalero · Reto ${r.num || num()}\n${r.ok}/${r.total} aciertos · ${r.score} pts${r.pos ? ` · #${r.pos} del día` : ""}\n${gridStr(r.grid)}\n¿Te atreves? ${SITE_URL}`;
-    Stats.track("compartir", {categoria: "Reto diario"});
-    if (navigator.share && matchMedia("(pointer:coarse)").matches){
-      try{ await navigator.share({text}); return; }catch(e){ if (e.name === "AbortError") return; }
-    }
-    try{ await navigator.clipboard.writeText(text); toast("¡Resultado copiado! Pégalo en WhatsApp o donde quieras 🤘"); }
-    catch(e){ window.prompt("Copia tu resultado:", text); }
+  function today(){
+    const key = norm($("name").value.trim()), r = mine(day(), key);
+    if (!r) return null;
+    const pct = r.pct ?? Math.round(r.ok / (r.total || 10) * 100);
+    return {...r, mode: "reto", num: num(), day: day(), name: $("name").value.trim(), pct, best: r.best ?? 0, verdict: r.verdict || `${r.ok}/${r.total} en el reto de hoy`};
   }
   let shownDay = "";
   function countdown(){
@@ -1614,7 +1617,7 @@ const Reto = (() => {
     }
   }
   setInterval(() => { if (!$("scr-start").classList.contains("hidden")){ if (shownDay !== day()) refresh(); else countdown(); } }, 30000);
-  return {day, num, questions, start, saveDone, saveProgress, playedRemote, refresh, today, shareText};
+  return {day, num, questions, start, saveDone, saveProgress, playedRemote, refresh, today, gridStr};
 })();
 
 /* =====================================================================
@@ -1673,8 +1676,15 @@ const ShareImg = (() => {
     spaced(x, 0);
     return c;
   }
-  async function open(r){
-    const btn = $("btn-share-img"); btn.disabled = true;
+  let cur = null;
+  function message(r){
+    const g = r.mode === "reto" ? Reto.gridStr(r.grid) : "";
+    return r.mode === "reto"
+      ? `🤘 Liantes Quiz Metalero · Reto ${r.num}\n${r.ok}/${r.total} aciertos · ${r.score} pts${r.pos ? ` · #${r.pos} del día` : ""}\n${g}\n¿Te atreves? ${SITE_URL}`
+      : `🤘 He hecho ${r.score} puntos (${r.ok}/${r.total} aciertos) en el Liantes Quiz Metalero${r.cat ? ` · ${r.cat}` : ""}.\n¿Cuánto sabes tú de rock y metal? ${SITE_URL}`;
+  }
+  async function open(r, btn){
+    if (btn) btn.disabled = true;
     try{
       await ready();
       const c = draw(r);
@@ -1682,18 +1692,58 @@ const ShareImg = (() => {
       if (url) URL.revokeObjectURL(url);
       url = URL.createObjectURL(blob);
       file = new File([blob], "liantes-quiz.png", {type: "image/png"});
-      text = (r.mode === "reto" ? `Reto ${r.num} del Liantes Quiz Metalero: ${r.ok}/${r.total} 🤘` : `He hecho ${r.score} puntos en el Liantes Quiz Metalero 🤘`) + ` ¿Te atreves? ${SITE_URL}`;
+      cur = r; text = message(r);
       $("img-prev").src = url;
-      $("img-share").classList.toggle("hidden", !(navigator.canShare && navigator.canShare({files: [file]})));
+      const canFiles = !!(navigator.canShare && navigator.canShare({files: [file]}));
+      $("img-modal").querySelector(".more").classList.toggle("hidden", !canFiles);
+      $("sh-help").textContent = "";
       $("img-modal").classList.remove("hidden"); document.body.classList.add("modal-open");
       Stats.track("imagen", {categoria: r.mode === "reto" ? "Reto diario" : r.cat});
-    }catch(e){ console.warn(e); toast("No se pudo crear la imagen en este navegador"); }
-    finally{ btn.disabled = false; }
+    }catch(e){ console.warn(e); toast("No se pudo preparar la imagen en este navegador"); }
+    finally{ if (btn) btn.disabled = false; }
   }
   function close(){ $("img-modal").classList.add("hidden"); document.body.classList.remove("modal-open"); }
-  async function share(){ try{ await navigator.share({files: [file], text}); }catch(e){ if (e.name !== "AbortError") download(); } }
   function download(){ const a = document.createElement("a"); a.href = url; a.download = "liantes-quiz.png"; document.body.appendChild(a); a.click(); a.remove(); }
-  return {open, close, share, download, draw};
+  async function copy(silent){
+    try{ await navigator.clipboard.writeText(text); if (!silent) toast("¡Texto copiado! 🤘"); return true; }
+    catch(e){ if (!silent) window.prompt("Copia tu resultado:", text); return false; }
+  }
+  const help = m => $("sh-help").textContent = m;
+  const popup = u => window.open(u, "_blank", "noopener,width=640,height=560");
+  async function to(net){
+    Stats.track("compartir", {categoria: cur && cur.mode === "reto" ? "Reto diario" : (cur && cur.cat) || "", dificultad: net});
+    const canFiles = !!(navigator.canShare && file && navigator.canShare({files: [file]}));
+    if (net === "instagram"){
+      // Instagram no admite publicar desde una web: se pasa la imagen a la app (móvil) o se descarga (ordenador)
+      if (canFiles){
+        copy(true);
+        try{ await navigator.share({files: [file]}); help("Elige Instagram (historia, publicación o mensaje). El texto ya está copiado por si quieres pegarlo."); return; }
+        catch(e){ if (e.name === "AbortError") return; }
+      }
+      download(); copy(true);
+      help("Imagen descargada y texto copiado. Ábrela desde la app de Instagram en tu móvil y súbela a tu historia o al feed 📸");
+    } else if (net === "facebook"){
+      if (canFiles && matchMedia("(pointer:coarse)").matches){
+        copy(true);
+        try{ await navigator.share({files: [file], text}); help("Elige Facebook para publicar la imagen. El texto ya está copiado por si no aparece."); return; }
+        catch(e){ if (e.name === "AbortError") return; }
+      }
+      await copy(true);
+      popup("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(SITE_URL));
+      help("Se abre Facebook con el enlace del quiz. Tu resultado está copiado: pégalo en la publicación (y si quieres, adjunta la imagen con «Descargar»).");
+    } else if (net === "whatsapp"){
+      popup("https://wa.me/?text=" + encodeURIComponent(text));
+    } else if (net === "x"){
+      popup("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text));
+    } else if (net === "copiar"){
+      copy();
+    } else if (net === "descargar"){
+      download(); help("Imagen guardada como liantes-quiz.png");
+    } else if (net === "mas"){
+      try{ await navigator.share({files: [file], text}); }catch(e){}
+    }
+  }
+  return {open, close, to, draw, message};
 })();
 
 /* =====================================================================
