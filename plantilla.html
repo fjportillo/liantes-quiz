@@ -170,6 +170,11 @@
   .modal .pin-box{border-top-color:var(--blue2);max-width:420px}
   .pin-in{width:100%;text-align:center;font-family:"Red Hat Display";font-weight:900;font-size:30px;letter-spacing:14px;padding:12px;margin-bottom:10px}
   .pin-in::placeholder{letter-spacing:4px;font-size:18px}
+  #pin-name{width:100%;margin-bottom:10px;font-size:17px}
+  .login-row{margin-top:6px}
+  .logged{margin-top:8px;font-size:14px;color:var(--ok);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .logged b{color:var(--text)}
+  .logged .report-link{margin:0;padding:0}
   .pin-help{font-size:12px !important;margin:10px 0 0 !important}
   .modal p{margin:0 0 18px;color:var(--muted);line-height:1.45}
   .modal .actions{margin-top:0}
@@ -352,6 +357,8 @@
   <section id="scr-start" class="card">
     <label for="name">Tu nombre</label>
     <input id="name" maxlength="24" placeholder="Tu nombre de Liante" autocomplete="off">
+    <div class="login-row hidden" id="login-row"><button class="report-link" id="btn-login" type="button">🔒 ¿Ya tienes PIN? Entra con tu nombre</button></div>
+    <div class="logged hidden" id="logged">🔒 Conectado como <b id="logged-name"></b><button class="report-link" id="btn-logout" type="button">Cerrar sesión</button></div>
     <div class="row">
       <div>
         <label for="count">Número de preguntas</label>
@@ -468,6 +475,7 @@
   <div class="box pin-box">
     <h4 id="pin-title"></h4>
     <p id="pin-text"></p>
+    <input id="pin-name" class="hidden" maxlength="24" autocomplete="off" placeholder="Tu nombre de Liante" aria-label="Nombre">
     <input id="pin-1" class="pin-in" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="••••" aria-label="PIN">
     <input id="pin-2" class="pin-in hidden" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="Repite el PIN" aria-label="Repite el PIN">
     <div class="rep-msg" id="pin-msg"></div>
@@ -632,7 +640,7 @@ function fillCategories(){
 
 function esc(s){ return s.replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
 
-function show(id){ ["scr-start","scr-game","scr-end","scr-hof"].forEach(s => $(s).classList.toggle("hidden", s !== id)); document.body.classList.toggle("playing", id === "scr-game"); window.scrollTo(0,0); }
+function show(id){ if (id === "scr-start" && typeof refreshLogin === "function") setTimeout(refreshLogin, 0); ["scr-start","scr-game","scr-end","scr-hof"].forEach(s => $(s).classList.toggle("hidden", s !== id)); document.body.classList.toggle("playing", id === "scr-game"); window.scrollTo(0,0); }
 
 function store(key, val){ try{ if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); }catch(e){ return null; } }
 
@@ -652,21 +660,25 @@ async function rpcCall(fn, args){
 }
 let pinResolve = null;
 function pinDialog(mode, name, msg){
-  // mode: "crear-libre" | "crear-existente" | "pedir"
-  const crear = mode.startsWith("crear");
-  $("pin-title").textContent = crear ? "🔒 Protege tu nombre" : "🔒 Introduce tu PIN";
+  // mode: "crear-libre" | "crear-existente" | "pedir" | "login"
+  const crear = mode.startsWith("crear"), login = mode === "login";
+  $("pin-name").classList.toggle("hidden", !login);
+  $("pin-cancel").textContent = login ? "Cancelar" : "Cambiar de nombre";
+  $("pin-title").textContent = crear ? "🔒 Protege tu nombre" : login ? "🔒 Entrar con tu PIN" : "🔒 Introduce tu PIN";
   $("pin-text").textContent = mode === "crear-libre"
     ? `Crea un PIN de 4 cifras para que nadie más pueda jugar como «${name}» en el Hall of Fame.`
     : mode === "crear-existente"
     ? `«${name}» ya tiene puntos en el Hall of Fame pero todavía no tiene PIN. Si es tu nombre, crea ahora tu PIN de 4 cifras para protegerlo.`
+    : login ? "Escribe tu nombre del Hall of Fame y tu PIN de 4 cifras."
     : `«${name}» está protegido con PIN. Introdúcelo para jugar con este nombre.`;
   $("pin-ok").textContent = crear ? "Guardar PIN y jugar" : "Entrar";
   $("pin-2").classList.toggle("hidden", !crear);
   $("pin-skip").classList.toggle("hidden", mode !== "crear-libre");
   $("pin-help").textContent = crear ? "Apúntalo: lo necesitarás si juegas desde otro móvil u ordenador." : "¿Has olvidado tu PIN? Pide a Liantes Metaleros que lo restablezca.";
+  if (login) $("pin-name").value = name || "";
   $("pin-1").value = ""; $("pin-2").value = ""; $("pin-msg").textContent = msg || ""; $("pin-msg").className = msg ? "rep-msg bad" : "rep-msg";
   $("pin-modal").classList.remove("hidden"); document.body.classList.add("modal-open");
-  setTimeout(() => $("pin-1").focus(), 50);
+  setTimeout(() => (login && !$("pin-name").value ? $("pin-name") : $("pin-1")).focus(), 50);
   return new Promise(r => pinResolve = r);
 }
 function pinClose(v){ $("pin-modal").classList.add("hidden"); document.body.classList.remove("modal-open"); const r = pinResolve; pinResolve = null; if (r) r(v); }
@@ -677,8 +689,42 @@ $("pin-ok").addEventListener("click", () => {
   const a = $("pin-1").value.trim(), b = $("pin-2").value.trim();
   if (!/^\d{4}$/.test(a)) return pinMsg("El PIN tiene que ser de 4 números.");
   if (!$("pin-2").classList.contains("hidden") && a !== b) return pinMsg("Los dos PIN no coinciden.");
-  pinClose({action: "ok", pin: a});
+  if (!$("pin-name").classList.contains("hidden") && !$("pin-name").value.trim()) return pinMsg("Escribe tu nombre.");
+  pinClose({action: "ok", pin: a, name: $("pin-name").value.trim()});
 });
+$("pin-name").addEventListener("keydown", e => { if (e.key === "Enter") $("pin-1").focus(); });
+
+/* ---------- Entrar con PIN / sesión ---------- */
+function refreshLogin(){
+  if (!HOF.online){ $("login-row").classList.add("hidden"); $("logged").classList.add("hidden"); return; }
+  const name = $("name").value.trim(), key = norm(name), has = !!(name && pins()[key]);
+  $("logged").classList.toggle("hidden", !has);
+  $("login-row").classList.toggle("hidden", has);
+  if (has) $("logged-name").textContent = name;
+}
+async function doLogin(){
+  let msg = "", name = $("name").value.trim();
+  while (true){
+    const d = await pinDialog("login", name, msg);
+    if (d.action !== "ok") return;
+    name = d.name; const key = norm(name);
+    const r = await rpcCall("pin_comprobar", {p_clave: key, p_pin: d.pin}).catch(() => "error");
+    if (r === "ok"){ savePin(key, d.pin); rememberName(key); $("name").value = name; store("rmq-opts", {...(store("rmq-opts") || {}), name}); refreshLogin(); return; }
+    msg = r === "sin_pin" ? "Ese nombre aún no tiene PIN. Escríbelo en «Tu nombre» y pulsa ¡A liarla! para crearlo."
+        : r === "bloqueado" ? "Demasiados intentos. Espera 15 minutos."
+        : r === "error" ? "No se pudo comprobar. Inténtalo de nuevo." : "Nombre o PIN incorrecto.";
+  }
+}
+function doLogout(){
+  const key = norm($("name").value.trim());
+  forgetPin(key);
+  const s = myNames(); s.delete(key); store("rmq-mynames", [...s]);
+  $("name").value = ""; store("rmq-opts", {...(store("rmq-opts") || {}), name: ""});
+  refreshLogin(); $("name").focus();
+}
+$("btn-login").addEventListener("click", doLogin);
+$("btn-logout").addEventListener("click", doLogout);
+$("name").addEventListener("input", refreshLogin);
 ["pin-1","pin-2"].forEach(id => $(id).addEventListener("keydown", e => { if (e.key === "Enter") $("pin-ok").click(); }));
 
 let checkingName = false;
@@ -1304,6 +1350,7 @@ Deco.apply();
     const o = store("rmq-opts");
     if (o){ $("name").value = o.name === "Anónimo" ? "" : o.name; $("count").value = String(o.n);
             $("diff").value = o.diff || ""; if ([...$("cat").options].some(x => x.value === o.cat)) $("cat").value = o.cat; }
+    refreshLogin();
     $("source").innerHTML = `<b>${BANK.length}</b> preguntas cargadas · fuente: ${esc(label)}`;
   }catch(e){
     $("source").textContent = "";
