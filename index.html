@@ -258,6 +258,11 @@
     background:var(--text);color:#1a1a1a;font-family:"Red Hat Display";font-weight:900;font-size:14px;letter-spacing:.3px;
     box-shadow:0 10px 30px rgba(0,0,0,.6);border:2px solid #1a1a1a;transition:transform .1s,background .15s,color .15s}
   .join .sk{font-size:1.3em}
+  .join, .tip{white-space:nowrap;flex:0 1 auto;min-width:0}
+  .join span:not(.sk){overflow:hidden;text-overflow:ellipsis}
+  .tip-short{display:none}
+  @media (max-width:480px){ .tip-full{display:none} .tip-short{display:inline} .fabbar{gap:8px} .join{gap:6px} }
+  @media (max-width:360px){ .fabbar{padding-left:10px;padding-right:10px} .join{padding:6px 12px} .tip-toggle{padding:6px 8px;gap:4px} .tip-toggle .chev{display:none} }
   .join:hover{background:var(--blue);color:#fff}
   .join:active{transform:translateY(1px)}
   body.playing .join, body.modal-open .join{display:none}
@@ -725,7 +730,7 @@
 <div class="fabbar" id="fabbar">
 <a class="join" id="join" href="https://docs.google.com/forms/d/18MqYXiKw-VQP9Fv5CIg65BsEJQxG1R-H9hxU1ywAfBQ/viewform" target="_blank" rel="noopener" title="Hazte socio de la Associació Liantes Metaleros" data-t-title><span class="sk">💀</span> <span data-t>Hazte socio</span></a>
 <div class="tip hidden" id="tip" role="complementary" aria-label="Invítame a algo" data-t-aria>
-  <button class="tip-toggle" id="tip-toggle" aria-expanded="false" aria-controls="tip-amts"><span class="cup">🍺</span> <span data-t>Invítame a algo</span> <span class="chev">▲</span></button>
+  <button class="tip-toggle" id="tip-toggle" aria-expanded="false" aria-controls="tip-amts"><span class="cup">🍺</span> <span class="tip-full" data-t>Invítame a algo</span><span class="tip-short" data-t>Invítame</span> <span class="chev">▲</span></button>
   <div class="tip-amts" id="tip-amts"></div>
 </div>
 </div>
@@ -744,7 +749,7 @@
   <p class="small muted" style="font-size:11px;opacity:.7" data-t>Esta web recoge estadísticas anónimas de uso, sin cookies ni datos personales.</p>
 </footer>
 
-<script src="i18n/ui.js?v=23735ff7"></script>
+<script src="i18n/ui.js?v=d5c5f18e"></script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN
