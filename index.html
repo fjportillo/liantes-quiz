@@ -617,6 +617,39 @@ function show(id){ ["scr-start","scr-game","scr-end","scr-hof"].forEach(s => $(s
 
 function store(key, val){ try{ if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); }catch(e){ return null; } }
 
+/* ---------- Comprobar si el nombre ya existe en el Hall of Fame ---------- */
+const myNames = () => new Set(store("rmq-mynames") || []);
+function rememberName(key){ const s = myNames(); s.add(key); store("rmq-mynames", [...s].slice(-20)); }
+async function nameTaken(key){
+  if (!HOF.online || !key || key === "anonimo") return false;
+  try{
+    const h = {apikey: SUPABASE_KEY};
+    if (SUPABASE_KEY.startsWith("eyJ")) h.Authorization = "Bearer " + SUPABASE_KEY;
+    const res = await fetch(SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/hall_of_fame?select=clave&clave=eq." + encodeURIComponent(key) + "&limit=1", {headers: h});
+    if (!res.ok) return false;
+    return (await res.json()).length > 0;
+  }catch(e){ return false; }
+}
+(() => { const o = store("rmq-opts"); if (o && o.name && o.name !== "Anónimo") rememberName(norm(o.name)); })();
+let checkingName = false;
+async function tryStart(){
+  if (checkingName) return;
+  const name = $("name").value.trim(), key = norm(name);
+  if (name && key !== "anonimo" && !myNames().has(key)){
+    checkingName = true; $("btn-start").disabled = true;
+    const taken = await nameTaken(key);
+    checkingName = false; $("btn-start").disabled = false;
+    if (taken){
+      const me = await askConfirm("¿Eres tú, " + name + "?",
+        `El nombre «${name}» ya está en el Hall of Fame. Si eres tú, tus puntos se sumarán a los suyos. Si no, elige otro nombre para no mezclar vuestras puntuaciones.`,
+        "Sí, soy yo", "No, cambiaré el nombre", true);
+      if (!me){ $("name").focus(); $("name").select(); return; }
+    }
+    rememberName(key);
+  }
+  startGame();
+}
+
 function startGame(){
   const name = $("name").value.trim() || "Anónimo";
   const cat = $("cat").value, diff = $("diff").value, n = +$("count").value;
@@ -937,9 +970,11 @@ function openHof(from){ hofReturn = from; show("scr-hof"); renderHof(); }
 
 /* ---------- Diálogo de confirmación ---------- */
 let modalResolve = null;
-function askConfirm(title, text, okLabel, noLabel){
+function askConfirm(title, text, okLabel, noLabel, safe){
   $("modal-title").textContent = title; $("modal-text").textContent = text;
   $("modal-ok").textContent = okLabel; $("modal-no").textContent = noLabel || "Cancelar";
+  $("modal-ok").className = safe ? "btn" : "btn danger";
+  $("modal").querySelector(".box").style.borderTopColor = safe ? "var(--blue2)" : "";
   $("modal").classList.remove("hidden"); document.body.classList.add("modal-open"); $("modal-no").focus();
   return new Promise(r => modalResolve = r);
 }
@@ -984,7 +1019,7 @@ document.addEventListener("keydown", e => {
   else if ((e.key === "Enter" || e.key === " ") && !$("btn-next").classList.contains("hidden")){ e.preventDefault(); next(); }
 });
 
-$("btn-start").addEventListener("click", startGame);
+$("btn-start").addEventListener("click", tryStart);
 $("btn-next").addEventListener("click", next);
 $("btn-again").addEventListener("click", startGame);
 $("btn-home").addEventListener("click", () => show("scr-start"));
@@ -1001,7 +1036,7 @@ $("btn-hof-reset").addEventListener("click", async () => {
     await HOF.reset(); renderHof();
   }
 });
-$("name").addEventListener("keydown", e => { if (e.key === "Enter") startGame(); });
+$("name").addEventListener("keydown", e => { if (e.key === "Enter") tryStart(); });
 
 
 /* =====================================================================
