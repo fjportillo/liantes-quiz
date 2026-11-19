@@ -11,6 +11,7 @@ Web: https://fjportillo.github.io/liantes-quiz/
 - `supabase.sql` — base de datos del Hall of Fame compartido
 - `hall_of_fame_mensual.sql`, `estadisticas.sql`, `reportes.sql`, `evento.sql`, `pin.sql` — ranking mensual, estadísticas, reportes de errores, modo evento y PIN
 - `retos_perfil.sql` — reto diario (10 preguntas iguales para todos cada día, una partida por jugador) y perfiles de jugador con logros
+- `ranking_diario.sql` — desde el 1-12-2026 el ranking del mes suma la mejor partida de cada día (hasta 20 preguntas) + premios del reto
 - `premios_reto.sql` — premio del reto diario (+500/+300/+150 al ranking del mes para el podio, mínimo 3 jugadores) y nuevos límites de puntos; activo desde el 1-12-2026
 - `preguntas_vistas.sql` — cuenta cuántas veces sale cada pregunta (vista `preguntas_ranking`); la renovación semanal retira las más vistas
 - `promo.html` — publicación del día para redes (imagen 4:5 y 9:16 + texto listo para copiar): https://fjportillo.github.io/liantes-quiz/promo.html
@@ -62,5 +63,7 @@ Puntuación: 100 puntos por acierto + hasta 100 por rapidez. Las salas se borran
 
 - **Puntos por dificultad:** fácil 100, media 150, difícil 200 (+5 por segundo sobrante y +50 con racha de 3 o más). Constantes `NEW_RULES_FROM` y `POINTS_BY_DIFF` en `plantilla.html`.
 - **Dificultad automática** (opción por defecto): cada pregunta se elige según el porcentaje de aciertos del jugador en ese dispositivo y sube o baja durante la partida según acierte o falle. El reto diario y el modo evento siguen siendo iguales para todos.
+- **Ranking por días:** cada jugador suma, por cada día, solo su mejor partida de hasta 20 preguntas (vista `partidas_ranking`). Las partidas más largas no puntúan; las de más de 200 preguntas («Todas») son de práctica y no se guardan.
+- **Aviso de novedades:** el 1 de diciembre la web muestra una vez en cada dispositivo una ventana con los cambios.
 - **Premio del reto diario:** el podio de cada día suma +500 / +300 / +150 al ranking del mes si jugaron al menos 3 personas (vista `reto_premios`).
 - Para probar las reglas antes de esa fecha, añade `#nuevas-reglas` a la dirección.

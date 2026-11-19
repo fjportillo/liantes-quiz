@@ -376,6 +376,12 @@
   .reto-cd{font-size:12px;color:var(--muted)}
   .reto-txt{margin:8px 0 10px;font-size:14px;color:#d8d8d2}
   .reto-btn{margin-top:0}
+  .count-hint{font-size:12px;color:#ffd76a;margin:-4px 0 8px}
+  .news-box h4{font-size:24px}
+  .news-list{list-style:none;margin:10px 0 16px;padding:0}
+  .news-list li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45}
+  .news-list li .ic{font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:24px;line-height:1}
+  .news-list b{color:var(--blue2)}
   .reto-prize{margin:8px 0 0;font-size:12px;color:#ffd76a;font-weight:600}
   .reto-grid{font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:clamp(18px,5.4vw,22px);letter-spacing:2px;white-space:nowrap;text-align:center;margin:4px 0 10px}
   .reto-grid.big-grid{font-size:clamp(20px,6vw,28px);letter-spacing:2px;margin:14px 0 4px;white-space:nowrap}
@@ -485,6 +491,7 @@
         </select>
       </div>
     </div>
+    <div class="count-hint hidden" id="count-hint"></div>
     <label for="cat" data-t>Categoría</label>
     <select id="cat"><option value="">Todas las categorías</option></select>
     <button id="btn-start" class="btn block" data-t>¡A liarla!</button>
@@ -626,6 +633,14 @@
   </div>
 </div>
 <div class="toast hidden" id="toast" role="status"></div>
+<div class="modal hidden" id="news-modal" role="dialog" aria-modal="true" aria-labelledby="news-title">
+  <div class="box news-box">
+    <h4 id="news-title"></h4>
+    <p class="muted" id="news-sub"></p>
+    <ul class="news-list" id="news-list"></ul>
+    <div class="actions"><button id="news-ok" class="btn"></button></div>
+  </div>
+</div>
 <div class="modal hidden" id="inst-modal" role="dialog" aria-modal="true" aria-labelledby="inst-title">
   <div class="box inst-box">
     <div class="inst-head"><img src="icons/icon-192.png" alt="" width="64" height="64"><div><h4 id="inst-title" data-t>Liantes Quiz en tu móvil</h4><p data-t>Se instala como una app: icono en tu pantalla de inicio, pantalla completa y funciona sin conexión. Gratis y sin pasar por ninguna tienda.</p></div></div>
@@ -773,6 +788,29 @@ const Skill = {
   level(key){ const s = this.get(key); return s.n < 5 ? 1 : s.a < 0.5 ? 0 : s.a < 0.75 ? 1 : 2; }
 };
 if (!NEW_RULES){ const o = document.querySelector('#diff option[value="auto"]'); if (o) o.remove(); }
+function countHint(){
+  const all = $("count").value === "0";
+  $("count-hint").textContent = !all ? "" : NEW_RULES ? T("Las partidas de más de 20 preguntas no puntúan para el ranking (cuenta tu mejor partida de cada día).")
+    : T("Las partidas con todas las preguntas son de práctica: no se guardan en el Hall of Fame.");
+  $("count-hint").classList.toggle("hidden", !all);
+}
+$("count").addEventListener("change", countHint);
+/* Novedades de diciembre: se muestran una vez en cada dispositivo */
+function showNews(){
+  if (!NEW_RULES || store("rmq-news-2026-12")) return;
+  $("news-title").textContent = T("🤘 ¡Novedades en Liantes Quiz!");
+  $("news-sub").textContent = T("Desde el 1 de diciembre cambian las reglas del ranking:");
+  const items = [
+    ["📅", "<b>" + T("Ranking por días") + "</b>: " + T("cada día cuenta solo tu mejor partida de hasta 20 preguntas. ¡Mejor jugar un poco cada día que mucho un solo día!")],
+    ["🏅", "<b>" + T("Premio del reto diario") + "</b>: " + T("el podio del día suma +500, +300 y +150 puntos al ranking del mes (mínimo 3 jugadores).")],
+    ["💯", "<b>" + T("Puntos por dificultad") + "</b>: " + T("fácil 100, media 150 y difícil 200 puntos por acierto, más los bonus de tiempo y racha.")],
+    ["🎚️", "<b>" + T("Dificultad automática") + "</b>: " + T("las preguntas se adaptan a tu nivel: si aciertas, suben; si fallas, bajan.")],
+  ];
+  $("news-list").innerHTML = items.map(([ic, t]) => `<li><span class="ic">${ic}</span><span>${t}</span></li>`).join("");
+  $("news-ok").textContent = T("¡A liarla!");
+  $("news-modal").classList.remove("hidden"); document.body.classList.add("modal-open");
+}
+$("news-ok").addEventListener("click", () => { store("rmq-news-2026-12", 1); $("news-modal").classList.add("hidden"); document.body.classList.remove("modal-open"); });
 const LETTERS = ["A","B","C","D"];
 const DIFF_LABEL = {facil: T("Fácil"), media: T("Media"), dificil: T("Difícil")};
 const catLabel = c => T(c);
@@ -1171,7 +1209,10 @@ function finish(){
   if (isReto) $("verdict").textContent = T("📅 Reto diario {num}", {num: game.num}) + " · " + $("verdict").textContent;
   $("mypos").textContent = T("Guardando en el Hall of Fame…");
   const res = game.result;
-  (async () => {
+  const longGame = total > 20;
+  if (total > 200){                            // la base de datos no admite partidas tan largas: es de práctica
+    $("mypos").textContent = T("🎸 Partida de práctica: las partidas con todas las preguntas no se guardan en el Hall of Fame.");
+  } else (async () => {
     try{
       const saved = await HOF.save(record);
       if (isReto && saved === "repetido"){
@@ -1192,6 +1233,7 @@ function finish(){
         if (rp >= 0){ res.pos = rp + 1; res.of = rows.length; Reto.saveDone(res);
           html = T("📅 Vas <b>#{pos}</b> de {n} en el reto de hoy.", {pos: rp + 1, n: rows.length}) + "<br>" + html; }
       }
+      if (NEW_RULES && longGame) html = T("ℹ️ Esta partida no puntúa para el ranking (tiene más de 20 preguntas).") + (html ? "<br>" + html : "");
       $("mypos").innerHTML = html;
     }catch(e){
       console.warn(e);
@@ -1337,7 +1379,7 @@ const HOF = (() => {
       let rows;
       try{ rows = await api("hall_of_fame_mes?select=*&order=puntos.desc,mejor.desc&limit=1000"); }
       catch(e){ rows = await api("hall_of_fame?select=*&order=puntos.desc,mejor.desc&limit=1000"); }   // respaldo si aún no existe la vista mensual
-      return rows.map(r => ({key: r.clave, name: r.nombre, score: r.puntos, games: r.partidas, ok: r.aciertos, total: r.total, best: r.mejor, bonus: r.bonus_reto || 0, wins: r.retos_ganados || 0}));
+      return rows.map(r => ({key: r.clave, name: r.nombre, score: r.puntos, games: r.partidas, ok: r.aciertos, total: r.total, best: r.mejor, bonus: r.bonus_reto || 0, wins: r.retos_ganados || 0, days: r.dias ?? null}));
     },
     async best(){
       let rows;
@@ -1366,7 +1408,8 @@ async function renderHof(){
   $("hof-sub").textContent = hofTab === "champs"
     ? T("Los tres mejores de cada mes 👑")
     : hofTab === "reto" ? T("Reto diario {num} · {fecha} · toca el nombre para ver su perfil", {num: Reto.num(), fecha: new Date().toLocaleDateString(LOCALE,{day:"numeric",month:"long",timeZone:"Europe/Madrid"})})
-    : T("Ranking de {mes} · se reinicia el {dia}", {mes, dia: nextMonthLabel()}) + (HOF.online ? "" : " · " + T("este dispositivo"));
+    : (NEW_RULES ? T("Ranking de {mes} · cuenta tu mejor partida de cada día · se reinicia el {dia}", {mes, dia: nextMonthLabel()})
+                 : T("Ranking de {mes} · se reinicia el {dia}", {mes, dia: nextMonthLabel()})) + (HOF.online ? "" : " · " + T("este dispositivo"));
   $("btn-hof-reset").classList.add("hidden");
   $("hof-body").innerHTML = `<div class="empty">${T("Cargando leyendas… 🤘")}</div>`;
   const cls = i => i < 3 ? `top${i+1}` : "";
@@ -1380,8 +1423,8 @@ async function renderHof(){
         : `<div class="empty">${HOF.online ? T("Nadie ha jugado todavía el reto de hoy. ¡Sé el primero! 📅") : T("El ranking del reto necesita el Hall of Fame compartido.")}</div>`;
     } else if (hofTab === "total"){
       const rows = (await HOF.totals()).slice(0, 25);
-      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>${T("Liante")}</th><th class="r mob-hide">${T("Partidas")}</th><th class="r mob-hide">${T("Aciertos")}</th><th class="r">${T("Puntos")}</th></tr></thead><tbody>` +
-        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td>${ncell(p.name, p.key, T("{pct}% aciertos", {pct: Math.round(p.ok/p.total*100)}) + " · " + TP(p.games, "{n} partida", "{n} partidas") + (p.bonus ? " · " + T("🏅 +{n} del reto", {n: p.bonus}) : ""))}<td class="r mob-hide">${p.games}</td><td class="r mob-hide">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}${p.bonus ? `<div class="bonus-s" title="${T("Premios del reto diario")}">🏅 +${p.bonus}</div>` : ""}</td></tr>`).join("") + `</tbody></table>`
+      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>${T("Liante")}</th><th class="r mob-hide">${NEW_RULES ? T("Días") : T("Partidas")}</th><th class="r mob-hide">${T("Aciertos")}</th><th class="r">${T("Puntos")}</th></tr></thead><tbody>` +
+        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td>${ncell(p.name, p.key, T("{pct}% aciertos", {pct: Math.round(p.ok/p.total*100)}) + " · " + (NEW_RULES && p.days != null ? TP(p.days, "{n} día", "{n} días") : TP(p.games, "{n} partida", "{n} partidas")) + (p.bonus ? " · " + T("🏅 +{n} del reto", {n: p.bonus}) : ""))}<td class="r mob-hide">${NEW_RULES && p.days != null ? p.days : p.games}</td><td class="r mob-hide">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}${p.bonus ? `<div class="bonus-s" title="${T("Premios del reto diario")}">🏅 +${p.bonus}</div>` : ""}</td></tr>`).join("") + `</tbody></table>`
         : `<div class="empty">${T("Nuevo mes, ranking a cero. ¡Juega y sé el primer Liante de {mes}! 🤘", {mes})}</div>`;
     } else if (hofTab === "best"){
       const rows = await HOF.best();
@@ -1467,6 +1510,7 @@ document.addEventListener("keydown", e => {
   if (!$("pin-modal").classList.contains("hidden")){ if (e.key === "Escape") pinClose({action: "cancel"}); return; }
   if (!$("img-modal").classList.contains("hidden")){ if (e.key === "Escape") ShareImg.close(); return; }
   if (!$("inst-modal").classList.contains("hidden")){ if (e.key === "Escape") Install.close(); return; }
+  if (!$("news-modal").classList.contains("hidden")){ if (e.key === "Escape" || e.key === "Enter") $("news-ok").click(); return; }
   if ($("scr-game").classList.contains("hidden") || !game) return;
   if (e.key === "Escape"){ cancelGame(); return; }
   const k = ["1","2","3","4"].indexOf(e.key);
@@ -2098,7 +2142,7 @@ const Install = (() => {
     const o = store("rmq-opts");
     if (o){ $("name").value = o.name === "Anónimo" ? "" : o.name; $("count").value = String(o.n);
             $("diff").value = (o.diff === "" && !o.v && NEW_RULES) ? "auto" : (o.diff || ""); if ([...$("cat").options].some(x => x.value === o.cat)) $("cat").value = o.cat; }
-    refreshLogin(); Reto.refresh();
+    refreshLogin(); Reto.refresh(); countHint(); setTimeout(showNews, 700);
     $("source").innerHTML = T("<b>{n}</b> preguntas cargadas · fuente: {src}", {n: BANK.length, src: esc(label)});
   }catch(e){
     $("source").textContent = "";
