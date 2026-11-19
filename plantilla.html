@@ -376,6 +376,12 @@
   .reto-cd{font-size:12px;color:var(--muted)}
   .reto-txt{margin:8px 0 10px;font-size:14px;color:#d8d8d2}
   .reto-btn{margin-top:0}
+  .kind-sw{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 6px}
+  .kind-sw button{appearance:none;cursor:pointer;background:#131415;border:1px solid var(--line);color:var(--muted);padding:12px 8px;text-align:center;font-family:"Red Hat Display"}
+  .kind-sw button b{display:block;font-weight:900;font-size:15px;color:var(--text);text-transform:uppercase;letter-spacing:1px}
+  .kind-sw button span{display:block;font-size:11px;margin-top:3px}
+  .kind-sw button.on{border-color:var(--blue2);background:linear-gradient(180deg,rgba(91,108,240,.25),#131415);color:var(--blue2)}
+  .kind-info{font-size:13px;color:var(--muted);margin:4px 0 10px;line-height:1.45}
   .count-hint{font-size:12px;color:#ffd76a;margin:-4px 0 8px}
   .news-box h4{font-size:24px}
   .news-list{list-style:none;margin:10px 0 16px;padding:0}
@@ -470,6 +476,12 @@
     <input id="name" maxlength="24" placeholder="Tu nombre de Liante" data-t-ph autocomplete="off">
     <div class="login-row hidden" id="login-row"><button class="report-link" id="btn-login" type="button" data-t>🔒 ¿Ya tienes PIN? Entra con tu nombre</button></div>
     <div class="logged hidden" id="logged"><span data-t>🔒 Conectado como</span> <b id="logged-name"></b><button class="report-link" id="btn-logout" type="button" data-t>Cerrar sesión</button></div>
+    <div class="kind-sw hidden" id="kind-sw" role="radiogroup" aria-label="Tipo de partida">
+      <button type="button" data-kind="campeonato" role="radio"><b data-t>🏆 Campeonato</b><span data-t>Puntúa para el ranking</span></button>
+      <button type="button" data-kind="practica" role="radio"><b data-t>🎸 Práctica</b><span data-t>A tu aire, no puntúa</span></button>
+    </div>
+    <p class="kind-info hidden" id="kind-info"></p>
+    <div id="practice-opts">
     <div class="row">
       <div>
         <label for="count" data-t>Número de preguntas</label>
@@ -494,6 +506,7 @@
     <div class="count-hint hidden" id="count-hint"></div>
     <label for="cat" data-t>Categoría</label>
     <select id="cat"><option value="">Todas las categorías</option></select>
+    </div>
     <button id="btn-start" class="btn block" data-t>¡A liarla!</button>
     <div class="start-2"><button id="btn-hof-start" class="btn ghost hof" data-t>🏆 Hall of Fame</button><button id="btn-prof-start" class="btn ghost hof" data-t>👤 Mi perfil</button></div>
     <div class="group-links">
@@ -790,10 +803,23 @@ const Skill = {
 if (!NEW_RULES){ const o = document.querySelector('#diff option[value="auto"]'); if (o) o.remove(); }
 function countHint(){
   const all = $("count").value === "0";
-  $("count-hint").textContent = !all ? "" : NEW_RULES ? T("Las partidas de más de 20 preguntas no puntúan para el ranking (cuenta tu mejor partida de cada día).")
-    : T("Las partidas con todas las preguntas son de práctica: no se guardan en el Hall of Fame.");
+  $("count-hint").textContent = all ? T("Las partidas con todas las preguntas son de práctica: no se guardan en el Hall of Fame.") : "";
   $("count-hint").classList.toggle("hidden", !all);
 }
+/* Tipo de partida (desde diciembre): campeonato (20 preguntas, dificultad automática, puntúa) o práctica (libre, no puntúa) */
+let KIND = NEW_RULES ? ((store("rmq-opts") || {}).kind || "campeonato") : null;
+function applyKind(){
+  $("kind-sw").classList.toggle("hidden", !NEW_RULES);
+  $("kind-info").classList.toggle("hidden", !NEW_RULES);
+  if (!NEW_RULES) return;
+  document.querySelectorAll("#kind-sw [data-kind]").forEach(b => { const on = b.dataset.kind === KIND; b.classList.toggle("on", on); b.setAttribute("aria-checked", on); });
+  $("practice-opts").classList.toggle("hidden", KIND === "campeonato");
+  $("kind-info").textContent = KIND === "campeonato"
+    ? T("20 preguntas de todas las categorías con dificultad automática. Cada día cuenta tu mejor partida de campeonato para el ranking del mes.")
+    : T("Elige preguntas, dificultad y categoría. Las partidas de práctica se guardan en tu perfil, pero no puntúan para el ranking.");
+}
+document.querySelectorAll("#kind-sw [data-kind]").forEach(b => b.addEventListener("click", () => { KIND = b.dataset.kind; store("rmq-opts", {...(store("rmq-opts") || {}), kind: KIND}); applyKind(); }));
+applyKind();
 $("count").addEventListener("change", countHint);
 /* Novedades de diciembre: se muestran una vez en cada dispositivo */
 function showNews(){
@@ -801,7 +827,8 @@ function showNews(){
   $("news-title").textContent = T("🤘 ¡Novedades en Liantes Quiz!");
   $("news-sub").textContent = T("Desde el 1 de diciembre cambian las reglas del ranking:");
   const items = [
-    ["📅", "<b>" + T("Ranking por días") + "</b>: " + T("cada día cuenta solo tu mejor partida de hasta 20 preguntas. ¡Mejor jugar un poco cada día que mucho un solo día!")],
+    ["🏆", "<b>" + T("Campeonato o práctica") + "</b>: " + T("al empezar eliges. El campeonato (20 preguntas, dificultad automática) puntúa para el ranking; la práctica es a tu aire y no puntúa.")],
+    ["📅", "<b>" + T("Ranking por días") + "</b>: " + T("cada día cuenta solo tu mejor partida de campeonato. ¡Mejor jugar un poco cada día que mucho un solo día!")],
     ["🏅", "<b>" + T("Premio del reto diario") + "</b>: " + T("el podio del día suma +500, +300 y +150 puntos al ranking del mes (mínimo 3 jugadores).")],
     ["💯", "<b>" + T("Puntos por dificultad") + "</b>: " + T("fácil 100, media 150 y difícil 200 puntos por acierto, más los bonus de tiempo y racha.")],
     ["🎚️", "<b>" + T("Dificultad automática") + "</b>: " + T("las preguntas se adaptan a tu nivel: si aciertas, suben; si fallas, bajan.")],
@@ -1049,7 +1076,8 @@ function alertPin(msg){ $("start-err").textContent = msg; $("start-err").classLi
 
 function startGame(){
   const name = $("name").value.trim() || "Anónimo";
-  const cat = $("cat").value, diff = $("diff").value, n = +$("count").value;
+  const champ = NEW_RULES && KIND === "campeonato";
+  const cat = champ ? "" : $("cat").value, diff = champ ? "auto" : $("diff").value, n = champ ? 20 : +$("count").value;
   const auto = diff === "auto";
   let pool = BANK.filter(q => (!cat || q.cat === cat) && (auto || !diff || q.diff === diff));
   $("start-err").classList.add("hidden");
@@ -1067,9 +1095,9 @@ function startGame(){
   const nowSeen = new Set(store("rmq-seen") || []);
   pool.forEach(q => nowSeen.add(qid(q)));
   store("rmq-seen", [...nowSeen].slice(-3000));
-  store("rmq-opts", {name, cat, diff, n, v: 2});
+  store("rmq-opts", champ ? {...(store("rmq-opts") || {}), name, kind: KIND, v: 2} : {name, cat, diff, n, v: 2, kind: KIND});
   game = { name, list: pool.map(q => ({...q, options: shuffle([q.c, ...q.wrong])})),
-           i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [], cat, diff, mode: "normal", grid: [], det: {} };
+           i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [], cat, diff, mode: "normal", grid: [], det: {}, kind: NEW_RULES ? KIND : null };
   if (auto){                                   // dificultad automática: cada pregunta se elige según cómo vas
     game.auto = {lvl: Skill.level(norm(name)), pool: BANK.filter(q => !cat || q.cat === cat)};
     game.list[0] = autoPick(0);
@@ -1199,9 +1227,9 @@ function finish(){
                   T("🍺 Toca más quedadas y repasar clásicos…");
   const isReto = game.mode === "reto";
   const record = {name: game.name, key: norm(game.name) || "anonimo", score: game.score, ok: game.ok, total, t: Date.now(),
-                  mode: game.mode, racha: game.best, det: game.det, grid: game.grid.join("")};
+                  mode: game.mode === "reto" ? "reto" : (game.kind || game.mode), racha: game.best, det: game.det, grid: game.grid.join("")};
   game.result = {score: game.score, ok: game.ok, total, best: game.best, pct, verdict: $("verdict").textContent, name: game.name,
-                 mode: game.mode, cat: game.cat, diff: game.diff, grid: game.grid.slice(), day: game.day, num: game.num, pos: null};
+                 mode: game.mode, kind: game.kind, cat: game.cat, diff: game.diff, grid: game.grid.slice(), day: game.day, num: game.num, pos: null};
   if (isReto){ Reto.saveDone(game.result); Reto.refresh(); }
   $("end-grid").textContent = isReto ? game.grid.join("") : "";
   $("end-grid").classList.toggle("hidden", !isReto);
@@ -1233,7 +1261,8 @@ function finish(){
         if (rp >= 0){ res.pos = rp + 1; res.of = rows.length; Reto.saveDone(res);
           html = T("📅 Vas <b>#{pos}</b> de {n} en el reto de hoy.", {pos: rp + 1, n: rows.length}) + "<br>" + html; }
       }
-      if (NEW_RULES && longGame) html = T("ℹ️ Esta partida no puntúa para el ranking (tiene más de 20 preguntas).") + (html ? "<br>" + html : "");
+      if (game && game.kind === "practica") html = T("🎸 Partida de práctica: no puntúa para el ranking.") + (html ? "<br>" + html : "");
+      else if (NEW_RULES && longGame) html = T("ℹ️ Esta partida no puntúa para el ranking (tiene más de 20 preguntas).") + (html ? "<br>" + html : "");
       $("mypos").innerHTML = html;
     }catch(e){
       console.warn(e);
@@ -1408,7 +1437,7 @@ async function renderHof(){
   $("hof-sub").textContent = hofTab === "champs"
     ? T("Los tres mejores de cada mes 👑")
     : hofTab === "reto" ? T("Reto diario {num} · {fecha} · toca el nombre para ver su perfil", {num: Reto.num(), fecha: new Date().toLocaleDateString(LOCALE,{day:"numeric",month:"long",timeZone:"Europe/Madrid"})})
-    : (NEW_RULES ? T("Ranking de {mes} · cuenta tu mejor partida de cada día · se reinicia el {dia}", {mes, dia: nextMonthLabel()})
+    : (NEW_RULES ? T("Ranking de {mes} · cuenta tu mejor partida de campeonato de cada día · se reinicia el {dia}", {mes, dia: nextMonthLabel()})
                  : T("Ranking de {mes} · se reinicia el {dia}", {mes, dia: nextMonthLabel()})) + (HOF.online ? "" : " · " + T("este dispositivo"));
   $("btn-hof-reset").classList.add("hidden");
   $("hof-body").innerHTML = `<div class="empty">${T("Cargando leyendas… 🤘")}</div>`;
@@ -1889,6 +1918,7 @@ const ShareImg = (() => {
     x.textAlign = "left"; x.fillStyle = "#F2F2EC"; x.fillText(a, sx, 422); x.fillStyle = "#9aa5ff"; x.fillText(b, sx + wa, 422); x.textAlign = "center";
     spaced(x, 4); x.fillStyle = "#9a9a94";
     const label = r.mode === "reto" ? T("RETO DIARIO {num}", {num: r.num}) + " · " + new Date().toLocaleDateString(LOCALE, {day: "numeric", month: "long", timeZone: "Europe/Madrid"}).toUpperCase()
+      : r.kind === "campeonato" ? [T("Campeonato"), T("{n} preguntas", {n: r.total})].join(" · ").toUpperCase()
       : [r.cat ? catLabel(r.cat) : T("Todas las categorías"), r.diff === "auto" ? T("Automática") : r.diff ? DIFF_LABEL[r.diff] : "", T("{n} preguntas", {n: r.total})].filter(Boolean).join(" · ").toUpperCase();
     fit(x, label, 700, 30, '"Red Hat Display", sans-serif', W - 140); x.fillText(label, W / 2, 500);
     spaced(x, 1); x.fillStyle = "#F2F2EC"; fit(x, r.verdict, 900, 46, `"Red Hat Display", sans-serif, ${EMO}`, W - 120); x.fillText(r.verdict, W / 2, 580);

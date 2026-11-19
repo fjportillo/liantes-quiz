@@ -62,8 +62,9 @@ Puntuación: 100 puntos por acierto + hasta 100 por rapidez. Las salas se borran
 ## Reglas desde el 1 de diciembre de 2026
 
 - **Puntos por dificultad:** fácil 100, media 150, difícil 200 (+5 por segundo sobrante y +50 con racha de 3 o más). Constantes `NEW_RULES_FROM` y `POINTS_BY_DIFF` en `plantilla.html`.
-- **Dificultad automática** (opción por defecto): cada pregunta se elige según el porcentaje de aciertos del jugador en ese dispositivo y sube o baja durante la partida según acierte o falle. El reto diario y el modo evento siguen siendo iguales para todos.
-- **Ranking por días:** cada jugador suma, por cada día, solo su mejor partida de hasta 20 preguntas (vista `partidas_ranking`). Las partidas más largas no puntúan; las de más de 200 preguntas («Todas») son de práctica y no se guardan.
+- **Campeonato o práctica:** al empezar se elige el tipo de partida. *Campeonato*: 20 preguntas de todas las categorías con dificultad automática; es la única que puntúa (`modo = 'campeonato'`). *Práctica*: número de preguntas, dificultad y categoría libres; se guarda para el perfil pero no cuenta para el ranking (`modo = 'practica'`). SQL en `campeonato.sql`.
+- **Dificultad automática**: cada pregunta se elige según el porcentaje de aciertos del jugador en ese dispositivo y sube o baja durante la partida según acierte o falle. El reto diario y el modo evento siguen siendo iguales para todos.
+- **Ranking por días:** cada jugador suma, por cada día, solo su mejor partida de campeonato (vista `partidas_ranking`). Las de práctica no puntúan; las de más de 200 preguntas («Todas») son de práctica y no se guardan.
 - **Aviso de novedades:** el 1 de diciembre la web muestra una vez en cada dispositivo una ventana con los cambios.
 - **Premio del reto diario:** el podio de cada día suma +500 / +300 / +150 al ranking del mes si jugaron al menos 3 personas (vista `reto_premios`).
 - Para probar las reglas antes de esa fecha, añade `#nuevas-reglas` a la dirección.
