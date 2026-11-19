@@ -1797,8 +1797,8 @@ const Reto = (() => {
   }
   function refresh(){
     shownDay = day();
-    $("reto-prize").textContent = NEW_RULES ? T("🏅 El podio del día suma +300, +200 y +100 puntos al ranking del mes (mínimo 3 jugadores).")
-      : T("🏅 Desde el 1 de diciembre, el podio del reto suma +300, +200 y +100 puntos al ranking del mes.");
+    $("reto-prize").textContent = NEW_RULES ? T("🏅 El podio del día suma +500, +300 y +150 puntos al ranking del mes (mínimo 3 jugadores).")
+      : T("🏅 Desde el 1 de diciembre, el podio del reto suma +500, +300 y +150 puntos al ranking del mes.");
     $("reto-num").textContent = num();
     countdown();
     const key = norm($("name").value.trim()), r = mine(shownDay, key), pr = store("rmq-reto-prog");

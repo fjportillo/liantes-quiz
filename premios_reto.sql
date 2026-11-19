@@ -3,7 +3,7 @@
 -- No borra nada. Los premios empiezan a contar con los retos del 1 de diciembre de 2026.
 --
 -- PREMIOS: al cerrarse cada día (medianoche, hora de Madrid), los tres mejores del reto de ese día suman
---          +300 / +200 / +100 puntos al ranking del mes. Solo si ese día jugaron al menos 3 personas.
+--          +500 / +300 / +150 puntos al ranking del mes. Solo si ese día jugaron al menos 3 personas.
 --          Empate a puntos: gana quien terminó antes.
 -- Consultas útiles:  select * from public.reto_premios order by fecha desc, puesto;
 
@@ -24,7 +24,7 @@ with d as (
     and fecha < (now() at time zone 'Europe/Madrid')::date
 )
 select fecha, clave, nombre, puesto::int as puesto, jugadores::int as jugadores,
-       (case puesto when 1 then 300 when 2 then 200 else 100 end)::int as bonus
+       (case puesto when 1 then 500 when 2 then 300 else 150 end)::int as bonus
 from d
 where jugadores >= 3 and puesto <= 3;
 grant select on public.reto_premios to anon, authenticated;

@@ -374,10 +374,10 @@ window.I18N = {
   "✕ Salir": "✕ Sortir",
   "Automática (se adapta a ti)": "Automàtica (s'adapta a tu)",
   "Automática": "Automàtica",
-  "🏅 El podio del día suma +300, +200 y +100 puntos al ranking del mes (mínimo 3 jugadores).": "🏅 El podi del dia suma +300, +200 i +100 punts al rànquing del mes (mínim 3 jugadors).",
-  "🏅 Desde el 1 de diciembre, el podio del reto suma +300, +200 y +100 puntos al ranking del mes.": "🏅 Des de l'1 de desembre, el podi del repte suma +300, +200 i +100 punts al rànquing del mes.",
   "🏅 +{n} del reto": "🏅 +{n} del repte",
-  "Premios del reto diario": "Premis del repte diari"
+  "Premios del reto diario": "Premis del repte diari",
+  "🏅 El podio del día suma +500, +300 y +150 puntos al ranking del mes (mínimo 3 jugadores).": "🏅 El podi del dia suma +500, +300 i +150 punts al rànquing del mes (mínim 3 jugadors).",
+  "🏅 Desde el 1 de diciembre, el podio del reto suma +500, +300 y +150 puntos al ranking del mes.": "🏅 Des de l'1 de desembre, el podi del repte suma +500, +300 i +150 punts al rànquing del mes."
  },
  "en": {
   "#{pos} del día": "#{pos} of the day",
@@ -751,9 +751,9 @@ window.I18N = {
   "✕ Salir": "✕ Leave",
   "Automática (se adapta a ti)": "Automatic (adapts to you)",
   "Automática": "Automatic",
-  "🏅 El podio del día suma +300, +200 y +100 puntos al ranking del mes (mínimo 3 jugadores).": "🏅 The day's podium earns +300, +200 and +100 points in the monthly ranking (minimum 3 players).",
-  "🏅 Desde el 1 de diciembre, el podio del reto suma +300, +200 y +100 puntos al ranking del mes.": "🏅 From 1 December, the challenge podium earns +300, +200 and +100 points in the monthly ranking.",
   "🏅 +{n} del reto": "🏅 +{n} from challenges",
-  "Premios del reto diario": "Daily challenge prizes"
+  "Premios del reto diario": "Daily challenge prizes",
+  "🏅 El podio del día suma +500, +300 y +150 puntos al ranking del mes (mínimo 3 jugadores).": "🏅 The day's podium earns +500, +300 and +150 points in the monthly ranking (minimum 3 players).",
+  "🏅 Desde el 1 de diciembre, el podio del reto suma +500, +300 y +150 puntos al ranking del mes.": "🏅 From 1 December, the challenge podium earns +500, +300 and +150 points in the monthly ranking."
  }
 };
