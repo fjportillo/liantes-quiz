@@ -11,6 +11,7 @@ Web: https://fjportillo.github.io/liantes-quiz/
 - `supabase.sql` — base de datos del Hall of Fame compartido
 - `hall_of_fame_mensual.sql`, `estadisticas.sql`, `reportes.sql`, `evento.sql`, `pin.sql` — ranking mensual, estadísticas, reportes de errores, modo evento y PIN
 - `login_obligatorio.sql` — solo guarda partidas de jugadores con nombre y PIN correcto (se acabaron las partidas como «Anónimo»)
+- `nombres_ofensivos.sql` — impide crear usuarios con insultos o palabras ofensivas (ES/CA/EN); la lista se edita en la tabla `nombres_prohibidos`
 
 **Acceso:** al abrir la web aparece la pantalla «Entra para jugar»: nombre + PIN de 4 cifras (si el nombre está libre o no tiene PIN, se crea en ese momento). La sesión se recuerda en el dispositivo; «Cambiar de usuario» la cierra. Sin entrar solo se puede consultar el Hall of Fame.
 - `retos_perfil.sql` — reto diario (10 preguntas iguales para todos cada día, una partida por jugador) y perfiles de jugador con logros

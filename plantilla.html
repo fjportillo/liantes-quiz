@@ -1110,6 +1110,8 @@ const Login = (() => {
       catch(e){ estado = null; }
       finally{ busy = false; $("l-go").disabled = false; }
       if (!["con_pin", "libre", "sin_pin"].includes(estado)) return err(T("No se pudo comprobar. Inténtalo de nuevo."));
+      if (estado !== "con_pin" && await rpcCall("nombre_ofensivo", {p_nombre: name}).catch(() => false))
+        return err(T("Ese nombre no está permitido: elige uno sin insultos ni palabras ofensivas."));
       $("l-name").value = name; return askPin();
     }
     const a = $("l-pin1").value.trim(), b = $("l-pin2").value.trim(), crear = estado !== "con_pin";
@@ -1118,7 +1120,9 @@ const Login = (() => {
     busy = true; $("l-go").disabled = true;
     try{
       if (crear){
-        const ok = await rpcCall("pin_crear", {p_clave: key, p_pin: a}).catch(() => "error");
+        const ok = await rpcCall("pin_crear", {p_clave: key, p_pin: a, p_nombre: name}).catch(e => String(e.message).includes("NOMBRE_OFENSIVO") ? "ofensivo"
+          : /function|p_nombre|schema cache/i.test(e.message) ? rpcCall("pin_crear", {p_clave: key, p_pin: a}).catch(() => "error") : "error");   // por si aún no se ha ejecutado nombres_ofensivos.sql
+        if (ok === "ofensivo"){ $("l-back").click(); return err(T("Ese nombre no está permitido: elige uno sin insultos ni palabras ofensivas.")); }
         if (ok === "error") return err(T("No se pudo comprobar. Inténtalo de nuevo."));
         if (!ok){ estado = "con_pin"; askPin(); return err(T("Otra persona acaba de proteger este nombre. Elige otro.")); }
       } else {
@@ -1346,6 +1350,7 @@ function finish(){
       console.warn(e);
       $("mypos").textContent = String(e.message).includes("PIN_INCORRECTO")
         ? T("🔒 No se guardó la puntuación: este nombre está protegido con otro PIN.")
+        : String(e.message).includes("NOMBRE_OFENSIVO") ? T("🚫 No se guardó la puntuación: el nombre no está permitido. Cambia de usuario y elige otro.")
         : T("⚠️ No se pudo guardar la puntuación en el Hall of Fame (¿sin conexión?).");
     }
   })();
