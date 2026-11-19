@@ -1,7 +1,7 @@
 /* Service worker de Liantes Quiz Metalero: permite instalar la web como app y jugar sin conexión.
    Estrategia: primero la red (para tener siempre la última versión y las preguntas nuevas) y,
    si no hay conexión, la copia guardada. Supabase y otras webs no pasan por aquí. */
-const CACHE = "liantes-quiz-v2";
+const CACHE = "liantes-quiz-v3";
 const SHELL = ["./", "index.html", "preguntas.csv", "logo.png", "manifest.webmanifest",
                "icons/icon-192.png", "icons/icon-512.png", "jugar.html", "evento.html",
                "i18n/ui.js", "i18n/i18n.js", "i18n/preguntas_ca.csv", "i18n/preguntas_en.csv"];
@@ -26,7 +26,9 @@ self.addEventListener("fetch", e => {
     }));
     return;
   }
-  e.respondWith(fetch(req).then(r => {
+  // cache "no-cache": siempre se pregunta al servidor si hay versión nueva (si no la hay, responde 304 y no se descarga nada)
+  const fresh = req.mode === "navigate" ? new Request(req.url, {cache: "no-cache", credentials: "same-origin"}) : new Request(req, {cache: "no-cache"});
+  e.respondWith(fetch(fresh).then(r => {
     if (r.ok){ const copy = r.clone(); const csv = url.pathname.match(/(i18n\/preguntas_\w+\.csv|preguntas\.csv)$/); const key = csv ? csv[1] : req;
       caches.open(CACHE).then(c => c.put(key, copy)); }
     return r;

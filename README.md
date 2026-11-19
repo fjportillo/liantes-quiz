@@ -31,7 +31,7 @@ Web: https://fjportillo.github.io/liantes-quiz/
 
 ## Regenerar `index.html` tras editar las preguntas
 ```
-python3 -c "import json;t=open('plantilla.html',encoding='utf-8').read();c=open('preguntas.csv',encoding='utf-8').read();open('index.html','w',encoding='utf-8').write(t.replace('/*__PREGUNTAS_CSV__*/\"\"',json.dumps(c,ensure_ascii=False)))"
+python3 build.py
 ```
 
 ## Renovación semanal (viernes 00:00, Madrid)
