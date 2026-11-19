@@ -88,35 +88,40 @@
   .xmodal .yes{background:var(--bad);color:#fff} .xmodal .no{background:#000;color:var(--text);border:1px solid var(--line) !important}
   header .room{margin-left:auto}
   header .exit-btn{margin-left:18px}
+  .lang-sw{display:flex;border:1px solid #3a3b40;flex:0 0 auto}
+  .lang-sw button{appearance:none;cursor:pointer;background:transparent;color:#9a9a94;border:0;font-family:"Red Hat Display";font-weight:800;font-size:12px;letter-spacing:1px;padding:6px 8px}
+  .lang-sw button+button{border-left:1px solid #3a3b40}
+  .lang-sw button.on{background:var(--text);color:#111}
 </style>
 </head>
 <body>
 <header>
   <img src="logo.png" alt="Liantes Metaleros">
-  <div class="t">LIANTES<span>MODO EVENTO</span></div>
-  <div class="room hidden" id="room-tag">Sala <b id="room-code"></b></div>
-  <button class="exit-btn" id="b-exit" title="Salir del modo evento">✕ Salir</button>
+  <div class="t">LIANTES<span data-t>MODO EVENTO</span></div>
+  <div class="room hidden" id="room-tag"><span data-t>Sala</span> <b id="room-code"></b></div>
+  <div class="lang-sw" id="lang-sw" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es">ES</button><button type="button" data-lang="ca">CA</button><button type="button" data-lang="en">EN</button></div>
+  <button class="exit-btn" id="b-exit" title="Salir del modo evento" data-t-title data-t>✕ Salir</button>
 </header>
 <main>
 
   <!-- CONFIGURACIÓN -->
   <section id="v-setup" class="card">
-    <h1>Modo evento</h1>
-    <p class="muted center">Proyecta esta pantalla. Cada jugador responde desde su móvil escaneando el QR.</p>
+    <h1 data-t>Modo evento</h1>
+    <p class="muted center" data-t>Proyecta esta pantalla. Cada jugador responde desde su móvil escaneando el QR.</p>
     <div class="row">
-      <div><label for="s-count">Preguntas</label>
+      <div><label for="s-count" data-t>Preguntas</label>
         <select id="s-count"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
-      <div><label for="s-secs">Segundos por pregunta</label>
+      <div><label for="s-secs" data-t>Segundos por pregunta</label>
         <select id="s-secs"><option>15</option><option selected>20</option><option>30</option></select></div>
     </div>
     <div class="row">
-      <div><label for="s-cat">Categoría</label><select id="s-cat"><option value="">Todas</option></select></div>
-      <div><label for="s-diff">Dificultad</label>
-        <select id="s-diff"><option value="">Todas</option><option value="facil">Fácil</option><option value="media">Media</option><option value="dificil">Difícil</option></select></div>
+      <div><label for="s-cat" data-t>Categoría</label><select id="s-cat"><option value="" data-t>Todas</option></select></div>
+      <div><label for="s-diff" data-t>Dificultad</label>
+        <select id="s-diff"><option value="" data-t>Todas</option><option value="facil" data-t>Fácil</option><option value="media" data-t>Media</option><option value="dificil" data-t>Difícil</option></select></div>
     </div>
-    <div class="controls"><button class="btn" id="b-create" disabled>Crear sala</button></div>
+    <div class="controls"><button class="btn" id="b-create" disabled data-t>Crear sala</button></div>
     <div class="err center" id="setup-err"></div>
-    <p class="hint center" id="setup-info">Cargando preguntas…</p>
+    <p class="hint center" id="setup-info" data-t>Cargando preguntas…</p>
   </section>
 
   <!-- SALA DE ESPERA -->
@@ -124,12 +129,12 @@
     <div class="lobby">
       <div class="qrbox"><div id="qr"></div></div>
       <div>
-        <div class="join-info">Escanea el QR o entra en la web y pon el código:</div>
+        <div class="join-info" data-t>Escanea el QR o entra en la web y pon el código:</div>
         <div class="code" id="lobby-code"></div>
         <div class="url" id="lobby-url"></div>
-        <div class="join-info" style="margin-top:22px"><span id="lobby-count">0</span> Liantes conectados</div>
+        <div class="join-info" style="margin-top:22px"><span id="lobby-count">0</span> <span data-t>Liantes conectados</span></div>
         <div class="players" id="lobby-players"></div>
-        <button class="btn" id="b-start" disabled>¡Empezar!</button>
+        <button class="btn" id="b-start" disabled data-t>¡Empezar!</button>
       </div>
     </div>
   </section>
@@ -139,39 +144,43 @@
     <div class="q-top">
       <span id="q-num"></span>
       <div class="timer" id="q-timer">20</div>
-      <span class="answered"><b id="q-ans">0</b>/<span id="q-players">0</span> han respondido</span>
+      <span class="answered"><b id="q-ans">0</b>/<span id="q-players">0</span> <span data-t>han respondido</span></span>
     </div>
     <div class="q-vis hidden" id="q-vis"></div>
     <h2 class="q-text" id="q-text"></h2>
     <div class="opts" id="q-opts"></div>
     <div class="controls">
-      <button class="btn hidden" id="b-reveal">Mostrar respuesta</button>
-      <button class="btn hidden" id="b-rank">Ver clasificación</button>
+      <button class="btn hidden" id="b-reveal" data-t>Mostrar respuesta</button>
+      <button class="btn hidden" id="b-rank" data-t>Ver clasificación</button>
     </div>
   </section>
 
   <!-- CLASIFICACIÓN -->
   <section id="v-rank" class="hidden" style="width:100%;display:flex;flex-direction:column;align-items:center">
-    <h1>Clasificación</h1>
+    <h1 data-t>Clasificación</h1>
     <div class="rank" id="rank-list"></div>
-    <div class="controls"><button class="btn" id="b-next">Siguiente pregunta</button></div>
-    <p class="hint">Atajo: barra espaciadora para avanzar</p>
+    <div class="controls"><button class="btn" id="b-next" data-t>Siguiente pregunta</button></div>
+    <p class="hint" data-t>Atajo: barra espaciadora para avanzar</p>
   </section>
 
   <!-- FINAL -->
   <section id="v-end" class="hidden" style="width:100%;display:flex;flex-direction:column;align-items:center">
-    <h1>¡Campeones! 🤘</h1>
+    <h1 data-t>¡Campeones! 🤘</h1>
     <div class="podium" id="podium"></div>
     <div class="rank" id="end-list"></div>
-    <div class="controls"><button class="btn" id="b-new">Nueva partida</button></div>
+    <div class="controls"><button class="btn" id="b-new" data-t>Nueva partida</button></div>
   </section>
 </main>
 
 <div class="xmodal hidden" id="x-modal" role="dialog" aria-modal="true">
-  <div class="box"><h4>¿Salir del modo evento?</h4><p id="x-text"></p>
-    <div class="acts"><button class="yes" id="x-yes">Sí, salir</button><button class="no" id="x-no">Cancelar</button></div></div>
+  <div class="box"><h4 data-t>¿Salir del modo evento?</h4><p id="x-text"></p>
+    <div class="acts"><button class="yes" id="x-yes" data-t>Sí, salir</button><button class="no" id="x-no" data-t>Cancelar</button></div></div>
 </div>
+<script src="i18n/ui.js"></script>
+<script src="i18n/i18n.js"></script>
 <script>
+I18NX.translateStatic();
+window.I18N_CONFIRM = () => !(S && S.codigo) || confirm(T("Se perderá la partida en curso."));
 const SUPABASE_URL = "https://zfrwdqenyvtuvjvbxcwo.supabase.co";
 const SUPABASE_KEY = "sb_publishable_arztBfRZYNWnpV8A7zCTBg_M2il4O0B";
 const PLAYER_URL = new URL("jugar.html", location.href).href.split("#")[0];
@@ -204,7 +213,7 @@ function parseCSV(text){
   if (f !== "" || row.length){ row.push(f); rows.push(row); }
   return rows.filter(r => r.some(v => v.trim() !== ""));
 }
-let BANK = [];
+let BANK = [], TRMAPS = {ca: new Map(), en: new Map()};
 async function loadBank(){
   const rows = parseCSV(await (await fetch("preguntas.csv?t=" + Date.now(), {cache: "no-store"})).text());
   const h = rows[0].map(x => x.trim().toLowerCase());
@@ -212,9 +221,10 @@ async function loadBank(){
   BANK = rows.slice(1).map(r => ({q: r[ix("pregunta")], c: r[ix("correcta")], wrong: [r[ix("incorrecta1")], r[ix("incorrecta2")], r[ix("incorrecta3")]].filter(Boolean),
     cat: r[ix("categoria")], diff: r[ix("dificultad")], vis: ix("visual") >= 0 ? (r[ix("visual")] || "") : "", act: ix("activa") >= 0 ? r[ix("activa")] : ""}))
     .filter(x => x.q && x.c && x.wrong.length >= 2 && !/^(no|0|false)$/i.test(x.act || ""));
-  const cats = [...new Set(BANK.map(b => b.cat).filter(Boolean))].sort((a,b) => a.localeCompare(b, "es"));
-  $("s-cat").innerHTML = '<option value="">Todas</option>' + cats.map(c => `<option>${esc(c)}</option>`).join("");
-  $("setup-info").textContent = BANK.length + " preguntas disponibles";
+  const cats = [...new Set(BANK.map(b => b.cat).filter(Boolean))].sort((a,b) => T(a).localeCompare(T(b), LOCALE));
+  $("s-cat").innerHTML = `<option value="">${T("Todas")}</option>` + cats.map(c => `<option value="${esc(c)}">${esc(T(c))}</option>`).join("");
+  TRMAPS = {ca: await I18NX.questionMap("ca"), en: await I18NX.questionMap("en")};
+  $("setup-info").textContent = T("{n} preguntas disponibles", {n: BANK.length});
   $("b-create").disabled = false;
 }
 
@@ -227,8 +237,14 @@ async function createRoom(){
   $("setup-err").textContent = "";
   const cat = $("s-cat").value, diff = $("s-diff").value, n = +$("s-count").value, secs = +$("s-secs").value;
   let pool = BANK.filter(b => (!cat || b.cat === cat) && (!diff || b.diff === diff));
-  if (pool.length < n){ $("setup-err").textContent = `Solo hay ${pool.length} preguntas con esa combinación. Elige menos preguntas u otra categoría.`; return; }
-  const list = shuffle(pool).slice(0, n).map(b => { const opts = shuffle([b.c, ...b.wrong].slice(0, 4)); return {...b, opts, correct: opts.indexOf(b.c)}; });
+  if (pool.length < n){ $("setup-err").textContent = T("Solo hay {n} preguntas con esa combinación. Elige menos preguntas u otra categoría.", {n: pool.length}); return; }
+  // Mismo orden de respuestas en los tres idiomas: cada móvil muestra la pregunta en su idioma
+  const list = shuffle(pool).slice(0, n).map(b => {
+    const base = [b.c, ...b.wrong].slice(0, 4), perm = shuffle(base.map((_, i) => i)), opts = perm.map(i => base[i]);
+    const tr = {};
+    for (const l of ["ca", "en"]){ const t = I18NX.translateQ(TRMAPS[l], b); tr[l] = {texto: t.texto, opciones: perm.map(i => t.base[i] || base[i])}; }
+    return {...b, opts, correct: perm.indexOf(0), tr};
+  });
   const secret = (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)) + Math.random().toString(36).slice(2);
   $("b-create").disabled = true;
   try{
@@ -236,7 +252,7 @@ async function createRoom(){
     S = {codigo, secret, list, i: -1, segundos: secs};
     store("ev-host", S);
     openLobby();
-  }catch(e){ $("setup-err").textContent = "No se pudo crear la sala: " + e.message; }
+  }catch(e){ $("setup-err").textContent = T("No se pudo crear la sala:") + " " + e.message; }
   $("b-create").disabled = false;
 }
 
@@ -268,17 +284,18 @@ async function nextQuestion(){
   if (S.i >= S.list.length) return finish();
   const q = S.list[S.i]; revealed = false;
   view("v-q");
-  $("q-num").textContent = `Pregunta ${S.i + 1} de ${S.list.length}`;
-  $("q-text").textContent = q.q;
+  $("q-num").textContent = T("Pregunta {i} de {n}", {i: S.i + 1, n: S.list.length});
+  const shown = LANG !== "es" && q.tr && q.tr[LANG] ? q.tr[LANG] : {texto: q.q, opciones: q.opts};
+  $("q-text").textContent = shown.texto;
   const vis = $("q-vis");
   if (q.vis){ vis.innerHTML = /^(img\/|https?:)|\.(png|jpe?g|webp|gif)$/i.test(q.vis) ? `<img src="${esc(q.vis)}" alt="">` : esc(q.vis); vis.classList.remove("hidden"); }
   else vis.classList.add("hidden");
-  $("q-opts").innerHTML = q.opts.map((o, k) => `<div class="opt o${k}" id="opt${k}"><span class="sh">${SHAPES[k]}</span><span>${esc(o)}</span><span class="n hidden" id="n${k}"></span><i class="bar" id="bar${k}"></i></div>`).join("");
+  $("q-opts").innerHTML = shown.opciones.map((o, k) => `<div class="opt o${k}" id="opt${k}"><span class="sh">${SHAPES[k]}</span><span>${esc(o)}</span><span class="n hidden" id="n${k}"></span><i class="bar" id="bar${k}"></i></div>`).join("");
   $("b-reveal").classList.remove("hidden"); $("b-rank").classList.add("hidden");
   $("q-ans").textContent = "0";
   try{
-    await rpc("ev_pregunta", {p_codigo: S.codigo, p_secret: S.secret, p_idx: S.i, p_pregunta: {texto: q.q, opciones: q.opts, cat: q.cat, vis: q.vis}});
-  }catch(e){ alert("Error de conexión: " + e.message); return; }
+    await rpc("ev_pregunta", {p_codigo: S.codigo, p_secret: S.secret, p_idx: S.i, p_pregunta: {texto: q.q, opciones: q.opts, cat: q.cat, vis: q.vis, tr: q.tr || null}});
+  }catch(e){ alert(T("Error de conexión:") + " " + e.message); return; }
   const st = (await api(`ev_estado?select=deadline,ahora,jugadores&codigo=eq.${S.codigo}`))[0];
   offset = Date.parse(st.ahora) - Date.now();
   const deadline = Date.parse(st.deadline);
@@ -314,17 +331,17 @@ async function reveal(){
       $("n" + k).textContent = v; $("n" + k).classList.remove("hidden"); $("bar" + k).style.width = (v / total * 100) + "%"; });
   }catch(e){}
   $("b-reveal").classList.add("hidden"); $("b-rank").classList.remove("hidden");
-  $("b-rank").textContent = S.i + 1 >= S.list.length ? "Ver resultado final" : "Ver clasificación";
+  $("b-rank").textContent = S.i + 1 >= S.list.length ? T("Ver resultado final") : T("Ver clasificación");
 }
 
 async function showRanking(){
   if (S.i + 1 >= S.list.length) return finish();
   view("v-rank");
-  $("rank-list").innerHTML = "<p class='muted center'>Calculando…</p>";
+  $("rank-list").innerHTML = `<p class='muted center'>${T("Calculando…")}</p>`;
   try{
     const rows = await api(`ev_ranking?select=nombre,puntos,aciertos&codigo=eq.${S.codigo}&order=puntos.desc,aciertos.desc&limit=10`);
-    $("rank-list").innerHTML = rows.map((r, i) => `<div class="rank-row ${i < 3 ? "r" + (i+1) : ""}" style="animation-delay:${i * 80}ms"><span class="p">${["🥇","🥈","🥉"][i] || i + 1}</span><span class="nm">${esc(r.nombre)}</span><span class="pt">${r.puntos}</span></div>`).join("") || "<p class='muted center'>Nadie ha puntuado todavía</p>";
-  }catch(e){ $("rank-list").innerHTML = "<p class='err center'>No se pudo cargar la clasificación</p>"; }
+    $("rank-list").innerHTML = rows.map((r, i) => `<div class="rank-row ${i < 3 ? "r" + (i+1) : ""}" style="animation-delay:${i * 80}ms"><span class="p">${["🥇","🥈","🥉"][i] || i + 1}</span><span class="nm">${esc(r.nombre)}</span><span class="pt">${r.puntos}</span></div>`).join("") || `<p class='muted center'>${T("Nadie ha puntuado todavía")}</p>`;
+  }catch(e){ $("rank-list").innerHTML = `<p class='err center'>${T("No se pudo cargar la clasificación")}</p>`; }
 }
 
 async function finish(){
@@ -358,8 +375,8 @@ document.addEventListener("keydown", e => { if (!$("x-modal").classList.contains
 function exitEvent(){
   const active = !!(S && S.codigo) && $("v-end").classList.contains("hidden") && $("v-setup").classList.contains("hidden");
   $("x-text").textContent = active
-    ? "Se cerrará la sala " + S.codigo + " y la partida terminará para todos los jugadores."
-    : "Volverás a la página principal del quiz.";
+    ? T("Se cerrará la sala {code} y la partida terminará para todos los jugadores.", {code: S.codigo})
+    : T("Volverás a la página principal del quiz.");
   $("x-modal").classList.remove("hidden");
 }
 async function doExit(){
@@ -375,7 +392,7 @@ $("x-no").addEventListener("click", () => $("x-modal").classList.add("hidden"));
 $("x-modal").addEventListener("click", e => { if (e.target.id === "x-modal") $("x-modal").classList.add("hidden"); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("x-modal").classList.contains("hidden")) $("x-modal").classList.add("hidden"); }, true);
 
-loadBank().catch(e => { $("setup-info").textContent = "No se pudieron cargar las preguntas."; });
+loadBank().catch(e => { $("setup-info").textContent = T("No se pudieron cargar las preguntas."); });
 // Recuperar una sala si se recarga la página por error
 (() => { const s = store("ev-host"); if (s && s.codigo && s.i === -1){ S = s; openLobby(); } })();
 </script>

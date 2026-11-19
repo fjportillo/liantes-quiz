@@ -1,9 +1,10 @@
 /* Service worker de Liantes Quiz Metalero: permite instalar la web como app y jugar sin conexión.
    Estrategia: primero la red (para tener siempre la última versión y las preguntas nuevas) y,
    si no hay conexión, la copia guardada. Supabase y otras webs no pasan por aquí. */
-const CACHE = "liantes-quiz-v1";
+const CACHE = "liantes-quiz-v2";
 const SHELL = ["./", "index.html", "preguntas.csv", "logo.png", "manifest.webmanifest",
-               "icons/icon-192.png", "icons/icon-512.png", "jugar.html", "evento.html"];
+               "icons/icon-192.png", "icons/icon-512.png", "jugar.html", "evento.html",
+               "i18n/ui.js", "i18n/i18n.js", "i18n/preguntas_ca.csv", "i18n/preguntas_en.csv"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).catch(() => {}).then(() => self.skipWaiting()));
@@ -26,13 +27,13 @@ self.addEventListener("fetch", e => {
     return;
   }
   e.respondWith(fetch(req).then(r => {
-    if (r.ok){ const copy = r.clone(); const key = url.pathname.endsWith("preguntas.csv") ? "preguntas.csv" : req;
+    if (r.ok){ const copy = r.clone(); const csv = url.pathname.match(/(i18n\/preguntas_\w+\.csv|preguntas\.csv)$/); const key = csv ? csv[1] : req;
       caches.open(CACHE).then(c => c.put(key, copy)); }
     return r;
   }).catch(async () => {
     const c = await caches.open(CACHE);
     return (await c.match(req, {ignoreSearch: true})) ||
-           (url.pathname.endsWith("preguntas.csv") ? await c.match("preguntas.csv") : null) ||
+           ((url.pathname.match(/(i18n\/preguntas_\w+\.csv|preguntas\.csv)$/) || [])[1] ? await c.match(url.pathname.match(/(i18n\/preguntas_\w+\.csv|preguntas\.csv)$/)[1]) : null) ||
            (req.mode === "navigate" ? await c.match("index.html") : Response.error());
   }));
 });

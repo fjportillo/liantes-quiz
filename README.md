@@ -41,3 +41,18 @@ Para previsualizar un tema: añadir `#tema-halloween` (o `navidad`, `dimoni`, `s
 - `jugar.html` — pantalla del jugador en el móvil (se abre con el QR o con `jugar.html?sala=CODIGO`).
 - `evento.sql` — tablas y funciones en Supabase (hay que ejecutarlo una vez).
 Puntuación: 100 puntos por acierto + hasta 100 por rapidez. Las salas se borran solas a los 2 días.
+
+## Idiomas (castellano, català, English)
+
+- El idioma se elige con los botones **ES · CA · EN** de la cabecera (se recuerda en cada dispositivo). También se puede forzar con `?lang=ca` o `?lang=en` en la dirección.
+- `i18n/ui.js` — traducciones de la interfaz. La clave es el texto en castellano tal como está en el código; `{x}` son valores que se rellenan solos. Si falta una traducción, se ve en castellano.
+- `i18n/i18n.js` — sistema de idiomas de las páginas del modo evento (`evento.html`, `jugar.html`).
+- `i18n/preguntas_ca.csv` e `i18n/preguntas_en.csv` — traducción de las preguntas:
+  `pregunta_es,visual,correcta_es,pregunta,correcta,incorrecta1,incorrecta2,incorrecta3`
+  - `pregunta_es` + `visual` identifican la pregunta tal cual está en `preguntas.csv`.
+  - `correcta_es` es la respuesta correcta en castellano cuando se tradujo: si después se cambia en `preguntas.csv`, el juego muestra esa pregunta en castellano hasta que se actualice la traducción.
+  - Una respuesta traducida vacía = igual que en castellano (nombres de grupos, discos, años…). Las incorrectas van en el mismo orden que en `preguntas.csv`.
+- `tools/check_i18n.py` — comprueba que no falte ni sobre ninguna traducción (`--limpiar` borra las de preguntas retiradas).
+- En el modo evento cada móvil ve la pregunta en su idioma, aunque la sala sea la misma.
+- El reto diario es el mismo en los tres idiomas (mismas preguntas y mismo orden de respuestas).
+- Los reportes de errores y el recuento de preguntas vistas se guardan siempre con el texto en castellano.

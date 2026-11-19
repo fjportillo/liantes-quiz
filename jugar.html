@@ -67,33 +67,38 @@
   .xmodal .acts button{flex:1;min-width:140px;appearance:none;border:0;cursor:pointer;font-family:"Red Hat Display";font-weight:900;text-transform:uppercase;letter-spacing:1px;font-size:15px;padding:14px}
   .xmodal .yes{background:var(--bad);color:#fff} .xmodal .no{background:#000;color:var(--text);border:1px solid var(--line) !important}
   header .exit-btn{margin-left:12px;padding:8px 10px;font-size:12px}
+  .lang-sw{display:flex;border:1px solid #3a3b40;flex:0 0 auto}
+  .lang-sw button{appearance:none;cursor:pointer;background:transparent;color:#9a9a94;border:0;font-family:"Red Hat Display";font-weight:800;font-size:12px;letter-spacing:1px;padding:6px 8px}
+  .lang-sw button+button{border-left:1px solid #3a3b40}
+  .lang-sw button.on{background:var(--text);color:#111}
 </style>
 </head>
 <body>
 <header>
   <img src="logo.png" alt="Liantes Metaleros">
   <div class="t">LIANTES</div>
-  <div class="me hidden" id="me"><b id="me-name"></b><br>Sala <span id="me-room"></span></div>
-  <button class="exit-btn" id="b-exit" title="Salir">✕ Salir</button>
+  <div class="me hidden" id="me"><b id="me-name"></b><br><span data-t>Sala</span> <span id="me-room"></span></div>
+  <div class="lang-sw" id="lang-sw" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es">ES</button><button type="button" data-lang="ca">CA</button><button type="button" data-lang="en">EN</button></div>
+  <button class="exit-btn" id="b-exit" title="Salir" data-t-title data-t>✕ Salir</button>
 </header>
 <main>
   <!-- UNIRSE -->
   <section id="v-join" class="card">
     <h1>LIANTES</h1>
-    <div class="sub">Quiz en directo</div>
-    <label for="in-code">Código de la sala</label>
+    <div class="sub" data-t>Quiz en directo</div>
+    <label for="in-code" data-t>Código de la sala</label>
     <input id="in-code" maxlength="4" autocomplete="off" placeholder="ABCD">
-    <label for="in-name">Tu nombre</label>
-    <input id="in-name" maxlength="20" autocomplete="off" placeholder="Tu nombre de Liante">
-    <button class="btn" id="b-join">¡Entrar!</button>
+    <label for="in-name" data-t>Tu nombre</label>
+    <input id="in-name" maxlength="20" autocomplete="off" placeholder="Tu nombre de Liante" data-t-ph>
+    <button class="btn" id="b-join" data-t>¡Entrar!</button>
     <div class="err" id="join-err"></div>
   </section>
 
   <!-- ESPERA -->
   <section id="v-wait" class="hidden">
     <div class="wait-emoji">🤘</div>
-    <div class="big" id="wait-title">¡Estás dentro!</div>
-    <p class="center muted" id="wait-text">Mira la pantalla grande. La partida empezará enseguida.</p>
+    <div class="big" id="wait-title" data-t>¡Estás dentro!</div>
+    <p class="center muted" id="wait-text" data-t>Mira la pantalla grande. La partida empezará enseguida.</p>
   </section>
 
   <!-- PREGUNTA -->
@@ -108,31 +113,34 @@
   <!-- RESULTADO -->
   <section id="v-res" class="hidden">
     <div class="res" id="res-box"><div class="ic" id="res-ic"></div><div class="tt" id="res-tt"></div><div class="ex" id="res-ex"></div></div>
-    <div class="card stat" style="margin-top:14px"><div><b id="res-pos">–</b><span>Puesto</span></div><div><b id="res-pts">0</b><span>Puntos</span></div><div><b id="res-ok">0</b><span>Aciertos</span></div></div>
-    <p class="center muted">Espera a la siguiente pregunta…</p>
+    <div class="card stat" style="margin-top:14px"><div><b id="res-pos">–</b><span data-t>Puesto</span></div><div><b id="res-pts">0</b><span data-t>Puntos</span></div><div><b id="res-ok">0</b><span data-t>Aciertos</span></div></div>
+    <p class="center muted" data-t>Espera a la siguiente pregunta…</p>
   </section>
 
   <!-- FINAL -->
   <section id="v-end" class="hidden">
     <div class="wait-emoji" id="end-emoji">🏆</div>
-    <div class="big" id="end-title">¡Partida terminada!</div>
-    <div class="card stat" style="margin-top:16px"><div><b id="end-pos">–</b><span>Puesto</span></div><div><b id="end-pts">0</b><span>Puntos</span></div><div><b id="end-ok">0</b><span>Aciertos</span></div></div>
-    <a class="link" href="./">Jugar al quiz normal →</a>
+    <div class="big" id="end-title" data-t>¡Partida terminada!</div>
+    <div class="card stat" style="margin-top:16px"><div><b id="end-pos">–</b><span data-t>Puesto</span></div><div><b id="end-pts">0</b><span data-t>Puntos</span></div><div><b id="end-ok">0</b><span data-t>Aciertos</span></div></div>
+    <a class="link" href="./" data-t>Jugar al quiz normal →</a>
   </section>
 </main>
 <div class="xmodal hidden" id="x-modal" role="dialog" aria-modal="true">
-  <div class="box"><h4>¿Salir de la partida?</h4><p id="x-text"></p>
-    <div class="acts"><button class="yes" id="x-yes">Sí, salir</button><button class="no" id="x-no">Cancelar</button></div></div>
+  <div class="box"><h4 data-t>¿Salir de la partida?</h4><p id="x-text"></p>
+    <div class="acts"><button class="yes" id="x-yes" data-t>Sí, salir</button><button class="no" id="x-no" data-t>Cancelar</button></div></div>
 </div>
+<script src="i18n/ui.js"></script>
+<script src="i18n/i18n.js"></script>
 <script>
+I18NX.translateStatic();
 const SUPABASE_URL = "https://zfrwdqenyvtuvjvbxcwo.supabase.co";
 const SUPABASE_KEY = "sb_publishable_arztBfRZYNWnpV8A7zCTBg_M2il4O0B";
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 const SHAPES = ["▲","◆","●","■"];
-const ERR = {SALA_NO_EXISTE: "No existe ninguna sala con ese código.", SALA_TERMINADA: "Esa partida ya ha terminado.", NOMBRE_OCUPADO: "Ese nombre ya está cogido en esta sala. Prueba otro.",
-  NOMBRE_NO_VALIDO: "Escribe un nombre (máx. 20 letras).", SALA_LLENA: "La sala está llena.", FUERA_DE_TIEMPO: "¡Se acabó el tiempo!"};
-const nice = m => { for (const k in ERR) if (String(m).includes(k)) return ERR[k]; return "Error de conexión. Inténtalo de nuevo."; };
+const ERR = {SALA_NO_EXISTE: T("No existe ninguna sala con ese código."), SALA_TERMINADA: T("Esa partida ya ha terminado."), NOMBRE_OCUPADO: T("Ese nombre ya está cogido en esta sala. Prueba otro."),
+  NOMBRE_NO_VALIDO: T("Escribe un nombre (máx. 20 letras)."), SALA_LLENA: T("La sala está llena."), FUERA_DE_TIEMPO: T("¡Se acabó el tiempo!")};
+const nice = m => { for (const k in ERR) if (String(m).includes(k)) return ERR[k]; return T("Error de conexión. Inténtalo de nuevo."); };
 
 async function api(path, opts = {}){
   const h = {apikey: SUPABASE_KEY, "Content-Type": "application/json"};
@@ -159,7 +167,7 @@ if (!P) setTimeout(() => ($("in-code").value ? $("in-name") : $("in-code")).focu
 async function join(){
   const codigo = $("in-code").value.trim().toUpperCase(), nombre = $("in-name").value.trim();
   $("join-err").textContent = "";
-  if (codigo.length !== 4){ $("join-err").textContent = "El código tiene 4 letras."; return; }
+  if (codigo.length !== 4){ $("join-err").textContent = T("El código tiene 4 letras."); return; }
   if (!nombre){ $("join-err").textContent = ERR.NOMBRE_NO_VALIDO; return; }
   $("b-join").disabled = true;
   try{
@@ -199,21 +207,22 @@ async function poll(){
 
 async function render(s){
   clearInterval(tick);
-  if (s.estado === "lobby"){ view("v-wait"); $("wait-title").textContent = "¡Estás dentro, " + P.nombre + "!"; $("wait-text").textContent = "Mira la pantalla grande. La partida empezará enseguida."; return; }
+  if (s.estado === "lobby"){ view("v-wait"); $("wait-title").textContent = T("¡Estás dentro, {name}!", {name: P.nombre}); $("wait-text").textContent = T("Mira la pantalla grande. La partida empezará enseguida."); return; }
   if (s.estado === "pregunta"){
     view("v-q");
     const q = s.pregunta || {}, mine = myAnswer[s.idx];
-    $("q-num").textContent = `Pregunta ${s.idx + 1}/${s.total}`;
-    $("q-text").textContent = q.texto || "";
+    $("q-num").textContent = T("Pregunta {i}/{n}", {i: s.idx + 1, n: s.total});
+    const tq = LANG !== "es" && q.tr && q.tr[LANG] ? q.tr[LANG] : q;      // la pregunta llega en los tres idiomas
+    $("q-text").textContent = tq.texto || q.texto || "";
     if (q.vis && !/^(img\/|https?:)|\.(png|jpe?g|webp|gif)$/i.test(q.vis)){ $("q-vis").textContent = q.vis; $("q-vis").classList.remove("hidden"); } else $("q-vis").classList.add("hidden");
-    $("q-opts").innerHTML = (q.opciones || []).map((o, k) => `<button class="opt o${k}" data-k="${k}"><span class="sh">${SHAPES[k]}</span><span>${esc(o)}</span></button>`).join("");
+    $("q-opts").innerHTML = (tq.opciones || q.opciones || []).map((o, k) => `<button class="opt o${k}" data-k="${k}"><span class="sh">${SHAPES[k]}</span><span>${esc(o)}</span></button>`).join("");
     $("q-opts").querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => answer(s.idx, +b.dataset.k)));
     $("q-msg").textContent = "";
-    if (mine !== undefined) lock(mine, "Respuesta enviada ✅ Mira la pantalla…");
+    if (mine !== undefined) lock(mine, T("Respuesta enviada ✅ Mira la pantalla…"));
     const deadline = Date.parse(s.deadline);
     const draw = () => { const left = Math.max(0, Math.ceil((deadline - (Date.now() + offset)) / 1000));
       $("q-tm").textContent = "⏱ " + left + " s"; $("q-tm").classList.toggle("low", left <= 5);
-      if (left <= 0 && myAnswer[s.idx] === undefined) lock(-1, "¡Se acabó el tiempo!"); };
+      if (left <= 0 && myAnswer[s.idx] === undefined) lock(-1, T("¡Se acabó el tiempo!")); };
     draw(); tick = setInterval(draw, 250);
     return;
   }
@@ -222,9 +231,10 @@ async function render(s){
     const mine = myAnswer[s.idx], ok = mine === s.correcta;
     const box = $("res-box"); box.className = "res " + (mine === undefined || mine < 0 ? "none" : ok ? "ok" : "bad");
     $("res-ic").textContent = mine === undefined || mine < 0 ? "⏰" : ok ? "🤘" : "💀";
-    $("res-tt").textContent = mine === undefined || mine < 0 ? "Sin respuesta" : ok ? "¡Correcto!" : "¡Fallaste!";
+    $("res-tt").textContent = mine === undefined || mine < 0 ? T("Sin respuesta") : ok ? T("¡Correcto!") : T("¡Fallaste!");
     const q = s.pregunta || {};
-    $("res-ex").textContent = "Respuesta: " + ((q.opciones || [])[s.correcta] || "");
+    const tqr = LANG !== "es" && q.tr && q.tr[LANG] ? q.tr[LANG] : q;
+    $("res-ex").textContent = T("Respuesta:") + " " + ((tqr.opciones || q.opciones || [])[s.correcta] || "");
     if (navigator.vibrate) try{ navigator.vibrate(ok ? 80 : [60, 60, 60]); }catch(e){}
     const st = await myStats();
     if (st){ $("res-pos").textContent = st.pos ? "#" + st.pos : "–"; $("res-pts").textContent = st.pts; $("res-ok").textContent = st.ok; }
@@ -235,8 +245,8 @@ async function render(s){
     const st = await myStats();
     if (st){ $("end-pos").textContent = st.pos ? "#" + st.pos : "–"; $("end-pts").textContent = st.pts; $("end-ok").textContent = st.ok + "/" + s.total;
       $("end-emoji").textContent = st.pos === 1 ? "👑" : st.pos === 2 ? "🥈" : st.pos === 3 ? "🥉" : "🤘";
-      $("end-title").textContent = st.pos === 1 ? "¡Eres el campeón!" : st.pos && st.pos <= 3 ? "¡Al podio!" : "¡Gracias por jugar!"; }
-    if (s.idx + 1 < s.total){ $("end-emoji").textContent = "🚪"; $("end-title").textContent = "El presentador ha cerrado la partida"; }
+      $("end-title").textContent = st.pos === 1 ? T("¡Eres el campeón!") : st.pos && st.pos <= 3 ? T("¡Al podio!") : T("¡Gracias por jugar!"); }
+    if (s.idx + 1 < s.total){ $("end-emoji").textContent = "🚪"; $("end-title").textContent = T("El presentador ha cerrado la partida"); }
     sessionStorage.removeItem("ev-player");
   }
 }
@@ -248,7 +258,7 @@ function lock(k, msg){
 
 async function answer(idx, k){
   if (myAnswer[idx] !== undefined) return;
-  myAnswer[idx] = k; saveAns(); lock(k, "Enviando…");
+  myAnswer[idx] = k; saveAns(); lock(k, T("Enviando…"));
   try{ await rpc("ev_responder", {p_codigo: P.codigo, p_jugador: P.jugador, p_token: P.token, p_idx: idx, p_opcion: k}); $("q-msg").textContent = "Respuesta enviada ✅ Mira la pantalla…"; }
   catch(e){ $("q-msg").textContent = nice(e.message); if (!String(e.message).includes("FUERA_DE_TIEMPO")) { delete myAnswer[idx]; saveAns(); $("q-opts").querySelectorAll(".opt").forEach(b => { b.disabled = false; b.classList.remove("mine"); }); } }
 }
@@ -256,7 +266,7 @@ async function answer(idx, k){
 /* ---------- Salir ---------- */
 function exitGame(){
   if (!P){ location.href = "./"; return; }
-  $("x-text").textContent = "Saldrás de la sala " + P.codigo + " y tus puntos de esta partida se perderán. Podrás volver a entrar con el código, pero empezarás de cero.";
+  $("x-text").textContent = T("Saldrás de la sala {code} y tus puntos de esta partida se perderán. Podrás volver a entrar con el código, pero empezarás de cero.", {code: P.codigo});
   $("x-modal").classList.remove("hidden");
 }
 async function doExit(){
