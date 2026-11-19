@@ -814,6 +814,10 @@ document.querySelectorAll("#lang-sw [data-lang]").forEach(b => {
 });
 const madridDay = () => new Intl.DateTimeFormat("en-CA", {timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit"}).format(Date.now());
 const NEW_RULES = madridDay() >= NEW_RULES_FROM || /nuevas-reglas/.test(location.href);
+/* Preguntas sobre la asociación y sus bandas: no entran en el campeonato ni (desde diciembre) en el reto diario,
+   que están pensados también para gente que no conoce Liantes Metaleros. Siguen disponibles en práctica. */
+const LOCAL_CATS = ["Bandas Liantes", "Liantes Metaleros"];
+const isLocalQ = q => LOCAL_CATS.includes(q.cat) || /liantes/i.test((q.key || q.q) + " " + (q.cEs || q.c));
 const basePoints = q => NEW_RULES ? (POINTS_BY_DIFF[q.diff] || POINTS_BY_DIFF.media) : POINTS_CORRECT;
 const LEVELS = ["facil", "media", "dificil"];
 /* Nivel de cada concursante (en este dispositivo): media de aciertos que se adapta poco a poco */
@@ -1152,7 +1156,7 @@ function startGame(){
   game = { name, list: pool.map(q => ({...q, options: shuffle([q.c, ...q.wrong])})),
            i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [], cat, diff, mode: "normal", grid: [], det: {}, kind: NEW_RULES ? KIND : null };
   if (auto){                                   // dificultad automática: cada pregunta se elige según cómo vas
-    game.auto = {lvl: Skill.level(norm(name)), pool: BANK.filter(q => !cat || q.cat === cat)};
+    game.auto = {lvl: Skill.level(norm(name)), pool: BANK.filter(q => (!cat || q.cat === cat) && !(champ && isLocalQ(q)))};
     game.list[0] = autoPick(0);
   }
   $("h-total").textContent = game.list.length;
@@ -1838,8 +1842,9 @@ const Reto = (() => {
   // Mismas preguntas y mismo orden de respuestas en todos los dispositivos
   function questions(d){
     const r = rng(hash("liantes-reto-" + d));
-    const older = BANK.filter(q => q.alta !== d);           // las añadidas ese mismo día no entran (por si se publican a media mañana)
-    const pool = (older.length >= 100 ? older : BANK).map(q => [qid(q) + "|" + (q.key || q.q), q]).sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0).map(x => x[1]);
+    const bank = d >= NEW_RULES_FROM ? BANK.filter(q => !isLocalQ(q)) : BANK;
+    const older = bank.filter(q => q.alta !== d);           // las añadidas ese mismo día no entran (por si se publican a media mañana)
+    const pool = (older.length >= 100 ? older : bank).map(q => [qid(q) + "|" + (q.key || q.q), q]).sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0).map(x => x[1]);
     const order = sshuffle(pool, r), want = {facil: 3, media: 4, dificil: 3}, picked = [], cats = new Map();
     for (const pass of [1, 2, 99]) for (const q of order){
       if (picked.length >= 10) break;
