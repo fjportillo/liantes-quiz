@@ -77,6 +77,10 @@
   .chip.liantes{color:#fff;background:var(--blue);border-color:var(--blue)}
   .chip.facil{color:#7fe0a8} .chip.media{color:#f0d36a} .chip.dificil{color:#ff8a7d}
   .qhead{display:flex;gap:16px;align-items:flex-start}
+  .visual{margin:16px 0 4px;display:flex;justify-content:center;align-items:center;min-height:90px;background:#0e0e10;border:1px solid var(--line);padding:14px}
+  .visual .emo{font-size:clamp(46px,13vw,76px);line-height:1.15;letter-spacing:6px;text-align:center}
+  .visual img{max-width:100%;max-height:min(42vh,320px);object-fit:contain;display:block}
+  .rv .vis{font-size:26px;letter-spacing:3px;margin:2px 0}
   .question{font-family:"Red Hat Display";font-weight:900;font-size:clamp(21px,4.2vw,28px);line-height:1.22;margin:0;flex:1}
   .timer{flex:0 0 64px;height:64px;position:relative}
   .timer svg{transform:rotate(-90deg)}
@@ -367,6 +371,7 @@
           <div class="num" id="tnum">20</div>
         </div>
       </div>
+      <div class="visual hidden" id="visual"></div>
       <div class="answers" id="answers"></div>
       <div class="feedback" id="feedback"></div>
       <div class="next"><button id="btn-cancel" class="btn link sm" title="Abandonar (Esc)">✕ Abandonar</button><button id="btn-next" class="btn hidden">Siguiente</button></div>
@@ -511,6 +516,7 @@ function toQuestions(rows){
   const iCat = col("categoria","category");
   const iD = col("dificultad","difficulty");
   const iA = col("activa","active");
+  const iV = col("visual","imagen","image");
   if (iQ < 0 || iC < 0 || iW.length < 2) throw new Error("La hoja debe tener las columnas: pregunta, correcta, incorrecta1, incorrecta2 (e incorrecta3 opcional).");
   const out = [];
   for (const r of rows.slice(1)){
@@ -520,7 +526,7 @@ function toQuestions(rows){
     if (!q || !c || wrong.length < 2) continue;
     let d = norm(iD >= 0 ? r[iD] : "");
     if (!DIFF_LABEL[d]) d = "";
-    out.push({ q, c, wrong, cat: iCat >= 0 ? (r[iCat]||"").trim() : "", diff: d });
+    out.push({ q, c, wrong, cat: iCat >= 0 ? (r[iCat]||"").trim() : "", diff: d, vis: iV >= 0 ? (r[iV]||"").trim() : "" });
   }
   return out;
 }
@@ -540,7 +546,7 @@ async function loadBank(){
   return {qs: toQuestions(parseCSV(EMBEDDED_CSV)), label: "preguntas incluidas"};
 }
 
-function qid(q){ let h = 0; const s = q.q; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return h.toString(36); }
+function qid(q){ let h = 0; const s = q.q + "|" + (q.vis || ""); for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return h.toString(36); }
 
 function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
@@ -593,6 +599,12 @@ function renderQuestion(){
   $("qmeta").innerHTML = (q.cat ? `<span class="chip${/liante/i.test(q.cat)?" liantes":""}">${esc(q.cat)}</span>` : "") +
                          (q.diff ? `<span class="chip ${q.diff}">${DIFF_LABEL[q.diff]}</span>` : "");
   $("question").textContent = q.q;
+  const vis = $("visual");
+  if (q.vis){
+    const isImg = /^(https?:\/\/|img\/)|\.(png|jpe?g|webp|gif|avif)$/i.test(q.vis);
+    vis.innerHTML = isImg ? `<img src="${esc(q.vis)}" alt="Imagen de la pregunta">` : `<div class="emo" aria-label="Pista visual">${esc(q.vis)}</div>`;
+    vis.classList.remove("hidden");
+  } else { vis.innerHTML = ""; vis.classList.add("hidden"); }
   $("answers").innerHTML = q.options.map((o, k) =>
     `<button class="ans" data-k="${k}"><span class="k">${LETTERS[k]}</span><span>${esc(o)}</span></button>`).join("");
   $("answers").querySelectorAll(".ans").forEach(b => b.addEventListener("click", () => answer(+b.dataset.k)));
@@ -624,7 +636,7 @@ function answer(k){
   } else {
     game.streak = 0;
     if (k >= 0) btns[k].classList.add("wrong");
-    game.misses.push({q: q.q, c: q.c, y: k >= 0 ? q.options[k] : "Sin respuesta (tiempo agotado)"});
+    game.misses.push({q: q.q, vis: q.vis, c: q.c, y: k >= 0 ? q.options[k] : "Sin respuesta (tiempo agotado)"});
     fb.textContent = k < 0 ? "¡Se acabó el tiempo!" : "¡Fallo!";
     fb.className = "feedback bad";
     $("qcard").classList.remove("shake"); void $("qcard").offsetWidth; $("qcard").classList.add("shake");
@@ -673,7 +685,7 @@ function finish(){
   })();
   $("review-wrap").classList.toggle("hidden", !game.misses.length);
   $("review").innerHTML = game.misses.map(m =>
-    `<div class="rv"><div class="q">${esc(m.q)}</div><div class="a">✔ ${esc(m.c)}</div><div class="y">✘ ${esc(m.y)}</div></div>`).join("");
+    `<div class="rv"><div class="q">${esc(m.q)}</div>${m.vis && !/\.(png|jpe?g|webp|gif|avif)$|^(https?:|img\/)/i.test(m.vis) ? `<div class="vis">${esc(m.vis)}</div>` : ""}<div class="a">✔ ${esc(m.c)}</div><div class="y">✘ ${esc(m.y)}</div></div>`).join("");
   show("scr-end");
 }
 

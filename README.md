@@ -11,11 +11,12 @@ Web: https://fjportillo.github.io/liantes-quiz/
 - `supabase.sql` — base de datos del Hall of Fame compartido
 
 ## Formato de `preguntas.csv`
-`pregunta,correcta,incorrecta1,incorrecta2,incorrecta3,categoria,dificultad,alta`
+`pregunta,correcta,incorrecta1,incorrecta2,incorrecta3,categoria,dificultad,alta,visual`
 
 - `incorrecta3` es opcional (pregunta de 3 respuestas).
 - `dificultad`: `facil`, `media` o `dificil`.
 - `alta`: fecha en que se añadió la pregunta (AAAA-MM-DD).
+- `visual` (opcional): emojis que se muestran en grande (categoría «Adivina la banda») o la ruta de una foto en `img/` (p. ej. `img/bunker.jpg`). Solo fotos propias o cedidas con permiso.
 - Se puede añadir una columna `activa` con `no` para ocultar una pregunta.
 
 ## Regenerar `index.html` tras editar las preguntas
