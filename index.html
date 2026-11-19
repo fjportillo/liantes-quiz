@@ -808,7 +808,8 @@ document.querySelectorAll("#lang-sw [data-lang]").forEach(b => {
     if (typeof game !== "undefined" && game && !$("scr-game").classList.contains("hidden") &&
         !(await askConfirm(T("¿Cambiar de idioma?"), T("Se perderá la partida en curso."), T("Cambiar"), T("Seguir jugando"), true))) return;
     try{ localStorage.setItem("rmq-lang", JSON.stringify(l)); }catch(e){}
-    const u = new URL(location.href); u.searchParams.delete("lang"); location.replace(u.toString());
+    const u = new URL(location.href); u.searchParams.delete("lang");
+    history.replaceState(history.state, "", u.toString()); location.reload();   // replace() con #… solo cambia el ancla y no recarga
   });
 });
 const madridDay = () => new Intl.DateTimeFormat("en-CA", {timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit"}).format(Date.now());

@@ -29,7 +29,7 @@
         if (b.dataset.lang === lang) return;
         if (window.I18N_CONFIRM && !window.I18N_CONFIRM()) return;
         try{ localStorage.setItem("rmq-lang", JSON.stringify(b.dataset.lang)); }catch(e){}
-        const url = new URL(location.href); url.searchParams.delete("lang"); location.replace(url.toString());
+        const url = new URL(location.href); url.searchParams.delete("lang"); history.replaceState(history.state, "", url.toString()); location.reload();
       });
     });
     document.documentElement.lang = lang;
