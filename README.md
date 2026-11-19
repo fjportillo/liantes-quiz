@@ -11,6 +11,7 @@ Web: https://fjportillo.github.io/liantes-quiz/
 - `supabase.sql` — base de datos del Hall of Fame compartido
 - `hall_of_fame_mensual.sql`, `estadisticas.sql`, `reportes.sql`, `evento.sql`, `pin.sql` — ranking mensual, estadísticas, reportes de errores, modo evento y PIN
 - `retos_perfil.sql` — reto diario (10 preguntas iguales para todos cada día, una partida por jugador) y perfiles de jugador con logros
+- `premios_reto.sql` — premio del reto diario (+300/+200/+100 al ranking del mes para el podio, mínimo 3 jugadores) y nuevos límites de puntos; activo desde el 1-12-2026
 - `preguntas_vistas.sql` — cuenta cuántas veces sale cada pregunta (vista `preguntas_ranking`); la renovación semanal retira las más vistas
 - `promo.html` — publicación del día para redes (imagen 4:5 y 9:16 + texto listo para copiar): https://fjportillo.github.io/liantes-quiz/promo.html
 - `manifest.webmanifest`, `sw.js`, `icons/` — app instalable (PWA): icono en el móvil y juego sin conexión. Enlace directo para instalar: https://fjportillo.github.io/liantes-quiz/#instalar. Si cambias archivos que guarda el sw.js, sube el número de CACHE para forzar la actualización.
@@ -56,3 +57,10 @@ Puntuación: 100 puntos por acierto + hasta 100 por rapidez. Las salas se borran
 - En el modo evento cada móvil ve la pregunta en su idioma, aunque la sala sea la misma.
 - El reto diario es el mismo en los tres idiomas (mismas preguntas y mismo orden de respuestas).
 - Los reportes de errores y el recuento de preguntas vistas se guardan siempre con el texto en castellano.
+
+## Reglas desde el 1 de diciembre de 2026
+
+- **Puntos por dificultad:** fácil 100, media 150, difícil 200 (+5 por segundo sobrante y +50 con racha de 3 o más). Constantes `NEW_RULES_FROM` y `POINTS_BY_DIFF` en `plantilla.html`.
+- **Dificultad automática** (opción por defecto): cada pregunta se elige según el porcentaje de aciertos del jugador en ese dispositivo y sube o baja durante la partida según acierte o falle. El reto diario y el modo evento siguen siendo iguales para todos.
+- **Premio del reto diario:** el podio de cada día suma +300 / +200 / +100 al ranking del mes si jugaron al menos 3 personas (vista `reto_premios`).
+- Para probar las reglas antes de esa fecha, añade `#nuevas-reglas` a la dirección.

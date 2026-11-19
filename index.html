@@ -164,6 +164,9 @@
   table.hof .sub{display:none;font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   table.hof .sub .grid-s{font-size:10px;letter-spacing:0}
   table.hof td.s{white-space:nowrap}
+  table.hof .bonus-s{font-size:11px;color:#ffd76a;font-weight:700}
+  .chip.auto{background:#2a2d4a;color:var(--blue2)}
+  @media (max-width:560px){ table.hof .bonus-s{display:none} }
   .tabs .ts{display:none}
   .tabs button{white-space:nowrap}
   .champ-row .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -373,6 +376,7 @@
   .reto-cd{font-size:12px;color:var(--muted)}
   .reto-txt{margin:8px 0 10px;font-size:14px;color:#d8d8d2}
   .reto-btn{margin-top:0}
+  .reto-prize{margin:8px 0 0;font-size:12px;color:#ffd76a;font-weight:600}
   .reto-grid{font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:clamp(18px,5.4vw,22px);letter-spacing:2px;white-space:nowrap;text-align:center;margin:4px 0 10px}
   .reto-grid.big-grid{font-size:clamp(20px,6vw,28px);letter-spacing:2px;margin:14px 0 4px;white-space:nowrap}
   .reto-acts{display:flex;gap:8px}.reto-acts .btn{flex:1;margin:0}
@@ -451,7 +455,7 @@
   <section id="scr-start" class="card">
     <div class="reto-box" id="reto-box">
       <div class="reto-head"><span class="reto-tag" data-t>📅 Reto diario <b id="reto-num"></b></span><span class="reto-cd" id="reto-cd"></span></div>
-      <div id="reto-todo"><p class="reto-txt" data-t>10 preguntas, <b>las mismas para todos</b>. Una sola oportunidad al día. ¿Quién es el Liante del día?</p>
+      <div id="reto-todo"><p class="reto-prize" id="reto-prize"></p><p class="reto-txt" data-t>10 preguntas, <b>las mismas para todos</b>. Una sola oportunidad al día. ¿Quién es el Liante del día?</p>
         <button id="btn-reto" class="btn block reto-btn" data-t>Jugar el reto de hoy</button></div>
       <div id="reto-done" class="hidden"><p class="reto-txt" id="reto-res"></p><div class="reto-grid" id="reto-grid"></div>
         <div class="reto-acts"><button id="btn-reto-share" class="btn sm" data-t>📤 Compartir</button><button id="btn-reto-rank" class="btn ghost sm" data-t>🏆 Ranking de hoy</button></div></div>
@@ -473,6 +477,7 @@
       <div>
         <label for="diff" data-t>Dificultad</label>
         <select id="diff">
+          <option value="auto" data-t>Automática (se adapta a ti)</option>
           <option value="" data-t>Todas</option>
           <option value="facil" data-t>Fácil</option>
           <option value="media" data-t>Media</option>
@@ -689,6 +694,11 @@ const POINTS_CORRECT       = 100;  // puntos por acierto
 const POINTS_PER_SECOND    = 5;    // bonus por cada segundo sobrante
 const STREAK_BONUS         = 50;   // bonus a partir de 3 aciertos seguidos
 
+/* REGLAS DE DICIEMBRE 2026: puntos según la dificultad y dificultad automática.
+   (Para probarlas antes, añade #nuevas-reglas a la dirección.) */
+const NEW_RULES_FROM = "2026-12-01";
+const POINTS_BY_DIFF = {facil: 100, media: 150, dificil: 200};
+
 /* HALL OF FAME COMPARTIDO (Supabase, gratuito). Si se dejan vacíos, el
    Hall of Fame se guarda solo en cada dispositivo. */
 const SUPABASE_URL = "https://zfrwdqenyvtuvjvbxcwo.supabase.co";   // p. ej. "https://abcdxyz.supabase.co"
@@ -747,6 +757,22 @@ document.querySelectorAll("#lang-sw [data-lang]").forEach(b => {
     const u = new URL(location.href); u.searchParams.delete("lang"); location.replace(u.toString());
   });
 });
+const madridDay = () => new Intl.DateTimeFormat("en-CA", {timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit"}).format(Date.now());
+const NEW_RULES = madridDay() >= NEW_RULES_FROM || /nuevas-reglas/.test(location.href);
+const basePoints = q => NEW_RULES ? (POINTS_BY_DIFF[q.diff] || POINTS_BY_DIFF.media) : POINTS_CORRECT;
+const LEVELS = ["facil", "media", "dificil"];
+/* Nivel de cada concursante (en este dispositivo): media de aciertos que se adapta poco a poco */
+const Skill = {
+  all(){ return store("rmq-skill") || {}; },
+  get(key){ return this.all()[key || "anonimo"] || {a: 0.6, n: 0}; },
+  update(key, ok){
+    const all = this.all(), k = key || "anonimo", s = all[k] || {a: 0.6, n: 0};
+    s.a = s.n < 20 ? (s.a * s.n + (ok ? 1 : 0)) / (s.n + 1) : s.a * 0.95 + (ok ? 0.05 : 0);
+    s.n++; all[k] = s; store("rmq-skill", all);
+  },
+  level(key){ const s = this.get(key); return s.n < 5 ? 1 : s.a < 0.5 ? 0 : s.a < 0.75 ? 1 : 2; }
+};
+if (!NEW_RULES){ const o = document.querySelector('#diff option[value="auto"]'); if (o) o.remove(); }
 const LETTERS = ["A","B","C","D"];
 const DIFF_LABEL = {facil: T("Fácil"), media: T("Media"), dificil: T("Difícil")};
 const catLabel = c => T(c);
@@ -986,7 +1012,8 @@ function alertPin(msg){ $("start-err").textContent = msg; $("start-err").classLi
 function startGame(){
   const name = $("name").value.trim() || "Anónimo";
   const cat = $("cat").value, diff = $("diff").value, n = +$("count").value;
-  let pool = BANK.filter(q => (!cat || q.cat === cat) && (!diff || q.diff === diff));
+  const auto = diff === "auto";
+  let pool = BANK.filter(q => (!cat || q.cat === cat) && (auto || !diff || q.diff === diff));
   $("start-err").classList.add("hidden");
   if (!pool.length){ $("start-err").textContent = T("No hay preguntas con esa combinación de categoría y dificultad."); $("start-err").classList.remove("hidden"); return; }
   // Evitar repeticiones: primero las preguntas que este dispositivo aún no ha visto
@@ -1002,13 +1029,33 @@ function startGame(){
   const nowSeen = new Set(store("rmq-seen") || []);
   pool.forEach(q => nowSeen.add(qid(q)));
   store("rmq-seen", [...nowSeen].slice(-3000));
-  store("rmq-opts", {name, cat, diff, n});
+  store("rmq-opts", {name, cat, diff, n, v: 2});
   game = { name, list: pool.map(q => ({...q, options: shuffle([q.c, ...q.wrong])})),
            i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [], cat, diff, mode: "normal", grid: [], det: {} };
+  if (auto){                                   // dificultad automática: cada pregunta se elige según cómo vas
+    game.auto = {lvl: Skill.level(norm(name)), pool: BANK.filter(q => !cat || q.cat === cat)};
+    game.list[0] = autoPick(0);
+  }
   $("h-total").textContent = game.list.length;
   Stats.track("inicio", {categoria: cat, dificultad: diff, preguntas: game.list.length});
   show("scr-game");
   renderQuestion();
+}
+
+/* Elige la pregunta de la posición i según el nivel actual (preferentemente no vista y no repetida) */
+function autoPick(i){
+  const used = new Set(game.list.slice(0, i).map(qid)), seen = new Set(store("rmq-seen") || []);
+  const want = Math.max(0, Math.min(2, Math.round(game.auto.lvl)));
+  for (const d of [0, 1, -1, 2, -2]){
+    const lv = LEVELS[want + d]; if (!lv) continue;
+    const c = game.auto.pool.filter(q => q.diff === lv && !used.has(qid(q)));
+    if (!c.length) continue;
+    const fresh = c.filter(q => !seen.has(qid(q)));
+    const q = shuffle(fresh.length ? fresh : c)[0];
+    seen.add(qid(q)); store("rmq-seen", [...seen].slice(-3000));
+    return {...q, options: shuffle([q.c, ...q.wrong])};
+  }
+  return game.list[i];
 }
 
 function renderQuestion(){
@@ -1018,7 +1065,8 @@ function renderQuestion(){
   $("h-streak").textContent = game.streak;
   $("progress").style.width = (game.i / game.list.length * 100) + "%";
   $("qmeta").innerHTML = (q.cat ? `<span class="chip${/liante/i.test(q.cat)?" liantes":""}">${esc(catLabel(q.cat))}</span>` : "") +
-                         (q.diff ? `<span class="chip ${q.diff}">${DIFF_LABEL[q.diff]}</span>` : "");
+                         (q.diff ? `<span class="chip ${q.diff}">${DIFF_LABEL[q.diff]}${NEW_RULES ? " · " + basePoints(q) : ""}</span>` : "") +
+                         (game.auto ? `<span class="chip auto">🎚️ ${T("Automática")}</span>` : "");
   $("question").textContent = q.q;
   const vis = $("visual");
   if (q.vis){
@@ -1052,10 +1100,12 @@ function answer(k){
   const dc = game.det[q.cat || "Otras"] = game.det[q.cat || "Otras"] || [0, 0];
   dc[1]++;
   game.grid.push(k === correctK ? "🟩" : k < 0 ? "⬛" : "🟥");
+  Skill.update(norm(game.name), k === correctK);
+  if (game.auto) game.auto.lvl = k === correctK ? Math.min(2, game.auto.lvl + 0.5) : Math.max(0, game.auto.lvl - 0.75);
   if (k === correctK){
     dc[0]++;
     game.ok++; game.streak++; game.best = Math.max(game.best, game.streak);
-    let pts = POINTS_CORRECT + Math.round(game.left) * POINTS_PER_SECOND;
+    let pts = basePoints(q) + Math.round(game.left) * POINTS_PER_SECOND;
     if (game.streak >= 3) pts += STREAK_BONUS;
     game.score += pts;
     fb.textContent = T("¡Correcto! +{pts}", {pts}) + (game.streak >= 3 ? "  " + T("🔥 Racha de {n}", {n: game.streak}) : "");
@@ -1079,7 +1129,7 @@ function answer(k){
 }
 
 function next(){
-  if (game.i < game.list.length - 1){ game.i++; renderQuestion(); }
+  if (game.i < game.list.length - 1){ game.i++; if (game.auto) game.list[game.i] = autoPick(game.i); renderQuestion(); }
   else finish();
 }
 
@@ -1287,7 +1337,7 @@ const HOF = (() => {
       let rows;
       try{ rows = await api("hall_of_fame_mes?select=*&order=puntos.desc,mejor.desc&limit=1000"); }
       catch(e){ rows = await api("hall_of_fame?select=*&order=puntos.desc,mejor.desc&limit=1000"); }   // respaldo si aún no existe la vista mensual
-      return rows.map(r => ({key: r.clave, name: r.nombre, score: r.puntos, games: r.partidas, ok: r.aciertos, total: r.total, best: r.mejor}));
+      return rows.map(r => ({key: r.clave, name: r.nombre, score: r.puntos, games: r.partidas, ok: r.aciertos, total: r.total, best: r.mejor, bonus: r.bonus_reto || 0, wins: r.retos_ganados || 0}));
     },
     async best(){
       let rows;
@@ -1331,7 +1381,7 @@ async function renderHof(){
     } else if (hofTab === "total"){
       const rows = (await HOF.totals()).slice(0, 25);
       html = rows.length ? `<table class="hof"><thead><tr><th></th><th>${T("Liante")}</th><th class="r mob-hide">${T("Partidas")}</th><th class="r mob-hide">${T("Aciertos")}</th><th class="r">${T("Puntos")}</th></tr></thead><tbody>` +
-        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td>${ncell(p.name, p.key, T("{pct}% aciertos", {pct: Math.round(p.ok/p.total*100)}) + " · " + TP(p.games, "{n} partida", "{n} partidas"))}<td class="r mob-hide">${p.games}</td><td class="r mob-hide">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}</td></tr>`).join("") + `</tbody></table>`
+        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td>${ncell(p.name, p.key, T("{pct}% aciertos", {pct: Math.round(p.ok/p.total*100)}) + " · " + TP(p.games, "{n} partida", "{n} partidas") + (p.bonus ? " · " + T("🏅 +{n} del reto", {n: p.bonus}) : ""))}<td class="r mob-hide">${p.games}</td><td class="r mob-hide">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}${p.bonus ? `<div class="bonus-s" title="${T("Premios del reto diario")}">🏅 +${p.bonus}</div>` : ""}</td></tr>`).join("") + `</tbody></table>`
         : `<div class="empty">${T("Nuevo mes, ranking a cero. ¡Juega y sé el primer Liante de {mes}! 🤘", {mes})}</div>`;
     } else if (hofTab === "best"){
       const rows = await HOF.best();
@@ -1747,6 +1797,8 @@ const Reto = (() => {
   }
   function refresh(){
     shownDay = day();
+    $("reto-prize").textContent = NEW_RULES ? T("🏅 El podio del día suma +300, +200 y +100 puntos al ranking del mes (mínimo 3 jugadores).")
+      : T("🏅 Desde el 1 de diciembre, el podio del reto suma +300, +200 y +100 puntos al ranking del mes.");
     $("reto-num").textContent = num();
     countdown();
     const key = norm($("name").value.trim()), r = mine(shownDay, key), pr = store("rmq-reto-prog");
@@ -1793,7 +1845,7 @@ const ShareImg = (() => {
     x.textAlign = "left"; x.fillStyle = "#F2F2EC"; x.fillText(a, sx, 422); x.fillStyle = "#9aa5ff"; x.fillText(b, sx + wa, 422); x.textAlign = "center";
     spaced(x, 4); x.fillStyle = "#9a9a94";
     const label = r.mode === "reto" ? T("RETO DIARIO {num}", {num: r.num}) + " · " + new Date().toLocaleDateString(LOCALE, {day: "numeric", month: "long", timeZone: "Europe/Madrid"}).toUpperCase()
-      : [r.cat ? catLabel(r.cat) : T("Todas las categorías"), r.diff ? DIFF_LABEL[r.diff] : "", T("{n} preguntas", {n: r.total})].filter(Boolean).join(" · ").toUpperCase();
+      : [r.cat ? catLabel(r.cat) : T("Todas las categorías"), r.diff === "auto" ? T("Automática") : r.diff ? DIFF_LABEL[r.diff] : "", T("{n} preguntas", {n: r.total})].filter(Boolean).join(" · ").toUpperCase();
     fit(x, label, 700, 30, '"Red Hat Display", sans-serif', W - 140); x.fillText(label, W / 2, 500);
     spaced(x, 1); x.fillStyle = "#F2F2EC"; fit(x, r.verdict, 900, 46, `"Red Hat Display", sans-serif, ${EMO}`, W - 120); x.fillText(r.verdict, W / 2, 580);
     spaced(x, 0); x.font = '400 250px "Rubik Dirt", cursive'; x.fillText(String(r.score), W / 2, 820);
@@ -2045,7 +2097,7 @@ const Install = (() => {
     fillCategories();
     const o = store("rmq-opts");
     if (o){ $("name").value = o.name === "Anónimo" ? "" : o.name; $("count").value = String(o.n);
-            $("diff").value = o.diff || ""; if ([...$("cat").options].some(x => x.value === o.cat)) $("cat").value = o.cat; }
+            $("diff").value = (o.diff === "" && !o.v && NEW_RULES) ? "auto" : (o.diff || ""); if ([...$("cat").options].some(x => x.value === o.cat)) $("cat").value = o.cat; }
     refreshLogin(); Reto.refresh();
     $("source").innerHTML = T("<b>{n}</b> preguntas cargadas · fuente: {src}", {n: BANK.length, src: esc(label)});
   }catch(e){
