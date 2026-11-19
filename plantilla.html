@@ -146,37 +146,31 @@
   footer .social svg{width:34px;height:34px;fill:currentColor}
   footer .shop{display:inline-block;background:#000;color:#fff;text-decoration:none;font-family:"Red Hat Display";font-size:13px;padding:10px 16px;border:1px solid var(--line);margin-bottom:14px}
   footer .shop:hover{background:var(--blue)}
-  .coffee{display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:"Red Hat Display";font-weight:800;
-    letter-spacing:.5px;font-size:15px;color:#1a1a1a;background:#ffc439;padding:12px 18px;min-height:48px;border:0;transition:filter .15s,transform .1s}
-  .coffee:hover{filter:brightness(1.06)} .coffee:active{transform:translateY(1px)}
-  .coffee small{font-weight:600;opacity:.75}
-  .coffee-box{margin-top:18px;text-align:center}
-  .coffee-box p{margin:0 0 10px;color:var(--muted);font-size:14px}
-  .coffee-pick{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 14px;text-align:center}
-  .coffee-pick .lbl{font-family:"Red Hat Display";font-weight:800;font-size:16px;color:#ffc439;letter-spacing:.3px}
-  .coffee-pick .cup{display:inline-block;font-size:1.25em;animation:steam 2.4s ease-in-out infinite}
+  /* ---------- Botón flotante "Invítame a algo" ---------- */
+  .tip{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:45;
+    display:flex;align-items:center;gap:8px;background:#161618;border:1px solid rgba(255,196,57,.55);border-radius:999px;padding:6px;
+    box-shadow:0 10px 30px rgba(0,0,0,.6);font-family:"Red Hat Display"}
+  .tip-toggle{appearance:none;border:0;background:transparent;color:#ffc439;font-family:"Red Hat Display";font-weight:800;font-size:14px;
+    display:flex;align-items:center;gap:6px;padding:8px 10px;min-height:40px;cursor:pointer;white-space:nowrap}
+  .tip .cup{display:inline-block;font-size:1.3em;animation:steam 2.4s ease-in-out infinite}
   @keyframes steam{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-2px) rotate(-6deg)}}
-  .coffee-pick .amts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-  .coffee-pick .amt{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:84px;min-height:46px;padding:10px 16px;border-radius:999px;
-    background:#ffc439;color:#1a1a1a;text-decoration:none;font-family:"Red Hat Display";font-weight:900;font-size:16px;
-    box-shadow:0 6px 20px rgba(255,196,57,.30);transition:transform .1s,filter .15s}
-  .coffee-pick .amt:hover{filter:brightness(1.07);transform:translateY(-1px)} .coffee-pick .amt:active{transform:translateY(1px)}
-  .coffee-pick .pp{flex-basis:100%;color:var(--muted);font-size:12px}
-  .coffee-pick.start{margin-top:12px;padding:14px;border:1px solid rgba(255,196,57,.45);background:linear-gradient(180deg,rgba(255,196,57,.12),rgba(255,196,57,.03))}
-  .coffee-pick.foot{margin:0 0 16px}
-  .coffee-box.hl{background:linear-gradient(180deg,rgba(255,196,57,.14),rgba(255,196,57,.04));border:1px solid rgba(255,196,57,.45);padding:16px;margin:16px 0 4px}
-  .coffee-box.hl p{color:var(--text);font-weight:600;font-size:15px}
-  .coffee-box.hl .lbl{display:none}
-  .coffee-box.hl .amt{animation:glow 2.8s ease-in-out infinite;flex:1;min-width:0}
-  .coffee-box.hl .amts{width:100%;flex-wrap:nowrap}
-  @keyframes glow{0%,100%{box-shadow:0 6px 22px rgba(255,196,57,.30)}50%{box-shadow:0 6px 34px rgba(255,196,57,.65)}}
-  .coffee-fab{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:45;
-    background:#161618;border:1px solid rgba(255,196,57,.5);padding:10px 12px;flex-wrap:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.6)}
-  .coffee-fab .pp{display:none} .coffee-fab .lbl{font-size:14px} .coffee-fab .amt{min-width:0;min-height:38px;padding:7px 12px;font-size:14px;box-shadow:none}
-  body.playing .coffee-fab, body.modal-open .coffee-fab{display:none}
-  @media (max-width:1099px){ .coffee-fab{display:none !important} }
-  body:has(#scr-end:not(.hidden)) .coffee-fab{display:none}
-  @media (prefers-reduced-motion:reduce){ .coffee-pick .cup, .coffee-box.hl .amt{animation:none} }
+  .tip-amts{display:flex;gap:6px}
+  .tip .amt{display:inline-flex;align-items:center;gap:5px;min-height:40px;padding:7px 13px;border-radius:999px;background:#ffc439;color:#1a1a1a;
+    text-decoration:none;font-weight:900;font-size:14px;transition:filter .15s,transform .1s;white-space:nowrap}
+  .tip .amt:hover{filter:brightness(1.07);transform:translateY(-1px)} .tip .amt:active{transform:translateY(1px)}
+  .tip-toggle .chev{font-size:11px;opacity:.8;transition:transform .2s}
+  body.playing .tip, body.modal-open .tip{display:none}
+  /* En pantallas pequeñas se muestra plegado; al tocarlo se despliegan los importes */
+  @media (max-width:1099px){
+    .tip:not(.open) .tip-amts{display:none}
+    .tip.open{flex-direction:column;align-items:stretch;border-radius:18px;padding:8px}
+    .tip.open .tip-amts{flex-direction:column}
+    .tip.open .amt{justify-content:center;min-height:46px;font-size:15px}
+    .tip.open .chev{transform:rotate(180deg)}
+    footer{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+  }
+  @media (min-width:1100px){ .tip-toggle{cursor:default} .tip-toggle .chev{display:none} }
+  @media (prefers-reduced-motion:reduce){ .tip .cup{animation:none} }
   footer p{margin:6px 0;color:var(--muted);font-size:13px}
   footer .motto{font-family:"Red Hat Display";font-weight:700;color:var(--text)}
   @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
@@ -323,7 +317,6 @@
     <select id="cat"><option value="">Todas las categorías</option></select>
     <button id="btn-start" class="btn block">¡A liarla!</button>
     <button id="btn-hof-start" class="btn ghost hof">🏆 Hall of Fame</button>
-    <div class="coffee-pick start hidden" data-coffee></div>
     <div id="start-err" class="err hidden"></div>
     <div id="source" class="source">Cargando preguntas…</div>
   </section>
@@ -366,10 +359,6 @@
       <div class="stat"><b id="st-pct">0%</b><span>Precisión</span></div>
       <div class="stat"><b id="st-streak">0</b><span>Mejor racha</span></div>
     </div>
-    <div class="coffee-box hl hidden" data-coffee-show>
-      <p>¿Te has echado unas risas? Invítame a un café y ayuda a mantener vivo el quiz 🤘</p>
-      <div class="coffee-pick inbox" data-coffee-fill></div>
-    </div>
     <div class="mypos" id="mypos"></div>
     <div id="review-wrap">
       <h3>Tus fallos</h3>
@@ -408,9 +397,11 @@
     </div>
   </div>
 </div>
+<div class="tip hidden" id="tip" role="complementary" aria-label="Invítame a algo">
+  <button class="tip-toggle" id="tip-toggle" aria-expanded="false" aria-controls="tip-amts"><span class="cup">🍺</span> Invítame a algo <span class="chev">▲</span></button>
+  <div class="tip-amts" id="tip-amts"></div>
+</div>
 <footer>
-  <div class="coffee-pick coffee-fab hidden" data-coffee></div>
-  <div class="coffee-pick foot hidden" data-coffee></div>
   <a class="shop" href="https://liantesmetaleros.yupopstore.com/products" target="_blank" rel="noopener">TIENDA LIANTES METALEROS 💀🛒</a>
   <div class="social">
     <a href="https://www.instagram.com/asociacion_liantesmetaleros" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4 6.2 6.2 0 000-12.4zM12 16a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.9 1.4 1.4 0 000-2.9z"/></svg></a>
@@ -967,16 +958,22 @@ const Deco = (() => {
 })();
 Deco.apply();
 
-/* ---------- Invítame a un café ---------- */
+/* ---------- Botón flotante "Invítame a algo" ---------- */
 (() => {
   const user = PAYPAL_ME.trim().replace(/^https?:\/\/(www\.)?(paypal\.me|paypal\.com\/paypalme)\//i, "").replace(/\/.*$/, "");
   if (!user) return;
   const url = n => `https://www.paypal.com/paypalme/${encodeURIComponent(user)}/${n}EUR`;
-  const chips = DONATION_AMOUNTS.map(([n, e]) =>
-    `<a class="amt" href="${url(n)}" target="_blank" rel="noopener" aria-label="Donar ${n} euros con PayPal">${e} ${n} €</a>`).join("");
-  const html = `<span class="lbl"><span class="cup">☕</span> Invítame a un café</span><div class="amts">${chips}</div><small class="pp">Pago con PayPal · tú eliges la cantidad</small>`;
-  document.querySelectorAll("[data-coffee], [data-coffee-fill]").forEach(el => { el.innerHTML = html; });
-  document.querySelectorAll("[data-coffee], [data-coffee-show]").forEach(el => el.classList.remove("hidden"));
+  $("tip-amts").innerHTML = DONATION_AMOUNTS.map(([n, e]) =>
+    `<a class="amt" href="${url(n)}" target="_blank" rel="noopener" aria-label="Invitar con ${n} euros por PayPal">${e} ${n} €</a>`).join("");
+  const tip = $("tip");
+  tip.classList.remove("hidden");
+  $("tip-toggle").addEventListener("click", e => {
+    if (matchMedia("(min-width:1100px)").matches) return;
+    const open = tip.classList.toggle("open");
+    $("tip-toggle").setAttribute("aria-expanded", open);
+    e.stopPropagation();
+  });
+  document.addEventListener("click", e => { if (!tip.contains(e.target)){ tip.classList.remove("open"); $("tip-toggle").setAttribute("aria-expanded", false); } });
 })();
 
 (async () => {
