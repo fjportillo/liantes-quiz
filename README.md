@@ -30,3 +30,9 @@ Se añaden preguntas nuevas en todas las categorías y se retiran las más antig
 ## Decoración automática
 La web se decora sola según la fecha (hora de Madrid): Festes de Maig de Badalona (Cremada del Dimoni, 9-11 may), Sant Jordi (22-23 abr), Día Mundial del Rock (12-14 jul), aniversario de Liantes (8 mar), Sant Joan (22-24 jun), San Valentín (13-14 feb), Carnaval (calculado cada año), Halloween (20 oct-2 nov), Navidad (1 dic-4 ene), Nochevieja/Año Nuevo, Reyes (5-6 ene) y, el resto del año, la estación.
 Para previsualizar un tema: añadir `#tema-halloween` (o `navidad`, `dimoni`, `santjordi`, `carnaval`, `rock`, `aniversario`, `santjoan`, `sanvalentin`, `nochevieja`, `reyes`, `primavera`, `verano`, `otono`, `invierno`, `ninguno`) al final de la dirección.
+
+## Modo evento (pantalla grande + móviles)
+- `evento.html` — pantalla del presentador: se proyecta, crea la sala, muestra el QR y el código, las preguntas, el reparto de votos, la clasificación y el podio. Atajo: barra espaciadora para avanzar.
+- `jugar.html` — pantalla del jugador en el móvil (se abre con el QR o con `jugar.html?sala=CODIGO`).
+- `evento.sql` — tablas y funciones en Supabase (hay que ejecutarlo una vez).
+Puntuación: 100 puntos por acierto + hasta 100 por rapidez. Las salas se borran solas a los 2 días.

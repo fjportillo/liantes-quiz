@@ -141,6 +141,9 @@
   .champ-row.top1{color:#ffd76a} .champ-row.top2{color:#d7d9e0} .champ-row.top3{color:#e2a36b}
   .tabs button{padding:12px 6px}
   @media (max-width:400px){ .tabs button{font-size:11px;letter-spacing:.3px} }
+  .group-links{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .group-links a{flex:1;min-width:150px;text-align:center;font-family:"Red Hat Display";font-weight:800;font-size:14px;color:var(--text);text-decoration:none;border:1px dashed var(--line);padding:12px 8px}
+  .group-links a:hover{border-color:var(--blue2);color:var(--blue2)}
   .hof-sub{text-align:center;color:var(--muted);font-size:13px;margin:6px 0 14px}
   table.hof th{font-family:"Red Hat Display";font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--line);font-weight:700}
   table.hof th.r, table.hof td.r{text-align:right}
@@ -369,6 +372,10 @@
     <select id="cat"><option value="">Todas las categorías</option></select>
     <button id="btn-start" class="btn block">¡A liarla!</button>
     <button id="btn-hof-start" class="btn ghost hof">🏆 Hall of Fame</button>
+    <div class="group-links">
+      <a href="jugar.html">📱 Tengo un código de sala</a>
+      <a href="evento.html">📺 Modo evento (jugar en grupo)</a>
+    </div>
     <div id="start-err" class="err hidden"></div>
     <div id="champ" class="champ hidden"></div>
     <div id="source" class="source">Cargando preguntas…</div>
