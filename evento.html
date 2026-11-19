@@ -307,7 +307,9 @@ async function reveal(){
   q.opts.forEach((_, k) => { $("opt" + k).classList.toggle("dim", k !== q.correct); $("opt" + k).classList.toggle("win", k === q.correct); });
   try{
     const votes = await api(`ev_votos?select=opcion,votos&codigo=eq.${S.codigo}&idx=eq.${S.i}`);
-    const total = votes.reduce((a, v) => a + v.votos, 0) || 1;
+    const answered = votes.reduce((a, v) => a + v.votos, 0), hits = (votes.find(x => x.opcion === q.correct) || {votos: 0}).votos;
+    rpc("contar_preguntas", {p: [{q: q.q, v: q.vis || "", r: answered, a: hits}]}).catch(() => {});   // para retirar las más vistas
+    const total = answered || 1;
     q.opts.forEach((_, k) => { const v = (votes.find(x => x.opcion === k) || {votos: 0}).votos;
       $("n" + k).textContent = v; $("n" + k).classList.remove("hidden"); $("bar" + k).style.width = (v / total * 100) + "%"; });
   }catch(e){}

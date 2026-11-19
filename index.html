@@ -987,8 +987,20 @@ function next(){
   else finish();
 }
 
+/* Cuenta cuántas veces sale cada pregunta (la renovación semanal retira las más vistas) */
+function countSeen(shown){
+  if (!HOF.online || !game) return;
+  const missed = new Set(game.misses.map(m => m.qref));
+  const items = game.list.slice(0, shown).map((q, i) => {
+    const answered = i < game.i || (i === game.i && game.answered === game.i);
+    return {q: q.q, v: q.vis || "", r: answered ? 1 : 0, a: answered && !missed.has(q) ? 1 : 0};
+  });
+  if (items.length) rpcCall("contar_preguntas", {p: items.slice(0, 60)}).catch(() => {});
+}
+
 function finish(){
   $("progress").style.width = "100%";
+  countSeen(game.list.length);
   const total = game.list.length, pct = Math.round(game.ok / total * 100);
   Stats.track("fin", {categoria: game.mode === "reto" ? "Reto diario" : game.cat, dificultad: game.diff, preguntas: total, aciertos: game.ok, puntos: game.score});
   $("final-score").textContent = game.score;
@@ -1283,7 +1295,7 @@ async function cancelGame(){
       ? `Llevas ${game.score} puntos. Si abandonas, el reto de hoy se da por jugado y no podrás repetirlo hasta mañana.`
       : `Llevas ${game.score} puntos en ${game.i + (wasRunning ? 0 : 1)} de ${game.list.length} preguntas. Si abandonas, esta partida no contará para el Hall of Fame.`,
     "Sí, abandonar", "Seguir jugando");
-  if (ok){ clearInterval(timerId); Stats.track("abandono", {categoria: game.cat, dificultad: game.diff, preguntas: game.list.length, aciertos: game.ok, puntos: game.score}); if (game.mode === "reto") Reto.saveDone({abandoned: true, score: game.score, ok: game.ok, total: game.list.length, grid: game.grid.slice()}); game = null; show("scr-start"); }
+  if (ok){ clearInterval(timerId); countSeen(game.i + 1); Stats.track("abandono", {categoria: game.cat, dificultad: game.diff, preguntas: game.list.length, aciertos: game.ok, puntos: game.score}); if (game.mode === "reto") Reto.saveDone({abandoned: true, score: game.score, ok: game.ok, total: game.list.length, grid: game.grid.slice()}); game = null; show("scr-start"); }
   else if (wasRunning) resumeTimer(game.pausedLeft);
 }
 function resumeTimer(secs){
