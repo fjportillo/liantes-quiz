@@ -153,6 +153,20 @@
   .coffee-box{margin-top:18px;text-align:center}
   .coffee-box p{margin:0 0 10px;color:var(--muted);font-size:14px}
   footer .coffee{display:inline-flex;margin:0 0 16px}
+  .coffee{border-radius:999px;box-shadow:0 6px 22px rgba(255,196,57,.35)}
+  .coffee .cup{display:inline-block;font-size:1.25em;animation:steam 2.4s ease-in-out infinite}
+  @keyframes steam{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-2px) rotate(-6deg)}}
+  .coffee-box.big{background:linear-gradient(180deg,rgba(255,196,57,.14),rgba(255,196,57,.04));border:1px solid rgba(255,196,57,.45);padding:16px;margin:16px 0 4px}
+  .coffee-box.big p{color:var(--text);font-weight:600;font-size:15px}
+  .coffee-box.big .coffee{font-size:17px;padding:14px 22px;width:100%;animation:glow 2.8s ease-in-out infinite}
+  @keyframes glow{0%,100%{box-shadow:0 6px 22px rgba(255,196,57,.30)}50%{box-shadow:0 6px 34px rgba(255,196,57,.65)}}
+  .coffee.start{width:100%;margin-top:10px}
+  .coffee-fab{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:45;
+    padding:12px 18px;font-size:15px}
+  body.playing .coffee-fab, body.modal-open .coffee-fab{display:none}
+  @media (max-width:1099px){ .coffee-fab{display:none !important} }
+  body:has(#scr-end:not(.hidden)) .coffee-fab{display:none}
+  @media (prefers-reduced-motion:reduce){ .coffee .cup, .coffee-box.big .coffee{animation:none} }
   footer p{margin:6px 0;color:var(--muted);font-size:13px}
   footer .motto{font-family:"Red Hat Display";font-weight:700;color:var(--text)}
   @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
@@ -299,6 +313,7 @@
     <select id="cat"><option value="">Todas las categorías</option></select>
     <button id="btn-start" class="btn block">¡A liarla!</button>
     <button id="btn-hof-start" class="btn ghost hof">🏆 Hall of Fame</button>
+    <div class="hidden" data-coffee><a class="coffee start" data-coffee-link href="#" target="_blank" rel="noopener"><span class="cup">☕</span> Invítame a un café <small>· 1 € con PayPal</small></a></div>
     <div id="start-err" class="err hidden"></div>
     <div id="source" class="source">Cargando preguntas…</div>
   </section>
@@ -341,11 +356,11 @@
       <div class="stat"><b id="st-pct">0%</b><span>Precisión</span></div>
       <div class="stat"><b id="st-streak">0</b><span>Mejor racha</span></div>
     </div>
-    <div class="mypos" id="mypos"></div>
-    <div class="coffee-box hidden" data-coffee>
-      <p>¿Te has echado unas risas? Ayuda a mantener el quiz vivo 🤘</p>
-      <a class="coffee" data-coffee-link href="#" target="_blank" rel="noopener">☕ Invítame a un café <small>· 1 € con PayPal</small></a>
+    <div class="coffee-box big hidden" data-coffee>
+      <p>¿Te has echado unas risas? Invítame a un café y ayuda a mantener vivo el quiz 🤘</p>
+      <a class="coffee" data-coffee-link href="#" target="_blank" rel="noopener"><span class="cup">☕</span> Invítame a un café · 1 €</a>
     </div>
+    <div class="mypos" id="mypos"></div>
     <div id="review-wrap">
       <h3>Tus fallos</h3>
       <div class="review" id="review"></div>
@@ -384,6 +399,7 @@
   </div>
 </div>
 <footer>
+  <div class="hidden" data-coffee><a class="coffee coffee-fab" data-coffee-link href="#" target="_blank" rel="noopener" aria-label="Invítame a un café, 1 euro con PayPal"><span class="cup">☕</span> Invítame a un café <small>· 1 €</small></a></div>
   <div class="hidden" data-coffee><a class="coffee" data-coffee-link href="#" target="_blank" rel="noopener">☕ Invítame a un café <small>· 1 € con PayPal</small></a></div>
   <a class="shop" href="https://liantesmetaleros.yupopstore.com/products" target="_blank" rel="noopener">TIENDA LIANTES METALEROS 💀🛒</a>
   <div class="social">
@@ -717,10 +733,10 @@ let modalResolve = null;
 function askConfirm(title, text, okLabel, noLabel){
   $("modal-title").textContent = title; $("modal-text").textContent = text;
   $("modal-ok").textContent = okLabel; $("modal-no").textContent = noLabel || "Cancelar";
-  $("modal").classList.remove("hidden"); $("modal-no").focus();
+  $("modal").classList.remove("hidden"); document.body.classList.add("modal-open"); $("modal-no").focus();
   return new Promise(r => modalResolve = r);
 }
-function closeModal(v){ $("modal").classList.add("hidden"); if (modalResolve){ const r = modalResolve; modalResolve = null; r(v); } }
+function closeModal(v){ $("modal").classList.add("hidden"); document.body.classList.remove("modal-open"); if (modalResolve){ const r = modalResolve; modalResolve = null; r(v); } }
 $("modal-ok").addEventListener("click", () => closeModal(true));
 $("modal-no").addEventListener("click", () => closeModal(false));
 $("modal").addEventListener("click", e => { if (e.target.id === "modal") closeModal(false); });
