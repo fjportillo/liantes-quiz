@@ -336,6 +336,48 @@
   @keyframes sway{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(8deg) translateY(-6px)}}
   .deco-toggle{appearance:none;background:transparent;border:1px solid var(--line);color:var(--muted);font-family:"DM Sans";font-size:12px;padding:8px 12px;margin-top:12px;cursor:pointer}
   @media (prefers-reduced-motion:reduce){ .hero .deco{animation:none} #deco-canvas{display:none} }
+  /* Reto diario */
+  .reto-box{border:1px solid var(--blue);background:linear-gradient(135deg,rgba(91,108,240,.18),rgba(91,108,240,.04));padding:14px 16px;margin-bottom:6px}
+  .reto-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .reto-tag{font-family:"Red Hat Display";font-weight:900;font-size:18px;text-transform:uppercase;letter-spacing:1px}
+  .reto-tag b{color:var(--blue2)}
+  .reto-cd{font-size:12px;color:var(--muted)}
+  .reto-txt{margin:8px 0 10px;font-size:14px;color:#d8d8d2}
+  .reto-btn{margin-top:0}
+  .reto-grid{font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:clamp(18px,5.4vw,22px);letter-spacing:2px;white-space:nowrap;text-align:center;margin:4px 0 10px}
+  .reto-grid.big-grid{font-size:clamp(20px,6vw,28px);letter-spacing:2px;margin:14px 0 4px;white-space:nowrap}
+  .reto-acts{display:flex;gap:8px}.reto-acts .btn{flex:1;margin:0}
+  .btn.sm{padding:10px 12px;font-size:12px;letter-spacing:1px}
+  .start-2{display:flex;gap:10px}.start-2 .btn{flex:1}
+  .share-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.share-row .btn{flex:1;min-width:170px}
+  .plink{appearance:none;background:none;border:0;color:inherit;font:inherit;padding:0;cursor:pointer;text-align:left;text-decoration:underline dotted rgba(255,255,255,.35);text-underline-offset:3px}
+  .plink:hover{color:var(--blue2)}
+  td.grid-s{font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:11px;letter-spacing:1px;white-space:nowrap}
+  /* Imagen */
+  .modal .img-box{max-width:440px;border-top-color:var(--blue2);max-height:94vh;overflow:auto}
+  .img-box img{width:100%;display:block;border:1px solid var(--line);background:#000}
+  .img-box .actions{margin-top:14px}
+  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--text);color:#111;padding:10px 18px;font-family:"Red Hat Display";font-weight:800;z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+  /* Perfil */
+  .prof-head{text-align:center}
+  .prof-av{width:76px;height:76px;margin:0 auto 8px;display:grid;place-items:center;background:#000;border:2px solid var(--blue2);font-family:"Rubik Dirt",cursive;font-size:38px;color:var(--text)}
+  .prof-name{font-family:"Red Hat Display";font-weight:900;font-size:28px;margin:0}
+  .prof-sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .prof-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
+  .prof-stats div{background:#131415;border:1px solid var(--line);padding:10px 6px;text-align:center}
+  .prof-stats b{display:block;font-family:"Red Hat Display";font-weight:900;font-size:22px}
+  .prof-stats span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+  .prof-fav{text-align:center;font-family:"Red Hat Display";font-weight:800;padding:10px;border:1px dashed var(--blue2);color:var(--blue2);margin-bottom:6px}
+  .cat-bar{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:13px;margin:8px 0}
+  .cat-bar i{grid-column:1/-1;height:6px;background:#000;border:1px solid var(--line);position:relative}
+  .cat-bar i::after{content:"";position:absolute;inset:0;width:var(--w);background:var(--blue)}
+  .badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+  .badge{background:#131415;border:1px solid var(--line);padding:10px 8px;text-align:center}
+  .badge .ic{font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:30px;line-height:1.2}
+  .badge b{display:block;font-family:"Red Hat Display";font-weight:900;font-size:13px;margin-top:4px}
+  .badge span{display:block;font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3}
+  .badge.on{border-color:var(--blue2);background:linear-gradient(180deg,rgba(91,108,240,.2),#131415)}
+  .badge.off{opacity:.42}.badge.off .ic{filter:grayscale(1)}
 </style>
 </head>
 <body>
@@ -355,6 +397,13 @@
 
   <!-- INICIO -->
   <section id="scr-start" class="card">
+    <div class="reto-box" id="reto-box">
+      <div class="reto-head"><span class="reto-tag">📅 Reto diario <b id="reto-num"></b></span><span class="reto-cd" id="reto-cd"></span></div>
+      <div id="reto-todo"><p class="reto-txt">10 preguntas, <b>las mismas para todos</b>. Una sola oportunidad al día. ¿Quién es el Liante del día?</p>
+        <button id="btn-reto" class="btn block reto-btn">Jugar el reto de hoy</button></div>
+      <div id="reto-done" class="hidden"><p class="reto-txt" id="reto-res"></p><div class="reto-grid" id="reto-grid"></div>
+        <div class="reto-acts"><button id="btn-reto-share" class="btn sm">📤 Compartir</button><button id="btn-reto-rank" class="btn ghost sm">🏆 Ranking de hoy</button></div></div>
+    </div>
     <label for="name">Tu nombre</label>
     <input id="name" maxlength="24" placeholder="Tu nombre de Liante" autocomplete="off">
     <div class="login-row hidden" id="login-row"><button class="report-link" id="btn-login" type="button">🔒 ¿Ya tienes PIN? Entra con tu nombre</button></div>
@@ -382,7 +431,7 @@
     <label for="cat">Categoría</label>
     <select id="cat"><option value="">Todas las categorías</option></select>
     <button id="btn-start" class="btn block">¡A liarla!</button>
-    <button id="btn-hof-start" class="btn ghost hof">🏆 Hall of Fame</button>
+    <div class="start-2"><button id="btn-hof-start" class="btn ghost hof">🏆 Hall of Fame</button><button id="btn-prof-start" class="btn ghost hof">👤 Mi perfil</button></div>
     <div class="group-links">
       <a href="jugar.html">📱 Tengo un código de sala</a>
       <a href="evento.html">📺 Modo evento (jugar en grupo)</a>
@@ -432,10 +481,16 @@
       <div class="stat"><b id="st-pct">0%</b><span>Precisión</span></div>
       <div class="stat"><b id="st-streak">0</b><span>Mejor racha</span></div>
     </div>
+    <div class="reto-grid big-grid hidden" id="end-grid"></div>
     <div class="mypos" id="mypos"></div>
+    <div class="share-row">
+      <button id="btn-share-text" class="btn hidden">📤 Compartir resultado</button>
+      <button id="btn-share-img" class="btn">📸 Compartir imagen</button>
+    </div>
     <div class="actions">
       <button id="btn-again" class="btn">Jugar otra vez</button>
       <button id="btn-hof-end" class="btn ghost">🏆 Hall of Fame</button>
+      <button id="btn-prof-end" class="btn ghost">👤 Mi perfil</button>
       <button id="btn-home" class="btn ghost">🏠 Volver al inicio</button>
     </div>
     <div id="review-wrap">
@@ -449,6 +504,7 @@
     <h2 class="hof-title">Hall of Fame</h2>
     <div class="hof-sub" id="hof-sub">Las leyendas Liantes</div>
     <div class="tabs" role="tablist">
+      <button id="tab-reto" role="tab">📅 Reto de hoy</button>
       <button id="tab-total" class="on" role="tab">Ranking del mes</button>
       <button id="tab-best" role="tab">Mejores partidas</button>
       <button id="tab-champs" role="tab">👑 Campeones</button>
@@ -457,6 +513,14 @@
     <div class="actions">
       <button id="btn-hof-back" class="btn">Volver</button>
       <button id="btn-hof-reset" class="btn link">Borrar Hall of Fame</button>
+    </div>
+  </section>
+
+  <!-- PERFIL -->
+  <section id="scr-profile" class="card hidden">
+    <div id="prof-body"></div>
+    <div class="actions">
+      <button id="btn-prof-back" class="btn">Volver</button>
     </div>
   </section>
 
@@ -487,6 +551,18 @@
     <p class="pin-help" id="pin-help"></p>
   </div>
 </div>
+<div class="modal hidden" id="img-modal" role="dialog" aria-modal="true" aria-labelledby="img-title">
+  <div class="box img-box">
+    <h4 id="img-title">📸 Tu resultado</h4>
+    <img id="img-prev" alt="Tarjeta con tu resultado">
+    <div class="actions">
+      <button id="img-share" class="btn">📤 Compartir</button>
+      <button id="img-down" class="btn ghost">⬇️ Descargar</button>
+      <button id="img-close" class="btn link">Cerrar</button>
+    </div>
+  </div>
+</div>
+<div class="toast hidden" id="toast" role="status"></div>
 <div class="modal hidden" id="rep-modal" role="dialog" aria-modal="true" aria-labelledby="rep-title">
   <div class="box rep-box">
     <h4 id="rep-title">⚠️ Reportar pregunta</h4>
@@ -598,6 +674,7 @@ function toQuestions(rows){
   const iD = col("dificultad","difficulty");
   const iA = col("activa","active");
   const iV = col("visual","imagen","image");
+  const iAl = col("alta","fecha");
   if (iQ < 0 || iC < 0 || iW.length < 2) throw new Error("La hoja debe tener las columnas: pregunta, correcta, incorrecta1, incorrecta2 (e incorrecta3 opcional).");
   const out = [];
   for (const r of rows.slice(1)){
@@ -607,7 +684,7 @@ function toQuestions(rows){
     if (!q || !c || wrong.length < 2) continue;
     let d = norm(iD >= 0 ? r[iD] : "");
     if (!DIFF_LABEL[d]) d = "";
-    out.push({ q, c, wrong, cat: iCat >= 0 ? (r[iCat]||"").trim() : "", diff: d, vis: iV >= 0 ? (r[iV]||"").trim() : "" });
+    out.push({ q, c, wrong, cat: iCat >= 0 ? (r[iCat]||"").trim() : "", diff: d, vis: iV >= 0 ? (r[iV]||"").trim() : "", alta: iAl >= 0 ? (r[iAl]||"").trim() : "" });
   }
   return out;
 }
@@ -640,7 +717,7 @@ function fillCategories(){
 
 function esc(s){ return s.replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
 
-function show(id){ if (id === "scr-start" && typeof refreshLogin === "function") setTimeout(refreshLogin, 0); ["scr-start","scr-game","scr-end","scr-hof"].forEach(s => $(s).classList.toggle("hidden", s !== id)); document.body.classList.toggle("playing", id === "scr-game"); window.scrollTo(0,0); }
+function show(id){ if (id === "scr-start" && typeof refreshLogin === "function") setTimeout(() => { refreshLogin(); Reto.refresh(); }, 0); ["scr-start","scr-game","scr-end","scr-hof","scr-profile"].forEach(s => $(s).classList.toggle("hidden", s !== id)); document.body.classList.toggle("playing", id === "scr-game"); window.scrollTo(0,0); }
 
 function store(key, val){ try{ if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); }catch(e){ return null; } }
 
@@ -724,14 +801,17 @@ function doLogout(){
 }
 $("btn-login").addEventListener("click", doLogin);
 $("btn-logout").addEventListener("click", doLogout);
-$("name").addEventListener("input", refreshLogin);
+$("name").addEventListener("input", () => { refreshLogin(); Reto.refresh(); });
 ["pin-1","pin-2"].forEach(id => $(id).addEventListener("keydown", e => { if (e.key === "Enter") $("pin-ok").click(); }));
 
 let checkingName = false;
-async function tryStart(){
+async function tryStart(mode){
   if (checkingName) return;
+  const reto = mode === "reto";
+  const go = () => reto ? Reto.start() : startGame();
   const name = $("name").value.trim(), key = norm(name);
-  if (!HOF.online || !name || key === "anonimo") return startGame();
+  if (reto && (!name || key === "anonimo")){ alertPin("Escribe tu nombre para jugar el reto diario y entrar en su ranking."); $("name").focus(); return; }
+  if (!HOF.online || !name || key === "anonimo") return go();
   checkingName = true; $("btn-start").disabled = true;
   try{
     let estado;
@@ -758,7 +838,8 @@ async function tryStart(){
       }
     }
     rememberName(key);
-    startGame();
+    if (reto && await Reto.playedRemote(key, name)) return;
+    go();
   } finally { checkingName = false; $("btn-start").disabled = false; }
 }
 function alertPin(msg){ $("start-err").textContent = msg; $("start-err").classList.remove("hidden"); setTimeout(() => $("start-err").classList.add("hidden"), 6000); }
@@ -784,7 +865,7 @@ function startGame(){
   store("rmq-seen", [...nowSeen].slice(-3000));
   store("rmq-opts", {name, cat, diff, n});
   game = { name, list: pool.map(q => ({...q, options: shuffle([q.c, ...q.wrong])})),
-           i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [], cat, diff };
+           i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [], cat, diff, mode: "normal", grid: [], det: {} };
   $("h-total").textContent = game.list.length;
   Stats.track("inicio", {categoria: cat, dificultad: diff, preguntas: game.list.length});
   show("scr-game");
@@ -813,6 +894,7 @@ function renderQuestion(){
   $("btn-next").classList.add("hidden");
   $("btn-report").classList.add("hidden");
   $("qcard").classList.remove("pop"); void $("qcard").offsetWidth; $("qcard").classList.add("pop");
+  if (game.mode === "reto") Reto.saveProgress(true);
   startTimer();
 }
 
@@ -828,7 +910,11 @@ function answer(k){
   const correctK = q.options.indexOf(q.c);
   btns[correctK].classList.add("correct");
   const fb = $("feedback");
+  const dc = game.det[q.cat || "Otras"] = game.det[q.cat || "Otras"] || [0, 0];
+  dc[1]++;
+  game.grid.push(k === correctK ? "🟩" : k < 0 ? "⬛" : "🟥");
   if (k === correctK){
+    dc[0]++;
     game.ok++; game.streak++; game.best = Math.max(game.best, game.streak);
     let pts = POINTS_CORRECT + Math.round(game.left) * POINTS_PER_SECOND;
     if (game.streak >= 3) pts += STREAK_BONUS;
@@ -845,6 +931,7 @@ function answer(k){
   }
   $("h-score").textContent = game.score;
   $("h-streak").textContent = game.streak;
+  if (game.mode === "reto") Reto.saveProgress(false);
   const last = game.i === game.list.length - 1;
   $("btn-next").textContent = last ? "Ver resultado" : "Siguiente";
   $("btn-next").classList.remove("hidden");
@@ -860,7 +947,7 @@ function next(){
 function finish(){
   $("progress").style.width = "100%";
   const total = game.list.length, pct = Math.round(game.ok / total * 100);
-  Stats.track("fin", {categoria: game.cat, dificultad: game.diff, preguntas: total, aciertos: game.ok, puntos: game.score});
+  Stats.track("fin", {categoria: game.mode === "reto" ? "Reto diario" : game.cat, dificultad: game.diff, preguntas: total, aciertos: game.ok, puntos: game.score});
   $("final-score").textContent = game.score;
   $("st-ok").textContent = `${game.ok}/${total}`;
   $("st-pct").textContent = pct + "%";
@@ -871,17 +958,40 @@ function finish(){
     pct >= 60   ? "🎸 ¡Headbanger de primera fila!" :
     pct >= 40   ? "🎵 Vas afinando, sigue así." :
                   "🍺 Toca más quedadas y repasar clásicos…";
-  const record = {name: game.name, key: norm(game.name) || "anonimo", score: game.score, ok: game.ok, total, t: Date.now()};
+  const isReto = game.mode === "reto";
+  const record = {name: game.name, key: norm(game.name) || "anonimo", score: game.score, ok: game.ok, total, t: Date.now(),
+                  mode: game.mode, racha: game.best, det: game.det, grid: game.grid.join("")};
+  game.result = {score: game.score, ok: game.ok, total, best: game.best, pct, verdict: $("verdict").textContent, name: game.name,
+                 mode: game.mode, cat: game.cat, diff: game.diff, grid: game.grid.slice(), day: game.day, num: game.num, pos: null};
+  if (isReto){ Reto.saveDone(game.result); Reto.refresh(); }
+  $("end-grid").textContent = isReto ? game.grid.join("") : "";
+  $("end-grid").classList.toggle("hidden", !isReto);
+  $("btn-share-text").classList.toggle("hidden", !isReto);
+  $("btn-again").classList.toggle("hidden", isReto);
+  if (isReto) $("verdict").textContent = `📅 Reto diario ${game.num} · ` + $("verdict").textContent;
   $("mypos").textContent = "Guardando en el Hall of Fame…";
+  const res = game.result;
   (async () => {
     try{
-      await HOF.save(record);
+      const saved = await HOF.save(record);
+      if (isReto && saved === "repetido"){
+        $("mypos").textContent = "⚠️ Este nombre ya había jugado hoy el reto, así que esta partida no cuenta. ¡Vuelve mañana!";
+        return;
+      }
       const totals = await HOF.totals();
       const pos = totals.findIndex(p => p.key === record.key);
       const me = totals[pos];
-      $("mypos").innerHTML = me
+      let html = me
         ? `🏆 <b>${esc(me.name)}</b>, estás en el puesto <b>#${pos+1}</b> del ranking de ${MESES[+madridMonthKey().split("-")[1] - 1]} con <b>${me.score}</b> puntos en ${me.games} ${me.games === 1 ? "partida" : "partidas"}.`
         : "";
+      if (me) res.posMes = pos + 1;
+      if (isReto){
+        const rows = await HOF.retoHoy().catch(() => []);
+        const rp = rows.findIndex(r => r.key === record.key);
+        if (rp >= 0){ res.pos = rp + 1; res.of = rows.length; Reto.saveDone(res);
+          html = `📅 Vas <b>#${rp+1}</b> de ${rows.length} en el reto de hoy.<br>` + html; }
+      }
+      $("mypos").innerHTML = html;
     }catch(e){
       console.warn(e);
       $("mypos").textContent = String(e.message).includes("PIN_INCORRECTO")
@@ -989,7 +1099,8 @@ const HOF = (() => {
   }
   const local = {
     all(){ return store("rmq-games") || []; },
-    async save(g){ const a = this.all(); a.push(g); store("rmq-games", a.slice(-2000)); },
+    async save(g){ const a = this.all(); a.push({name: g.name, key: g.key, score: g.score, ok: g.ok, total: g.total, t: g.t}); store("rmq-games", a.slice(-2000)); return "ok"; },
+    async retoHoy(){ return []; },
     async totals(){ const k = madridMonthKey(); return aggregate(this.all().filter(g => madridMonthKey(g.t) === k)); },
     async best(){ const k = madridMonthKey(); return this.all().filter(g => madridMonthKey(g.t) === k).sort((a,b) => b.score - a.score || a.t - b.t).slice(0, 25); },
     async champions(){
@@ -1002,6 +1113,11 @@ const HOF = (() => {
   };
   const remote = {
     async save(g){
+      const pin = (store("rmq-pins") || {})[g.key] || null;
+      try{
+        return await rpcCall("guardar_partida2", {p_nombre: g.name.slice(0, 24), p_clave: g.key.slice(0, 40), p_puntos: g.score, p_aciertos: g.ok, p_total: g.total, p_pin: pin,
+          p_modo: g.mode || "normal", p_racha: g.racha || 0, p_detalle: g.det || null, p_cuadro: g.grid || null});
+      }catch(e){ if (e.status !== 404) throw e; }      // aún sin retos_perfil.sql: método anterior
       try{
         await rpcCall("guardar_partida", {p_nombre: g.name.slice(0, 24), p_clave: g.key.slice(0, 40), p_puntos: g.score, p_aciertos: g.ok, p_total: g.total, p_pin: (store("rmq-pins") || {})[g.key] || null});
       }catch(e){
@@ -1009,6 +1125,11 @@ const HOF = (() => {
           body: JSON.stringify({nombre: g.name.slice(0, 24), clave: g.key.slice(0, 40), puntos: g.score, aciertos: g.ok, total: g.total})});
         else throw e;
       }
+      return "ok";
+    },
+    async retoHoy(){
+      const rows = await api("reto_hoy?select=nombre,clave,puntos,aciertos,total,cuadro,creado&order=puntos.desc,creado.asc&limit=200");
+      return rows.map(r => ({key: r.clave, name: r.nombre, score: r.puntos, ok: r.aciertos, total: r.total, grid: r.cuadro || ""}));
     },
     async totals(){
       let rows;
@@ -1032,16 +1153,17 @@ const HOF = (() => {
     async count(){ return 1; },
     async reset(){ throw new Error("El Hall of Fame compartido solo se borra desde Supabase."); }
   };
-  return {online, ...(online ? remote : local)};
+  return {online, api, ...(online ? remote : local)};
 })();
 
 let hofTab = "total";
 const MEDALS = ["🥇","🥈","🥉"];
 async function renderHof(){
-  ["total","best","champs"].forEach(k => $("tab-" + k).classList.toggle("on", hofTab === k));
+  ["reto","total","best","champs"].forEach(k => $("tab-" + k).classList.toggle("on", hofTab === k));
   const mes = monthLabel(madridMonthKey());
   $("hof-sub").textContent = hofTab === "champs"
     ? "Los tres mejores de cada mes 👑"
+    : hofTab === "reto" ? `Reto diario ${Reto.num()} · ${new Date().toLocaleDateString("es-ES",{day:"numeric",month:"long",timeZone:"Europe/Madrid"})} · toca el nombre para ver su perfil`
     : `Ranking de ${mes} · se reinicia el ${nextMonthLabel()}` + (HOF.online ? "" : " · este dispositivo");
   $("btn-hof-reset").classList.add("hidden");
   $("hof-body").innerHTML = `<div class="empty">Cargando leyendas… 🤘</div>`;
@@ -1049,20 +1171,25 @@ async function renderHof(){
   const medal = i => i < 3 ? MEDALS[i] : `<span class="muted small">${i+1}</span>`;
   let html = "";
   try{
-    if (hofTab === "total"){
+    if (hofTab === "reto"){
+      const rows = HOF.online ? (await HOF.retoHoy()).slice(0, 50) : [];
+      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="xs-hide">Resultado</th><th class="r">Aciertos</th><th class="r">Puntos</th></tr></thead><tbody>` +
+        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${plink(g.name, g.key)}</td><td class="grid-s xs-hide">${esc(g.grid)}</td><td class="r">${g.ok}/${g.total}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>`
+        : `<div class="empty">${HOF.online ? "Nadie ha jugado todavía el reto de hoy. ¡Sé el primero! 📅" : "El ranking del reto necesita el Hall of Fame compartido."}</div>`;
+    } else if (hofTab === "total"){
       const rows = (await HOF.totals()).slice(0, 25);
       html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r xs-hide">Partidas</th><th class="r">Aciertos</th><th class="r">Puntos</th></tr></thead><tbody>` +
-        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(p.name)}</td><td class="r xs-hide">${p.games}</td><td class="r">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}</td></tr>`).join("") + `</tbody></table>`
+        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${plink(p.name, p.key)}</td><td class="r xs-hide">${p.games}</td><td class="r">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}</td></tr>`).join("") + `</tbody></table>`
         : `<div class="empty">Nuevo mes, ranking a cero. ¡Juega y sé el primer Liante de ${mes}! 🤘</div>`;
     } else if (hofTab === "best"){
       const rows = await HOF.best();
       html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r">Aciertos</th><th class="r xs-hide">Fecha</th><th class="r">Puntos</th></tr></thead><tbody>` +
-        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(g.name)}</td><td class="r">${g.ok}/${g.total}</td><td class="r xs-hide">${new Date(g.t).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit",timeZone:"Europe/Madrid"})}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>`
+        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${plink(g.name)}</td><td class="r">${g.ok}/${g.total}</td><td class="r xs-hide">${new Date(g.t).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit",timeZone:"Europe/Madrid"})}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>`
         : `<div class="empty">Aún no hay partidas este mes. ¡Estrénalo! 🤘</div>`;
     } else {
       const months = await HOF.champions();
       html = months.length ? months.map(m => `<div class="champ-month"><h4>👑 ${monthLabel(m.mes)}</h4>` +
-        m.top.map((p,i) => `<div class="champ-row ${cls(i)}"><span class="medal">${MEDALS[i] || ""}</span><span class="nm">${esc(p.name)}</span><span class="pt">${p.score} pts</span></div>`).join("") + `</div>`).join("")
+        m.top.map((p,i) => `<div class="champ-row ${cls(i)}"><span class="medal">${MEDALS[i] || ""}</span><span class="nm">${plink(p.name)}</span><span class="pt">${p.score} pts</span></div>`).join("") + `</div>`).join("")
         : `<div class="empty">Todavía no hay campeones. El primero se coronará el ${nextMonthLabel()}. 👑</div>`;
     }
     $("hof-body").innerHTML = html;
@@ -1072,6 +1199,8 @@ async function renderHof(){
     $("hof-body").innerHTML = `<div class="err">No se pudo cargar el Hall of Fame. Comprueba la conexión e inténtalo de nuevo.</div>`;
   }
 }
+function plink(name, key){ return HOF.online ? `<button class="plink" type="button" data-pkey="${esc(key || norm(name))}" data-pname="${esc(name)}">${esc(name)}</button>` : esc(name); }
+$("hof-body").addEventListener("click", e => { const b = e.target.closest("[data-pkey]"); if (b) Profile.open(b.dataset.pkey, b.dataset.pname, "scr-hof"); });
 let hofReturn = "scr-start";
 function openHof(from){ hofReturn = from; show("scr-hof"); renderHof(); }
 
@@ -1107,10 +1236,12 @@ $("modal").addEventListener("click", e => { if (e.target.id === "modal") closeMo
 async function cancelGame(){
   const wasRunning = game.answered !== game.i;
   if (wasRunning){ clearInterval(timerId); game.pausedLeft = game.left; }
-  const ok = await askConfirm("¿Abandonar la partida?",
-    `Llevas ${game.score} puntos en ${game.i + (wasRunning ? 0 : 1)} de ${game.list.length} preguntas. Si abandonas, esta partida no contará para el Hall of Fame.`,
+  const ok = await askConfirm(game.mode === "reto" ? "¿Abandonar el reto de hoy?" : "¿Abandonar la partida?",
+    game.mode === "reto"
+      ? `Llevas ${game.score} puntos. Si abandonas, el reto de hoy se da por jugado y no podrás repetirlo hasta mañana.`
+      : `Llevas ${game.score} puntos en ${game.i + (wasRunning ? 0 : 1)} de ${game.list.length} preguntas. Si abandonas, esta partida no contará para el Hall of Fame.`,
     "Sí, abandonar", "Seguir jugando");
-  if (ok){ clearInterval(timerId); Stats.track("abandono", {categoria: game.cat, dificultad: game.diff, preguntas: game.list.length, aciertos: game.ok, puntos: game.score}); game = null; show("scr-start"); }
+  if (ok){ clearInterval(timerId); Stats.track("abandono", {categoria: game.cat, dificultad: game.diff, preguntas: game.list.length, aciertos: game.ok, puntos: game.score}); if (game.mode === "reto") Reto.saveDone({abandoned: true, score: game.score, ok: game.ok, total: game.list.length, grid: game.grid.slice()}); game = null; show("scr-start"); }
   else if (wasRunning) resumeTimer(game.pausedLeft);
 }
 function resumeTimer(secs){
@@ -1131,6 +1262,7 @@ document.addEventListener("keydown", e => {
   if (!$("modal").classList.contains("hidden")){ if (e.key === "Escape") closeModal(false); return; }
   if (!$("rep-modal").classList.contains("hidden")){ if (e.key === "Escape") Report.close(); return; }
   if (!$("pin-modal").classList.contains("hidden")){ if (e.key === "Escape") pinClose({action: "cancel"}); return; }
+  if (!$("img-modal").classList.contains("hidden")){ if (e.key === "Escape") ShareImg.close(); return; }
   if ($("scr-game").classList.contains("hidden") || !game) return;
   if (e.key === "Escape"){ cancelGame(); return; }
   const k = ["1","2","3","4"].indexOf(e.key);
@@ -1140,7 +1272,20 @@ document.addEventListener("keydown", e => {
   else if ((e.key === "Enter" || e.key === " ") && !$("btn-next").classList.contains("hidden")){ e.preventDefault(); next(); }
 });
 
-$("btn-start").addEventListener("click", tryStart);
+$("btn-start").addEventListener("click", () => tryStart());
+$("btn-reto").addEventListener("click", () => tryStart("reto"));
+$("btn-reto-share").addEventListener("click", () => Reto.shareText(Reto.today()));
+$("btn-reto-rank").addEventListener("click", () => { hofTab = "reto"; openHof("scr-start"); });
+$("btn-share-text").addEventListener("click", () => Reto.shareText(game && game.result));
+$("btn-share-img").addEventListener("click", () => game && game.result && ShareImg.open(game.result));
+$("btn-prof-start").addEventListener("click", () => {
+  const name = $("name").value.trim();
+  if (!name){ alertPin("Escribe tu nombre (o entra con tu PIN) para ver tu perfil."); $("name").focus(); return; }
+  Profile.open(norm(name), name, "scr-start");
+});
+$("btn-prof-end").addEventListener("click", () => game && Profile.open(norm(game.name) || "anonimo", game.name, "scr-end"));
+$("btn-prof-back").addEventListener("click", () => Profile.back());
+$("tab-reto").addEventListener("click", () => { hofTab = "reto"; renderHof(); });
 $("btn-next").addEventListener("click", next);
 $("btn-again").addEventListener("click", startGame);
 $("btn-home").addEventListener("click", () => show("scr-start"));
@@ -1158,6 +1303,10 @@ $("btn-hof-reset").addEventListener("click", async () => {
   }
 });
 $("name").addEventListener("keydown", e => { if (e.key === "Enter") tryStart(); });
+$("img-close").addEventListener("click", () => ShareImg.close());
+$("img-share").addEventListener("click", () => ShareImg.share());
+$("img-down").addEventListener("click", () => ShareImg.download());
+$("img-modal").addEventListener("click", e => { if (e.target.id === "img-modal") ShareImg.close(); });
 
 
 /* =====================================================================
@@ -1341,8 +1490,281 @@ Deco.apply();
   document.addEventListener("click", e => { if (!tip.contains(e.target)){ tip.classList.remove("open"); $("tip-toggle").setAttribute("aria-expanded", false); } });
 })();
 
+
+/* =====================================================================
+   RETO DIARIO: 10 preguntas iguales para todos cada día (hora de Madrid)
+   ===================================================================== */
+const SITE_URL = "https://fjportillo.github.io/liantes-quiz/";
+let toastT = 0;
+function toast(msg){ const t = $("toast"); t.textContent = msg; t.classList.remove("hidden"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.add("hidden"), 3500); }
+
+const Reto = (() => {
+  const EPOCH = "2026-11-19";                       // reto #1
+  const TIMEOUT = "Sin respuesta (tiempo agotado)";
+  const day = (ts = Date.now()) => new Intl.DateTimeFormat("en-CA", {timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit"}).format(ts);
+  const num = (d = day()) => "#" + (Math.round((Date.parse(d) - Date.parse(EPOCH)) / 86400000) + 1);
+  function hash(s){ let h = 2166136261; for (const c of s){ h ^= c.codePointAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+  function rng(seed){ return () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function sshuffle(a, r){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+  // Mismas preguntas y mismo orden de respuestas en todos los dispositivos
+  function questions(d){
+    const r = rng(hash("liantes-reto-" + d));
+    const older = BANK.filter(q => q.alta !== d);           // las añadidas ese mismo día no entran (por si se publican a media mañana)
+    const pool = (older.length >= 100 ? older : BANK).map(q => [qid(q) + "|" + q.q, q]).sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0).map(x => x[1]);
+    const order = sshuffle(pool, r), want = {facil: 3, media: 4, dificil: 3}, picked = [], cats = new Map();
+    for (const pass of [1, 2, 99]) for (const q of order){
+      if (picked.length >= 10) break;
+      if (picked.includes(q)) continue;
+      const dq = q.diff || "media";
+      if (pass < 99 && !(want[dq] > 0)) continue;
+      if ((cats.get(q.cat) || 0) >= pass) continue;
+      picked.push(q); cats.set(q.cat, (cats.get(q.cat) || 0) + 1); if (want[dq]) want[dq]--;
+    }
+    const rank = {facil: 0, media: 1, dificil: 2};
+    picked.sort((a, b) => (rank[a.diff] ?? 1) - (rank[b.diff] ?? 1));
+    return picked.map(q => ({...q, options: sshuffle([q.c, ...q.wrong], r)}));
+  }
+
+  // Resultados guardados en este dispositivo: {fecha: {clave: resultado}}
+  const all = () => store("rmq-retos") || {};
+  const mine = (d, key) => key ? (all()[d] || {})[key] || null : null;
+  function put(d, key, v){
+    const a = all(); a[d] = a[d] || {}; a[d][key] = {...(a[d][key] || {}), ...v};
+    const o = {}; Object.keys(a).sort().slice(-30).forEach(k => o[k] = a[k]); store("rmq-retos", o);
+  }
+  function saveDone(res){
+    const key = norm(res.name || (game && game.name) || ""); if (!key) return;
+    const g = Array.isArray(res.grid) ? res.grid : [...(res.grid || "")];
+    put(res.day || day(), key, {score: res.score, ok: res.ok, total: res.total || 10, grid: g, pos: res.pos || null, of: res.of || null, abandoned: !!res.abandoned, best: res.best, pct: res.pct, verdict: res.verdict});
+    store("rmq-reto-prog", null);
+  }
+  function saveProgress(pending){
+    const g = game, st = {day: g.day, key: norm(g.name), next: g.i + 1, score: g.score, ok: g.ok, streak: g.streak, best: g.best,
+      grid: g.grid.slice(), det: JSON.parse(JSON.stringify(g.det)), misses: g.misses.map(m => ({idx: g.list.indexOf(m.qref), y: m.y}))};
+    if (pending){                                   // si recarga con la pregunta en pantalla, cuenta como tiempo agotado
+      const c = g.list[g.i].cat || "Otras"; st.det[c] = st.det[c] ? [st.det[c][0], st.det[c][1] + 1] : [0, 1];
+      st.grid.push("⬛"); st.streak = 0; st.misses.push({idx: g.i, y: TIMEOUT});
+    }
+    store("rmq-reto-prog", st);
+  }
+  async function playedRemote(key, name){
+    const d = day();
+    if (mine(d, key)){ refresh(); toast("Ya has jugado el reto de hoy. ¡Vuelve mañana! 🤘"); return true; }
+    if (!HOF.online) return false;
+    try{
+      const rows = await HOF.api(`retos?select=puntos,aciertos,total,cuadro&fecha=eq.${d}&clave=eq.${encodeURIComponent(key)}`);
+      if (rows && rows.length){
+        const r = rows[0];
+        put(d, key, {score: r.puntos, ok: r.aciertos, total: r.total, grid: [...(r.cuadro || "")]});
+        refresh(); toast(`«${name}» ya jugó hoy el reto. ¡Vuelve mañana! 🤘`); return true;
+      }
+    }catch(e){}
+    return false;
+  }
+  function start(){
+    const name = $("name").value.trim(), key = norm(name), d = day();
+    if (mine(d, key)){ refresh(); return; }
+    const list = questions(d);
+    if (list.length < 10){ alertPin("Ahora mismo no hay preguntas suficientes para el reto."); return; }
+    game = {name, list, i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [], cat: "", diff: "", mode: "reto", grid: [], det: {}, day: d, num: num(d)};
+    const pr = store("rmq-reto-prog");
+    const resumed = !!(pr && pr.day === d && pr.key === key);
+    if (resumed) Object.assign(game, {i: pr.next, score: pr.score, ok: pr.ok, streak: pr.streak, best: pr.best, grid: pr.grid, det: pr.det,
+      misses: pr.misses.filter(m => list[m.idx]).map(m => { const q = list[m.idx]; return {qref: q, q: q.q, vis: q.vis, c: q.c, y: m.y}; })});
+    store("rmq-opts", {...(store("rmq-opts") || {}), name});
+    $("h-total").textContent = list.length;
+    if (!resumed) Stats.track("inicio", {categoria: "Reto diario", dificultad: "", preguntas: list.length});
+    show("scr-game");
+    if (game.i >= list.length){ finish(); return; }
+    renderQuestion();
+    if (resumed) toast("Seguimos con tu reto donde lo dejaste");
+  }
+  const gridStr = g => (Array.isArray(g) ? g : [...(g || "")]).join("");
+  function today(){ const key = norm($("name").value.trim()), r = mine(day(), key); return r ? {...r, num: num(), name: $("name").value.trim()} : null; }
+  async function shareText(r){
+    if (!r || r.abandoned) return;
+    const text = `🤘 Liantes Quiz Metalero · Reto ${r.num || num()}\n${r.ok}/${r.total} aciertos · ${r.score} pts${r.pos ? ` · #${r.pos} del día` : ""}\n${gridStr(r.grid)}\n¿Te atreves? ${SITE_URL}`;
+    Stats.track("compartir", {categoria: "Reto diario"});
+    if (navigator.share && matchMedia("(pointer:coarse)").matches){
+      try{ await navigator.share({text}); return; }catch(e){ if (e.name === "AbortError") return; }
+    }
+    try{ await navigator.clipboard.writeText(text); toast("¡Resultado copiado! Pégalo en WhatsApp o donde quieras 🤘"); }
+    catch(e){ window.prompt("Copia tu resultado:", text); }
+  }
+  let shownDay = "";
+  function countdown(){
+    const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", {timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", hourCycle: "h23"}).formatToParts(new Date()).map(x => [x.type, x.value]));
+    const left = 1440 - (+p.hour * 60 + +p.minute);
+    $("reto-cd").textContent = `Nuevo reto en ${Math.floor(left / 60)} h ${left % 60} min`;
+  }
+  function refresh(){
+    shownDay = day();
+    $("reto-num").textContent = num();
+    countdown();
+    const key = norm($("name").value.trim()), r = mine(shownDay, key), pr = store("rmq-reto-prog");
+    $("reto-todo").classList.toggle("hidden", !!r);
+    $("reto-done").classList.toggle("hidden", !r);
+    $("btn-reto").textContent = key && pr && pr.day === shownDay && pr.key === key ? "Continuar el reto de hoy" : "Jugar el reto de hoy";
+    if (r){
+      $("reto-res").innerHTML = r.abandoned ? "Abandonaste el reto de hoy. ¡Mañana tienes otro!"
+        : `Hoy: <b>${r.ok}/${r.total}</b> aciertos · <b>${r.score}</b> puntos` + (r.pos ? ` · puesto <b>#${r.pos}</b>${r.of ? ` de ${r.of}` : ""}` : "");
+      $("reto-grid").textContent = r.abandoned ? "" : gridStr(r.grid);
+      $("btn-reto-share").classList.toggle("hidden", !!r.abandoned);
+    }
+  }
+  setInterval(() => { if (!$("scr-start").classList.contains("hidden")){ if (shownDay !== day()) refresh(); else countdown(); } }, 30000);
+  return {day, num, questions, start, saveDone, saveProgress, playedRemote, refresh, today, shareText};
+})();
+
+/* =====================================================================
+   TARJETA DE RESULTADO EN IMAGEN (para Instagram, WhatsApp…)
+   ===================================================================== */
+const ShareImg = (() => {
+  let file = null, url = null, text = "";
+  const logo = new Image(); logo.src = "logo.png";
+  const EMO = '"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji"';
+  async function ready(){
+    try{ await Promise.race([Promise.all(['400 100px "Rubik Dirt"', '900 60px "Red Hat Display"', '800 40px "Red Hat Display"', '700 30px "Red Hat Display"', '400 30px "DM Sans"', '40px "Noto Color Emoji"'].map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 2500))]); }catch(e){}
+    if (!logo.complete) await new Promise(r => { logo.onload = logo.onerror = r; setTimeout(r, 2000); });
+  }
+  function fit(x, txt, weight, size, family, maxW){ do { x.font = `${weight} ${size}px ${family}`; size -= 2; } while (x.measureText(txt).width > maxW && size > 16); }
+  function spaced(x, px){ if ("letterSpacing" in x) x.letterSpacing = px + "px"; }
+  function draw(r){
+    const W = 1080, H = 1350, c = document.createElement("canvas"); c.width = W; c.height = H;
+    const x = c.getContext("2d");
+    x.fillStyle = "#111112"; x.fillRect(0, 0, W, H);
+    let g = x.createRadialGradient(W / 2, 420, 40, W / 2, 420, 820); g.addColorStop(0, "rgba(91,108,240,.30)"); g.addColorStop(1, "rgba(91,108,240,0)");
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    x.fillStyle = "#fff"; x.fillRect(0, 0, W, 46);
+    x.fillStyle = "#000"; x.fillRect(W / 2 - 100, 0, 200, 200);
+    if (logo.naturalWidth){ const k = Math.min(200 / logo.naturalWidth, 200 / logo.naturalHeight), lw = logo.naturalWidth * k, lh = logo.naturalHeight * k; x.drawImage(logo, W / 2 - lw / 2, 100 - lh / 2, lw, lh); }
+    x.textAlign = "center"; x.textBaseline = "alphabetic";
+    spaced(x, 6); x.fillStyle = "#8f8f8b"; x.font = '400 150px "Rubik Dirt", cursive'; x.fillText("LIANTES", W / 2, 352);
+    spaced(x, 12); x.font = '900 54px "Red Hat Display", sans-serif';
+    const a = "QUIZ ", b = "METALERO", wa = x.measureText(a).width, wb = x.measureText(b).width, sx = W / 2 - (wa + wb) / 2;
+    x.textAlign = "left"; x.fillStyle = "#F2F2EC"; x.fillText(a, sx, 422); x.fillStyle = "#9aa5ff"; x.fillText(b, sx + wa, 422); x.textAlign = "center";
+    spaced(x, 4); x.fillStyle = "#9a9a94";
+    const label = r.mode === "reto" ? `RETO DIARIO ${r.num} · ${new Date().toLocaleDateString("es-ES", {day: "numeric", month: "long", timeZone: "Europe/Madrid"}).toUpperCase()}`
+      : [r.cat || "Todas las categorías", r.diff ? DIFF_LABEL[r.diff] : "", r.total + " preguntas"].filter(Boolean).join(" · ").toUpperCase();
+    fit(x, label, 700, 30, '"Red Hat Display", sans-serif', W - 140); x.fillText(label, W / 2, 500);
+    spaced(x, 1); x.fillStyle = "#F2F2EC"; fit(x, r.verdict, 900, 46, `"Red Hat Display", sans-serif, ${EMO}`, W - 120); x.fillText(r.verdict, W / 2, 580);
+    spaced(x, 0); x.font = '400 250px "Rubik Dirt", cursive'; x.fillText(String(r.score), W / 2, 820);
+    spaced(x, 8); x.fillStyle = "#9a9a94"; x.font = '700 30px "Red Hat Display", sans-serif'; x.fillText("PUNTOS", W / 2, 875);
+    const boxes = [[`${r.ok}/${r.total}`, "ACIERTOS"], [r.pct + "%", "PRECISIÓN"], [String(r.best), "MEJOR RACHA"]];
+    boxes.forEach(([v, l], i) => {
+      const bx = 75 + i * 320, by = 920;
+      x.fillStyle = "#1d1e20"; x.fillRect(bx, by, 290, 140); x.strokeStyle = "#313236"; x.lineWidth = 2; x.strokeRect(bx, by, 290, 140);
+      spaced(x, 0); x.fillStyle = "#F2F2EC"; x.font = '900 60px "Red Hat Display", sans-serif'; x.fillText(v, bx + 145, by + 78);
+      spaced(x, 3); x.fillStyle = "#9a9a94"; x.font = '700 22px "Red Hat Display", sans-serif'; x.fillText(l, bx + 145, by + 116);
+    });
+    let y = 1130;
+    if (r.mode === "reto" && r.grid && r.grid.length){
+      const n = r.grid.length, sz = 62, gap = 12, gx = W / 2 - (n * sz + (n - 1) * gap) / 2;
+      r.grid.forEach((e, i) => { x.fillStyle = e === "🟩" ? "#3ccf7e" : e === "🟥" ? "#ef4b4f" : "#3a3b40"; x.fillRect(gx + i * (sz + gap), 1092, sz, sz); });
+      y = 1205;
+    }
+    const posTxt = r.mode === "reto" && r.pos ? `#${r.pos} en el reto de hoy` : r.posMes ? `#${r.posMes} en el ranking de ${MESES[+madridMonthKey().split("-")[1] - 1]}` : "";
+    spaced(x, 1); x.fillStyle = "#F2F2EC";
+    const who = (r.name && r.name !== "Anónimo" ? r.name : "Un Liante") + (posTxt ? "  ·  " + posTxt : "");
+    fit(x, who, 800, 36, '"Red Hat Display", sans-serif', W - 120); x.fillText(who, W / 2, y);
+    x.fillStyle = "#5b6cf0"; x.fillRect(0, H - 96, W, 96);
+    spaced(x, 2); x.fillStyle = "#fff"; x.font = '900 34px "Red Hat Display", sans-serif'; x.fillText("¿TE ATREVES?  fjportillo.github.io/liantes-quiz", W / 2, H - 36);
+    spaced(x, 0);
+    return c;
+  }
+  async function open(r){
+    const btn = $("btn-share-img"); btn.disabled = true;
+    try{
+      await ready();
+      const c = draw(r);
+      const blob = await new Promise(res => c.toBlob(res, "image/png"));
+      if (url) URL.revokeObjectURL(url);
+      url = URL.createObjectURL(blob);
+      file = new File([blob], "liantes-quiz.png", {type: "image/png"});
+      text = (r.mode === "reto" ? `Reto ${r.num} del Liantes Quiz Metalero: ${r.ok}/${r.total} 🤘` : `He hecho ${r.score} puntos en el Liantes Quiz Metalero 🤘`) + ` ¿Te atreves? ${SITE_URL}`;
+      $("img-prev").src = url;
+      $("img-share").classList.toggle("hidden", !(navigator.canShare && navigator.canShare({files: [file]})));
+      $("img-modal").classList.remove("hidden"); document.body.classList.add("modal-open");
+      Stats.track("imagen", {categoria: r.mode === "reto" ? "Reto diario" : r.cat});
+    }catch(e){ console.warn(e); toast("No se pudo crear la imagen en este navegador"); }
+    finally{ btn.disabled = false; }
+  }
+  function close(){ $("img-modal").classList.add("hidden"); document.body.classList.remove("modal-open"); }
+  async function share(){ try{ await navigator.share({files: [file], text}); }catch(e){ if (e.name !== "AbortError") download(); } }
+  function download(){ const a = document.createElement("a"); a.href = url; a.download = "liantes-quiz.png"; document.body.appendChild(a); a.click(); a.remove(); }
+  return {open, close, share, download, draw};
+})();
+
+/* =====================================================================
+   PERFIL DE JUGADOR Y LOGROS
+   ===================================================================== */
+const Profile = (() => {
+  let from = "scr-start";
+  const BADGES = [
+    ["🎸", "Debut", "Juega tu primera partida", p => p.partidas >= 1],
+    ["🤘", "Habitual", "25 partidas jugadas", p => p.partidas >= 25],
+    ["💀", "Leyenda", "100 partidas jugadas", p => p.partidas >= 100],
+    ["🧠", "Enciclopedia", "500 aciertos en total", p => p.aciertos >= 500],
+    ["💯", "Perfecto", "Una partida de 10 o más sin fallos", p => p.perfectas >= 1],
+    ["🔥", "Imparable", "10 aciertos seguidos", p => p.racha >= 10],
+    ["⚡", "Bestia", "Más de 2.000 puntos en una partida", p => p.mejor >= 2000],
+    ["🎯", "Francotirador", "80 % de aciertos con 100 preguntas o más", p => p.total >= 100 && p.aciertos / p.total >= .8],
+    ["📅", "Retador", "Juega tu primer reto diario", p => p.retos >= 1],
+    ["🗓️", "Fiel al reto", "7 días seguidos jugando el reto", p => (p.racha_reto_max || 0) >= 7],
+    ["🥇", "Liante del día", "Gana un reto diario", p => p.retos_ganados >= 1],
+    ["🏅", "Podio", "Top 3 de un mes", p => p.podios >= 1],
+    ["👑", "Campeón", "Campeón de un mes", p => p.campeon >= 1],
+    ["🦇", "Noctámbulo", "Juega entre las 0:00 y las 6:00", p => p.noche >= 1],
+  ];
+  const n = v => Number(v || 0).toLocaleString("es-ES");
+  function render(p){
+    const cats = Object.entries(p.categorias || {}).map(([c, [ok, tot]]) => ({c, ok, tot, pct: tot ? ok / tot : 0})).sort((a, b) => b.tot - a.tot);
+    const masters = cats.filter(c => c.tot >= 20 && c.pct >= .8);
+    const fav = cats.filter(c => c.tot >= 5).sort((a, b) => b.pct - a.pct || b.tot - a.tot)[0];
+    const badges = BADGES.map(([ic, t, d, f]) => ({ic, t, d, on: !!f(p)}))
+      .concat(masters.length ? masters.map(m => ({ic: "🏆", t: "Maestro", d: m.c, on: true})) : [{ic: "🏆", t: "Maestro", d: "80 % de aciertos con 20+ preguntas de una categoría", on: false}]);
+    badges.sort((a, b) => b.on - a.on);
+    const got = badges.filter(b => b.on).length;
+    const desde = p.desde ? new Date(p.desde).toLocaleDateString("es-ES", {month: "long", year: "numeric", timeZone: "Europe/Madrid"}) : "";
+    return `<div class="prof-head"><div class="prof-av">${esc((p.nombre || "?").trim()[0].toUpperCase())}</div>
+        <h2 class="prof-name">${esc(p.nombre)}</h2>
+        <div class="prof-sub">Liante desde ${esc(desde)} · ${n(p.mes_puntos)} puntos este mes</div></div>
+      <div class="prof-stats">
+        <div><b>${n(p.partidas)}</b><span>Partidas</span></div>
+        <div><b>${n(p.puntos)}</b><span>Puntos totales</span></div>
+        <div><b>${n(p.mejor)}</b><span>Mejor partida</span></div>
+        <div><b>${p.total ? Math.round(p.aciertos / p.total * 100) : 0}%</b><span>Precisión</span></div>
+        <div><b>${n(p.racha)}</b><span>Mejor racha</span></div>
+        <div><b>${n(p.retos)}${p.racha_reto > 1 ? ` <small>🔥${p.racha_reto}</small>` : ""}</b><span>Retos diarios</span></div>
+      </div>
+      ${fav ? `<div class="prof-fav">⭐ Su fuerte: ${esc(fav.c)} (${Math.round(fav.pct * 100)} %)</div>` : ""}
+      <h3>Logros <span class="muted small">${got}/${badges.length}</span></h3>
+      <div class="badges">${badges.map(b => `<div class="badge ${b.on ? "on" : "off"}" title="${esc(b.d)}"><div class="ic">${b.ic}</div><b>${esc(b.t)}</b><span>${esc(b.d)}</span></div>`).join("")}</div>
+      <h3>Por categorías</h3>
+      ${cats.length ? cats.slice(0, 10).map(c => `<div class="cat-bar"><span>${esc(c.c)}</span><span class="muted">${c.ok}/${c.tot} · ${Math.round(c.pct * 100)} %</span><i style="--w:${Math.round(c.pct * 100)}%"></i></div>`).join("")
+        : `<div class="empty">Las categorías se cuentan desde las partidas que se jueguen a partir de ahora.</div>`}`;
+  }
+  async function open(key, name, back){
+    from = back || "scr-start";
+    show("scr-profile");
+    const body = $("prof-body");
+    if (!HOF.online){ body.innerHTML = `<div class="empty">El perfil necesita el Hall of Fame compartido.</div>`; return; }
+    body.innerHTML = `<div class="empty">Cargando perfil… 🤘</div>`;
+    try{
+      const p = await rpcCall("perfil", {p_clave: key});
+      body.innerHTML = p ? render(p) : `<div class="empty">«${esc(name || key)}» todavía no tiene partidas en el Hall of Fame. ¡Juega una y estrena tu perfil! 🎸</div>`;
+      Stats.track("perfil", {});
+    }catch(e){
+      console.warn(e);
+      body.innerHTML = `<div class="err">${e.status === 404 ? "Los perfiles se activarán en cuanto se actualice la base de datos." : "No se pudo cargar el perfil. Comprueba la conexión."}</div>`;
+    }
+  }
+  return {open, back: () => { show(from); if (from === "scr-hof") renderHof(); }, render};
+})();
+
 (async () => {
-  $("btn-start").disabled = true;
+  $("btn-start").disabled = true; $("btn-reto").disabled = true;
   try{
     const {qs, label} = await loadBank();
     BANK = qs;
@@ -1350,14 +1772,14 @@ Deco.apply();
     const o = store("rmq-opts");
     if (o){ $("name").value = o.name === "Anónimo" ? "" : o.name; $("count").value = String(o.n);
             $("diff").value = o.diff || ""; if ([...$("cat").options].some(x => x.value === o.cat)) $("cat").value = o.cat; }
-    refreshLogin();
+    refreshLogin(); Reto.refresh();
     $("source").innerHTML = `<b>${BANK.length}</b> preguntas cargadas · fuente: ${esc(label)}`;
   }catch(e){
     $("source").textContent = "";
     $("start-err").textContent = "No se pudieron cargar las preguntas: " + e.message;
     $("start-err").classList.remove("hidden");
   }
-  $("btn-start").disabled = false;
+  $("btn-start").disabled = false; $("btn-reto").disabled = false;
 })();
 </script>
 </body>
