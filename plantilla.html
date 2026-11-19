@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liantes Quiz Metalero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Dirt&family=Red+Hat+Display:wght@400;700;800;900&family=DM+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Roboto:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#111112; --panel:#1d1e20; --panel2:#232427; --line:#313236;
+    --text:#F2F2EC; --muted:#9a9a94; --grey:#8f8f8b;
+    --blue:#5b6cf0; --blue2:#9aa5ff;
+    --ok:#3ccf7e; --bad:#ef4b4f; --gold:#F2F2EC;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:"DM Sans",system-ui,sans-serif}
+  body{
+    min-height:100vh;
+    background-color:var(--bg);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  a{color:inherit}
+  /* Cabecera estilo web Liantes */
+  .topbar{background:#fff;height:30px;display:flex;justify-content:center;position:relative}
+  .logo-slot{position:absolute;top:0;width:74px;height:74px;background:#000;display:grid;place-items:center;
+    font-family:"Rubik Dirt",cursive;color:#d9d9d3;font-size:13px;line-height:1;text-align:center;letter-spacing:.5px;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+  .logo-slot img{width:100%;height:100%;object-fit:contain}
+  nav.menu{background:#1a1a1a;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 34px;padding:56px 16px 16px;font-family:Roboto,sans-serif;font-size:14px}
+  nav.menu a{color:var(--text);text-decoration:none;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid transparent}
+  nav.menu a:hover{border-color:var(--text)}
+  .hero{text-align:center;padding:26px 16px 6px}
+  .hero .pre{font-family:"Red Hat Display";font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:12px;color:var(--muted)}
+  h1.logo{font-family:"Rubik Dirt",cursive;font-weight:400;margin:6px 0 0;font-size:clamp(56px,14vw,108px);line-height:.9;color:var(--grey);letter-spacing:2px}
+  .hero .sub{font-family:"Red Hat Display";font-weight:900;font-size:clamp(22px,5vw,34px);letter-spacing:6px;text-transform:uppercase;margin-top:4px}
+  .hero .sub span{color:var(--blue2)}
+  .tag{text-align:center;color:var(--muted);font-size:14px;margin:10px 0 24px;font-style:italic}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 40px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:24px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+  label{display:block;font-family:"Red Hat Display";font-weight:700;font-size:13px;color:var(--text);margin:16px 0 6px}
+  input,select{width:100%;background:#F5F8FB;border:0;color:#1a1a1a;border-radius:0;padding:12px 14px;font-size:16px;font-family:"DM Sans"}
+  input::placeholder{color:#8a8f96}
+  input:focus,select:focus{outline:2px solid var(--blue);outline-offset:2px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:560px){.row{grid-template-columns:1fr}}
+  .btn{appearance:none;border:0;cursor:pointer;font-family:"Red Hat Display";font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+    font-size:16px;padding:15px 24px;border-radius:0;color:#1a1a1a;background:var(--text);transition:background .15s,color .15s,transform .1s}
+  .btn:hover{background:var(--blue);color:#fff} .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#000;color:var(--text);border:1px solid var(--line)}
+  .btn.ghost:hover{background:var(--blue);border-color:var(--blue)}
+  .btn.block{width:100%;margin-top:24px}
+  .btn:disabled{opacity:.5;cursor:wait}
+  .muted{color:var(--muted)} .small{font-size:13px}
+  .hidden{display:none !important}
+  .source{margin-top:14px;text-align:center;font-size:12px;color:var(--muted)}
+  .source b{color:var(--text);font-weight:600}
+
+  /* Juego */
+  .hud{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;font-family:"Red Hat Display";font-weight:700}
+  .hud .pill{background:#000;border:1px solid var(--line);padding:6px 12px;font-size:14px;text-transform:uppercase;letter-spacing:1px}
+  .hud .pill b{color:var(--blue2)}
+  .bar{height:5px;background:#000;overflow:hidden;margin-bottom:16px}
+  .bar > i{display:block;height:100%;background:var(--blue);width:0;transition:width .3s}
+  .qmeta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .chip{font-family:"Red Hat Display";font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;background:#000;color:var(--muted);border:1px solid var(--line)}
+  .chip.liantes{color:#fff;background:var(--blue);border-color:var(--blue)}
+  .chip.facil{color:#7fe0a8} .chip.media{color:#f0d36a} .chip.dificil{color:#ff8a7d}
+  .qhead{display:flex;gap:16px;align-items:flex-start}
+  .question{font-family:"Red Hat Display";font-weight:900;font-size:clamp(21px,4.2vw,28px);line-height:1.22;margin:0;flex:1}
+  .timer{flex:0 0 64px;height:64px;position:relative}
+  .timer svg{transform:rotate(-90deg)}
+  .timer .num{position:absolute;inset:0;display:grid;place-items:center;font-family:"Red Hat Display";font-size:22px;font-weight:900}
+  .answers{display:grid;gap:10px;margin-top:22px}
+  .ans{display:flex;align-items:center;gap:14px;text-align:left;width:100%;cursor:pointer;
+    background:#131415;border:1px solid var(--line);color:var(--text);border-radius:0;padding:14px 16px;font-size:17px;font-family:"DM Sans";transition:border-color .15s,background .15s,transform .08s}
+  .ans:hover:not(:disabled){border-color:var(--text);background:#1a1b1d}
+  .ans:active:not(:disabled){transform:scale(.995)}
+  .ans .k{flex:0 0 32px;height:32px;display:grid;place-items:center;background:var(--text);color:#1a1a1a;font-family:"Red Hat Display";font-weight:900}
+  .ans.correct{border-color:var(--ok);background:rgba(60,207,126,.13)}
+  .ans.correct .k{background:var(--ok);color:#06150d}
+  .ans.wrong{border-color:var(--bad);background:rgba(239,75,79,.13)}
+  .ans.wrong .k{background:var(--bad);color:#1a0607}
+  .ans:disabled{cursor:default}
+  .feedback{margin-top:16px;min-height:28px;font-family:"Red Hat Display";font-weight:800;font-size:18px;text-transform:uppercase;letter-spacing:1px}
+  .feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
+  .next{display:flex;justify-content:flex-end}
+
+  /* Resultado */
+  .big{font-family:"Rubik Dirt",cursive;font-size:clamp(64px,16vw,110px);text-align:center;line-height:1;margin:8px 0 0;color:var(--text)}
+  .verdict{text-align:center;font-family:"Red Hat Display";font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:1px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+  .stat{background:#000;border:1px solid var(--line);padding:12px;text-align:center}
+  .stat b{display:block;font-family:"Red Hat Display";font-weight:900;font-size:26px}
+  .stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+  h3{font-family:"Red Hat Display";font-weight:900;font-size:22px;margin:24px 0 10px}
+  table{width:100%;border-collapse:collapse;font-size:15px}
+  td{padding:8px 6px;border-bottom:1px solid var(--line)}
+  td.n{width:32px;color:var(--muted);font-family:"Red Hat Display";font-weight:700}
+  td.s{text-align:right;font-family:"Red Hat Display";font-weight:900}
+  tr.me td{color:var(--blue2)}
+  .review{display:grid;gap:8px}
+  .rv{background:#131415;border:1px solid var(--line);border-left:3px solid var(--bad);padding:10px 12px;font-size:14px}
+  .rv .q{font-weight:700;margin-bottom:4px}
+  .rv .a{color:var(--ok)} .rv .y{color:var(--bad)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .actions .btn{flex:1}
+  .err{background:rgba(239,75,79,.12);border:1px solid var(--bad);padding:12px;margin-top:14px;font-size:14px}
+  .next{justify-content:space-between;align-items:center;gap:10px}
+  .btn.sm{font-size:13px;padding:11px 14px}
+  .btn.link{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  .btn.link:hover{background:#000;color:var(--bad);border-color:var(--bad)}
+  .btn.hof{width:100%;margin-top:10px}
+  .tabs{display:flex;gap:0;margin:6px 0 14px;border:1px solid var(--line)}
+  .tabs button{flex:1;appearance:none;border:0;cursor:pointer;background:#000;color:var(--muted);font-family:"Red Hat Display";font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:13px;padding:12px}
+  .tabs button.on{background:var(--text);color:#1a1a1a}
+  .hof-title{font-family:"Rubik Dirt",cursive;font-weight:400;text-align:center;font-size:clamp(44px,11vw,72px);margin:0;color:var(--text);line-height:1}
+  .hof-sub{text-align:center;color:var(--muted);font-size:13px;margin:6px 0 14px}
+  table.hof th{font-family:"Red Hat Display";font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--line);font-weight:700}
+  table.hof th.r, table.hof td.r{text-align:right}
+  table.hof td.medal{font-size:20px;width:36px;text-align:center}
+  table.hof tr.top1 td{color:#ffd76a} table.hof tr.top2 td{color:#d7d9e0} table.hof tr.top3 td{color:#e2a36b}
+  .empty{text-align:center;color:var(--muted);padding:26px 8px}
+  .mypos{background:#000;border:1px solid var(--line);padding:14px;text-align:center;margin-top:6px}
+  .mypos b{color:var(--blue2);font-family:"Red Hat Display";font-weight:900}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:20px;z-index:50}
+  .modal .box{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--bad);max-width:400px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+  .modal h4{margin:0 0 8px;font-family:"Red Hat Display";font-weight:900;font-size:22px}
+  .modal p{margin:0 0 18px;color:var(--muted);line-height:1.45}
+  .modal .actions{margin-top:0}
+  .btn.danger{background:var(--bad);color:#fff}
+  .btn.danger:hover{background:#ff6266}
+  footer{border-top:3px solid #fff;background:#1a1a1a;margin-top:30px;padding:26px 18px 34px;text-align:center}
+  footer .social{display:flex;justify-content:center;gap:22px;margin-bottom:14px}
+  footer .social a{width:44px;height:44px;display:grid;place-items:center;color:var(--text);opacity:.9}
+  footer .social a:hover{opacity:1;color:var(--blue2)}
+  footer .social svg{width:34px;height:34px;fill:currentColor}
+  footer .shop{display:inline-block;background:#000;color:#fff;text-decoration:none;font-family:"Red Hat Display";font-size:13px;padding:10px 16px;border:1px solid var(--line);margin-bottom:14px}
+  footer .shop:hover{background:var(--blue)}
+  footer p{margin:6px 0;color:var(--muted);font-size:13px}
+  footer .motto{font-family:"Red Hat Display";font-weight:700;color:var(--text)}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .shake{animation:shake .25s 2}
+  @keyframes pop{0%{transform:scale(.97);opacity:0}100%{transform:scale(1);opacity:1}}
+  .pop{animation:pop .22s ease-out}
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar"><div class="logo-slot" id="logo-slot"><span id="logo-txt">LIANTES<br>QUIZ</span><img src="logo.png" alt="Liantes Metaleros" style="display:none" onload="this.style.display='block';document.getElementById('logo-txt').remove()" onerror="this.remove()"></div></div>
+  <nav class="menu">
+    <a href="https://liantesmetaleros.com/acerca-de-liantes" target="_blank" rel="noopener">Acerca de Liantes</a>
+    <a href="https://liantesmetaleros.com/bandas-liantes" target="_blank" rel="noopener">Bandas Liantes</a>
+    <a href="https://liantesmetaleros.com/eventos-liantes" target="_blank" rel="noopener">Eventos Liantes</a>
+    <a href="https://liantesmetaleros.com/galeria" target="_blank" rel="noopener">Galería</a>
+  </nav>
+</header>
+<div class="hero">
+  <div class="pre">Asociación sin ánimo de lucro · Badalona</div>
+  <h1 class="logo">LIANTES</h1>
+  <div class="sub">Quiz <span>Metalero</span></div>
+</div>
+<div class="wrap">
+  <div class="tag">Live fast, die young… y contesta rápido. ¿Cuánto sabes de rock, metal y de los Liantes?</div>
+
+  <!-- INICIO -->
+  <section id="scr-start" class="card">
+    <label for="name">Tu nombre</label>
+    <input id="name" maxlength="24" placeholder="Tu nombre de Liante" autocomplete="off">
+    <div class="row">
+      <div>
+        <label for="count">Número de preguntas</label>
+        <select id="count">
+          <option value="10">10</option>
+          <option value="15" selected>15</option>
+          <option value="20">20</option>
+          <option value="0">Todas</option>
+        </select>
+      </div>
+      <div>
+        <label for="diff">Dificultad</label>
+        <select id="diff">
+          <option value="">Todas</option>
+          <option value="facil">Fácil</option>
+          <option value="media">Media</option>
+          <option value="dificil">Difícil</option>
+        </select>
+      </div>
+    </div>
+    <label for="cat">Categoría</label>
+    <select id="cat"><option value="">Todas las categorías</option></select>
+    <button id="btn-start" class="btn block">¡A liarla!</button>
+    <button id="btn-hof-start" class="btn ghost hof">🏆 Hall of Fame</button>
+    <div id="start-err" class="err hidden"></div>
+    <div id="source" class="source">Cargando preguntas…</div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="scr-game" class="hidden">
+    <div class="hud">
+      <span class="pill">Pregunta <b id="h-idx">1</b>/<span id="h-total">10</span></span>
+      <span class="pill" id="h-streak-wrap">Racha <b id="h-streak">0</b></span>
+      <span class="pill">Puntos <b id="h-score">0</b></span>
+    </div>
+    <div class="bar"><i id="progress"></i></div>
+    <div class="card" id="qcard">
+      <div class="qmeta" id="qmeta"></div>
+      <div class="qhead">
+        <h2 class="question" id="question"></h2>
+        <div class="timer" aria-label="Tiempo restante">
+          <svg width="64" height="64" viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="28" fill="none" stroke="#000" stroke-width="6"/>
+            <circle id="tring" cx="32" cy="32" r="28" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round"
+              stroke-dasharray="175.93" stroke-dashoffset="0"/>
+            <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#9aa5ff"/><stop offset="1" stop-color="#5b6cf0"/></linearGradient></defs>
+          </svg>
+          <div class="num" id="tnum">20</div>
+        </div>
+      </div>
+      <div class="answers" id="answers"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="next"><button id="btn-cancel" class="btn link sm" title="Abandonar (Esc)">✕ Abandonar</button><button id="btn-next" class="btn hidden">Siguiente</button></div>
+    </div>
+  </section>
+
+  <!-- RESULTADO -->
+  <section id="scr-end" class="card hidden">
+    <div class="verdict" id="verdict"></div>
+    <div class="big" id="final-score">0</div>
+    <div class="muted small" style="text-align:center">puntos</div>
+    <div class="stats">
+      <div class="stat"><b id="st-ok">0</b><span>Aciertos</span></div>
+      <div class="stat"><b id="st-pct">0%</b><span>Precisión</span></div>
+      <div class="stat"><b id="st-streak">0</b><span>Mejor racha</span></div>
+    </div>
+    <div class="mypos" id="mypos"></div>
+    <div id="review-wrap">
+      <h3>Tus fallos</h3>
+      <div class="review" id="review"></div>
+    </div>
+    <div class="actions">
+      <button id="btn-again" class="btn">Jugar otra vez</button>
+      <button id="btn-hof-end" class="btn ghost">🏆 Hall of Fame</button>
+      <button id="btn-home" class="btn ghost">Cambiar opciones</button>
+    </div>
+  </section>
+
+  <!-- HALL OF FAME -->
+  <section id="scr-hof" class="card hidden">
+    <h2 class="hof-title">Hall of Fame</h2>
+    <div class="hof-sub" id="hof-sub">Las leyendas Liantes</div>
+    <div class="tabs" role="tablist">
+      <button id="tab-total" class="on" role="tab">Puntos acumulados</button>
+      <button id="tab-best" role="tab">Mejores partidas</button>
+    </div>
+    <div id="hof-body"></div>
+    <div class="actions">
+      <button id="btn-hof-back" class="btn">Volver</button>
+      <button id="btn-hof-reset" class="btn link">Borrar Hall of Fame</button>
+    </div>
+  </section>
+
+  <div class="modal hidden" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="box">
+      <h4 id="modal-title"></h4>
+      <p id="modal-text"></p>
+      <div class="actions">
+        <button id="modal-ok" class="btn danger"></button>
+        <button id="modal-no" class="btn ghost">Seguir jugando</button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+  <a class="shop" href="https://liantesmetaleros.yupopstore.com/products" target="_blank" rel="noopener">TIENDA LIANTES METALEROS 💀🛒</a>
+  <div class="social">
+    <a href="https://www.instagram.com/asociacion_liantesmetaleros" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4 6.2 6.2 0 000-12.4zM12 16a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.9 1.4 1.4 0 000-2.9z"/></svg></a>
+    <a href="https://www.facebook.com/liantesmetaleros" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12a12 12 0 10-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0024 12z"/></svg></a>
+    <a href="https://www.youtube.com/@liantesmetaleros" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg></a>
+  </div>
+  <p class="motto">Hagamos entre todos una Vida mejor.</p>
+  <p><a href="https://liantesmetaleros.com" target="_blank" rel="noopener">liantesmetaleros.com</a> · UP LIANTES METALEROS 🤘</p>
+</footer>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN
+   ---------------------------------------------------------------------
+   Para administrar las preguntas desde Google Sheets, pega aquí el
+   enlace CSV de tu hoja (Archivo > Compartir > Publicar en la web >
+   formato "Valores separados por comas (.csv)"). Si lo dejas vacío,
+   la app usará el archivo preguntas.csv que esté junto a esta página.
+   ===================================================================== */
+const SHEET_CSV_URL = "";
+
+const SECONDS_PER_QUESTION = 20;   // tiempo por pregunta
+const POINTS_CORRECT       = 100;  // puntos por acierto
+const POINTS_PER_SECOND    = 5;    // bonus por cada segundo sobrante
+const STREAK_BONUS         = 50;   // bonus a partir de 3 aciertos seguidos
+
+/* HALL OF FAME COMPARTIDO (Supabase, gratuito). Si se dejan vacíos, el
+   Hall of Fame se guarda solo en cada dispositivo. */
+const SUPABASE_URL = "https://zfrwdqenyvtuvjvbxcwo.supabase.co";   // p. ej. "https://abcdxyz.supabase.co"
+const SUPABASE_KEY = "sb_publishable_arztBfRZYNWnpV8A7zCTBg_M2il4O0B";   // clave pública "publishable" o "anon"
+
+/* Preguntas incluidas de respaldo (se usan si no se puede leer la hoja ni el CSV) */
+const EMBEDDED_CSV = /*__PREGUNTAS_CSV__*/"";
+
+/* ===================================================================== */
+
+const $ = id => document.getElementById(id);
+const LETTERS = ["A","B","C","D"];
+const DIFF_LABEL = {facil:"Fácil", media:"Media", dificil:"Difícil"};
+let BANK = [];
+let game = null;
+let timerId = null;
+
+function parseCSV(text){
+  const rows = []; let row = []; let field = ""; let q = false;
+  text = text.replace(/^﻿/, "");
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (q){
+      if (c === '"'){ if (text[i+1] === '"'){ field += '"'; i++; } else q = false; }
+      else field += c;
+    } else if (c === '"') q = true;
+    else if (c === ',') { row.push(field); field = ""; }
+    else if (c === '\n' || c === '\r'){
+      if (c === '\r' && text[i+1] === '\n') i++;
+      row.push(field); rows.push(row); row = []; field = "";
+    } else field += c;
+  }
+  if (field !== "" || row.length){ row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(v => v.trim() !== ""));
+}
+
+function norm(s){ return (s||"").toString().trim().toLowerCase()
+  .normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]/g,""); }
+
+function toQuestions(rows){
+  if (!rows.length) return [];
+  const head = rows[0].map(norm);
+  const col = (...names) => head.findIndex(h => names.includes(h));
+  const iQ = col("pregunta","question");
+  const iC = col("correcta","respuestacorrecta","correct");
+  const iW = head.map((h,i)=>h.startsWith("incorrecta")||h.startsWith("wrong")?i:-1).filter(i=>i>=0);
+  const iCat = col("categoria","category");
+  const iD = col("dificultad","difficulty");
+  const iA = col("activa","active");
+  if (iQ < 0 || iC < 0 || iW.length < 2) throw new Error("La hoja debe tener las columnas: pregunta, correcta, incorrecta1, incorrecta2 (e incorrecta3 opcional).");
+  const out = [];
+  for (const r of rows.slice(1)){
+    const q = (r[iQ]||"").trim(), c = (r[iC]||"").trim();
+    const wrong = iW.map(i => (r[i]||"").trim()).filter(Boolean).slice(0,3);
+    if (iA >= 0){ const a = norm(r[iA]); if (a === "no" || a === "0" || a === "false") continue; }
+    if (!q || !c || wrong.length < 2) continue;
+    let d = norm(iD >= 0 ? r[iD] : "");
+    if (!DIFF_LABEL[d]) d = "";
+    out.push({ q, c, wrong, cat: iCat >= 0 ? (r[iCat]||"").trim() : "", diff: d });
+  }
+  return out;
+}
+
+async function loadBank(){
+  const attempts = [];
+  if (SHEET_CSV_URL) attempts.push(["Google Sheets", SHEET_CSV_URL + (SHEET_CSV_URL.includes("?")?"&":"?") + "t=" + Date.now()]);
+  if (location.protocol.startsWith("http")) attempts.push(["preguntas.csv", "preguntas.csv?t=" + Date.now()]);
+  for (const [label, url] of attempts){
+    try{
+      const res = await fetch(url, {cache:"no-store"});
+      if (!res.ok) throw new Error(res.status);
+      const qs = toQuestions(parseCSV(await res.text()));
+      if (qs.length) return {qs, label};
+    }catch(e){ console.warn("No se pudo cargar", label, e); }
+  }
+  return {qs: toQuestions(parseCSV(EMBEDDED_CSV)), label: "preguntas incluidas"};
+}
+
+function qid(q){ let h = 0; const s = q.q; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return h.toString(36); }
+
+function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function fillCategories(){
+  const cats = [...new Set(BANK.map(q=>q.cat).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"));
+  const sel = $("cat");
+  sel.innerHTML = '<option value="">Todas las categorías</option>' +
+    cats.map(c => `<option>${esc(c)}</option>`).join("");
+}
+
+function esc(s){ return s.replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+
+function show(id){ ["scr-start","scr-game","scr-end","scr-hof"].forEach(s => $(s).classList.toggle("hidden", s !== id)); window.scrollTo(0,0); }
+
+function store(key, val){ try{ if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); }catch(e){ return null; } }
+
+function startGame(){
+  const name = $("name").value.trim() || "Anónimo";
+  const cat = $("cat").value, diff = $("diff").value, n = +$("count").value;
+  let pool = BANK.filter(q => (!cat || q.cat === cat) && (!diff || q.diff === diff));
+  $("start-err").classList.add("hidden");
+  if (!pool.length){ $("start-err").textContent = "No hay preguntas con esa combinación de categoría y dificultad."; $("start-err").classList.remove("hidden"); return; }
+  // Evitar repeticiones: primero las preguntas que este dispositivo aún no ha visto
+  const seen = new Set(store("rmq-seen") || []);
+  let fresh = pool.filter(q => !seen.has(qid(q))), old = pool.filter(q => seen.has(qid(q)));
+  const need = n || pool.length;
+  if (fresh.length < need && old.length){            // casi todo visto: empezar ronda nueva
+    const keep = new Set(fresh.map(qid));
+    store("rmq-seen", [...seen].filter(id => !pool.some(q => qid(q) === id) || keep.has(id)));
+  }
+  pool = shuffle(fresh).concat(shuffle(old));
+  if (n) pool = pool.slice(0, n);
+  const nowSeen = new Set(store("rmq-seen") || []);
+  pool.forEach(q => nowSeen.add(qid(q)));
+  store("rmq-seen", [...nowSeen].slice(-3000));
+  store("rmq-opts", {name, cat, diff, n});
+  game = { name, list: pool.map(q => ({...q, options: shuffle([q.c, ...q.wrong])})),
+           i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [] };
+  $("h-total").textContent = game.list.length;
+  show("scr-game");
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = game.list[game.i];
+  $("h-idx").textContent = game.i + 1;
+  $("h-score").textContent = game.score;
+  $("h-streak").textContent = game.streak;
+  $("progress").style.width = (game.i / game.list.length * 100) + "%";
+  $("qmeta").innerHTML = (q.cat ? `<span class="chip${/liante/i.test(q.cat)?" liantes":""}">${esc(q.cat)}</span>` : "") +
+                         (q.diff ? `<span class="chip ${q.diff}">${DIFF_LABEL[q.diff]}</span>` : "");
+  $("question").textContent = q.q;
+  $("answers").innerHTML = q.options.map((o, k) =>
+    `<button class="ans" data-k="${k}"><span class="k">${LETTERS[k]}</span><span>${esc(o)}</span></button>`).join("");
+  $("answers").querySelectorAll(".ans").forEach(b => b.addEventListener("click", () => answer(+b.dataset.k)));
+  $("feedback").textContent = ""; $("feedback").className = "feedback";
+  $("btn-next").classList.add("hidden");
+  $("qcard").classList.remove("pop"); void $("qcard").offsetWidth; $("qcard").classList.add("pop");
+  startTimer();
+}
+
+function startTimer(){ resumeTimer(SECONDS_PER_QUESTION); }
+
+function answer(k){
+  if (game.answered === game.i) return;
+  game.answered = game.i;
+  clearInterval(timerId);
+  const q = game.list[game.i];
+  const btns = [...$("answers").querySelectorAll(".ans")];
+  btns.forEach(b => b.disabled = true);
+  const correctK = q.options.indexOf(q.c);
+  btns[correctK].classList.add("correct");
+  const fb = $("feedback");
+  if (k === correctK){
+    game.ok++; game.streak++; game.best = Math.max(game.best, game.streak);
+    let pts = POINTS_CORRECT + Math.round(game.left) * POINTS_PER_SECOND;
+    if (game.streak >= 3) pts += STREAK_BONUS;
+    game.score += pts;
+    fb.textContent = `¡Correcto! +${pts}` + (game.streak >= 3 ? `  🔥 Racha de ${game.streak}` : "");
+    fb.className = "feedback ok";
+  } else {
+    game.streak = 0;
+    if (k >= 0) btns[k].classList.add("wrong");
+    game.misses.push({q: q.q, c: q.c, y: k >= 0 ? q.options[k] : "Sin respuesta (tiempo agotado)"});
+    fb.textContent = k < 0 ? "¡Se acabó el tiempo!" : "¡Fallo!";
+    fb.className = "feedback bad";
+    $("qcard").classList.remove("shake"); void $("qcard").offsetWidth; $("qcard").classList.add("shake");
+  }
+  $("h-score").textContent = game.score;
+  $("h-streak").textContent = game.streak;
+  const last = game.i === game.list.length - 1;
+  $("btn-next").textContent = last ? "Ver resultado" : "Siguiente";
+  $("btn-next").classList.remove("hidden");
+  $("btn-next").focus({preventScroll:true});
+}
+
+function next(){
+  if (game.i < game.list.length - 1){ game.i++; renderQuestion(); }
+  else finish();
+}
+
+function finish(){
+  $("progress").style.width = "100%";
+  const total = game.list.length, pct = Math.round(game.ok / total * 100);
+  $("final-score").textContent = game.score;
+  $("st-ok").textContent = `${game.ok}/${total}`;
+  $("st-pct").textContent = pct + "%";
+  $("st-streak").textContent = game.best;
+  $("verdict").textContent =
+    pct === 100 ? "🤘 ¡Liante de honor! Perfecto." :
+    pct >= 80   ? "💀 ¡Leyenda metalera!" :
+    pct >= 60   ? "🎸 ¡Headbanger de primera fila!" :
+    pct >= 40   ? "🎵 Vas afinando, sigue así." :
+                  "🍺 Toca más quedadas y repasar clásicos…";
+  const record = {name: game.name, key: norm(game.name) || "anonimo", score: game.score, ok: game.ok, total, t: Date.now()};
+  $("mypos").textContent = "Guardando en el Hall of Fame…";
+  (async () => {
+    try{
+      await HOF.save(record);
+      const totals = await HOF.totals();
+      const pos = totals.findIndex(p => p.key === record.key);
+      const me = totals[pos];
+      $("mypos").innerHTML = me
+        ? `🏆 <b>${esc(me.name)}</b>, estás en el puesto <b>#${pos+1}</b> del Hall of Fame con <b>${me.score}</b> puntos acumulados en ${me.games} ${me.games === 1 ? "partida" : "partidas"}.`
+        : "";
+    }catch(e){
+      console.warn(e);
+      $("mypos").textContent = "⚠️ No se pudo guardar la puntuación en el Hall of Fame (¿sin conexión?).";
+    }
+  })();
+  $("review-wrap").classList.toggle("hidden", !game.misses.length);
+  $("review").innerHTML = game.misses.map(m =>
+    `<div class="rv"><div class="q">${esc(m.q)}</div><div class="a">✔ ${esc(m.c)}</div><div class="y">✘ ${esc(m.y)}</div></div>`).join("");
+  show("scr-end");
+}
+
+/* ---------- Hall of Fame ---------- */
+const HOF = (() => {
+  const online = !!(SUPABASE_URL && SUPABASE_KEY);
+  const base = SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/";
+  const headers = () => {
+    const h = {apikey: SUPABASE_KEY, "Content-Type": "application/json"};
+    if (SUPABASE_KEY.startsWith("eyJ")) h.Authorization = "Bearer " + SUPABASE_KEY;
+    return h;
+  };
+  async function api(path, opts = {}){
+    const res = await fetch(base + path, {...opts, headers: {...headers(), ...(opts.headers || {})}});
+    if (!res.ok) throw new Error("Supabase " + res.status + ": " + (await res.text()).slice(0, 200));
+    return res.status === 204 || res.status === 201 ? null : res.json();
+  }
+  const local = {
+    async save(g){ const a = store("rmq-games") || []; a.push(g); store("rmq-games", a.slice(-1000)); },
+    async totals(){
+      const map = new Map();
+      for (const g of (store("rmq-games") || [])){
+        const p = map.get(g.key) || {key: g.key, name: g.name, score: 0, games: 0, ok: 0, total: 0, best: 0, last: 0};
+        p.score += g.score; p.games++; p.ok += g.ok; p.total += g.total; p.best = Math.max(p.best, g.score);
+        if (g.t >= p.last){ p.last = g.t; p.name = g.name; }
+        map.set(g.key, p);
+      }
+      return [...map.values()].sort((a,b) => b.score - a.score || b.best - a.best);
+    },
+    async best(){ return (store("rmq-games") || []).slice().sort((a,b) => b.score - a.score || a.t - b.t).slice(0, 25); },
+    async count(){ return (store("rmq-games") || []).length; },
+    async reset(){ store("rmq-games", []); }
+  };
+  const remote = {
+    async save(g){
+      await api("partidas", {method: "POST", headers: {Prefer: "return=minimal"},
+        body: JSON.stringify({nombre: g.name.slice(0, 24), clave: g.key.slice(0, 40), puntos: g.score, aciertos: g.ok, total: g.total})});
+    },
+    async totals(){
+      const rows = await api("hall_of_fame?select=*&order=puntos.desc,mejor.desc&limit=1000");
+      return rows.map(r => ({key: r.clave, name: r.nombre, score: r.puntos, games: r.partidas, ok: r.aciertos, total: r.total, best: r.mejor}));
+    },
+    async best(){
+      const rows = await api("partidas?select=nombre,puntos,aciertos,total,creado&order=puntos.desc,creado.asc&limit=25");
+      return rows.map(r => ({name: r.nombre, score: r.puntos, ok: r.aciertos, total: r.total, t: Date.parse(r.creado)}));
+    },
+    async count(){ return 1; },
+    async reset(){ throw new Error("El Hall of Fame compartido solo se borra desde Supabase."); }
+  };
+  return {online, ...(online ? remote : local)};
+})();
+
+let hofTab = "total";
+const MEDALS = ["🥇","🥈","🥉"];
+async function renderHof(){
+  $("tab-total").classList.toggle("on", hofTab === "total");
+  $("tab-best").classList.toggle("on", hofTab === "best");
+  $("hof-sub").textContent = HOF.online ? "Las leyendas Liantes de todos los jugadores" : "Las leyendas Liantes de este dispositivo";
+  $("btn-hof-reset").classList.add("hidden");
+  $("hof-body").innerHTML = `<div class="empty">Cargando leyendas… 🤘</div>`;
+  const cls = i => i < 3 ? `top${i+1}` : "";
+  const medal = i => i < 3 ? MEDALS[i] : `<span class="muted small">${i+1}</span>`;
+  let html = "";
+  try{
+    if (hofTab === "total"){
+      const rows = (await HOF.totals()).slice(0, 25);
+      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r">Partidas</th><th class="r">Aciertos</th><th class="r">Puntos</th></tr></thead><tbody>` +
+        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(p.name)}</td><td class="r">${p.games}</td><td class="r">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}</td></tr>`).join("") + `</tbody></table>` : "";
+    } else {
+      const rows = await HOF.best();
+      html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r">Aciertos</th><th class="r">Fecha</th><th class="r">Puntos</th></tr></thead><tbody>` +
+        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(g.name)}</td><td class="r">${g.ok}/${g.total}</td><td class="r">${new Date(g.t).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit"})}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>` : "";
+    }
+    $("hof-body").innerHTML = html || `<div class="empty">Todavía no hay leyendas. ¡Juega una partida y estrena el Hall of Fame! 🤘</div>`;
+    if (!HOF.online && await HOF.count()) $("btn-hof-reset").classList.remove("hidden");
+  }catch(e){
+    console.warn(e);
+    $("hof-body").innerHTML = `<div class="err">No se pudo cargar el Hall of Fame. Comprueba la conexión e inténtalo de nuevo.</div>`;
+  }
+}
+let hofReturn = "scr-start";
+function openHof(from){ hofReturn = from; show("scr-hof"); renderHof(); }
+
+/* ---------- Diálogo de confirmación ---------- */
+let modalResolve = null;
+function askConfirm(title, text, okLabel, noLabel){
+  $("modal-title").textContent = title; $("modal-text").textContent = text;
+  $("modal-ok").textContent = okLabel; $("modal-no").textContent = noLabel || "Cancelar";
+  $("modal").classList.remove("hidden"); $("modal-no").focus();
+  return new Promise(r => modalResolve = r);
+}
+function closeModal(v){ $("modal").classList.add("hidden"); if (modalResolve){ const r = modalResolve; modalResolve = null; r(v); } }
+$("modal-ok").addEventListener("click", () => closeModal(true));
+$("modal-no").addEventListener("click", () => closeModal(false));
+$("modal").addEventListener("click", e => { if (e.target.id === "modal") closeModal(false); });
+
+/* ---------- Abandonar partida ---------- */
+async function cancelGame(){
+  const wasRunning = game.answered !== game.i;
+  if (wasRunning){ clearInterval(timerId); game.pausedLeft = game.left; }
+  const ok = await askConfirm("¿Abandonar la partida?",
+    `Llevas ${game.score} puntos en ${game.i + (wasRunning ? 0 : 1)} de ${game.list.length} preguntas. Si abandonas, esta partida no contará para el Hall of Fame.`,
+    "Sí, abandonar", "Seguir jugando");
+  if (ok){ clearInterval(timerId); game = null; show("scr-start"); }
+  else if (wasRunning) resumeTimer(game.pausedLeft);
+}
+function resumeTimer(secs){
+  clearInterval(timerId);
+  const end = Date.now() + secs * 1000, C = 175.93;
+  const tick = () => {
+    const ms = Math.max(0, end - Date.now());
+    game.left = ms / 1000;
+    $("tnum").textContent = Math.ceil(game.left);
+    $("tring").style.strokeDashoffset = C * (1 - ms / (SECONDS_PER_QUESTION*1000));
+    $("tnum").style.color = game.left <= 5 ? "var(--bad)" : "";
+    if (ms <= 0){ clearInterval(timerId); answer(-1); }
+  };
+  tick(); timerId = setInterval(tick, 100);
+}
+
+document.addEventListener("keydown", e => {
+  if (!$("modal").classList.contains("hidden")){ if (e.key === "Escape") closeModal(false); return; }
+  if ($("scr-game").classList.contains("hidden") || !game) return;
+  if (e.key === "Escape"){ cancelGame(); return; }
+  const k = ["1","2","3","4"].indexOf(e.key);
+  const kl = ["a","b","c","d"].indexOf(e.key.toLowerCase());
+  const idx = k >= 0 ? k : kl;
+  if (idx >= 0 && game.answered !== game.i && idx < game.list[game.i].options.length) answer(idx);
+  else if ((e.key === "Enter" || e.key === " ") && !$("btn-next").classList.contains("hidden")){ e.preventDefault(); next(); }
+});
+
+$("btn-start").addEventListener("click", startGame);
+$("btn-next").addEventListener("click", next);
+$("btn-again").addEventListener("click", startGame);
+$("btn-home").addEventListener("click", () => show("scr-start"));
+$("btn-cancel").addEventListener("click", cancelGame);
+$("btn-hof-start").addEventListener("click", () => openHof("scr-start"));
+$("btn-hof-end").addEventListener("click", () => openHof("scr-end"));
+$("btn-hof-back").addEventListener("click", () => show(hofReturn));
+$("tab-total").addEventListener("click", () => { hofTab = "total"; renderHof(); });
+$("tab-best").addEventListener("click", () => { hofTab = "best"; renderHof(); });
+$("btn-hof-reset").addEventListener("click", async () => {
+  if (await askConfirm("¿Borrar el Hall of Fame?", "Se borrarán todas las puntuaciones guardadas en este dispositivo. No se puede deshacer.", "Sí, borrar", "Cancelar")){
+    await HOF.reset(); renderHof();
+  }
+});
+$("name").addEventListener("keydown", e => { if (e.key === "Enter") startGame(); });
+
+(async () => {
+  $("btn-start").disabled = true;
+  try{
+    const {qs, label} = await loadBank();
+    BANK = qs;
+    fillCategories();
+    const o = store("rmq-opts");
+    if (o){ $("name").value = o.name === "Anónimo" ? "" : o.name; $("count").value = String(o.n);
+            $("diff").value = o.diff || ""; if ([...$("cat").options].some(x => x.value === o.cat)) $("cat").value = o.cat; }
+    $("source").innerHTML = `<b>${BANK.length}</b> preguntas cargadas · fuente: ${esc(label)}`;
+  }catch(e){
+    $("source").textContent = "";
+    $("start-err").textContent = "No se pudieron cargar las preguntas: " + e.message;
+    $("start-err").classList.remove("hidden");
+  }
+  $("btn-start").disabled = false;
+})();
+</script>
+</body>
+</html>

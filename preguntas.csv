@@ -1,91 +1,381 @@
-pregunta,correcta,incorrecta1,incorrecta2,incorrecta3,categoria,dificultad
-"¿Qué banda grabó el álbum ""Master of Puppets"" (1986)?",Metallica,Megadeth,Slayer,Anthrax,Thrash metal,facil
-¿Quién cantaba en Iron Maiden en el álbum "The Number of the Beast"?,Bruce Dickinson,Paul Di'Anno,Blaze Bayley,Rob Halford,Heavy metal,media
-¿De qué ciudad inglesa es Black Sabbath?,Birmingham,Liverpool,Londres,Mánchester,Heavy metal,media
-¿Cómo se llama la mascota de Iron Maiden?,Eddie,Vic Rattlehead,Snaggletooth,Deathbat,Heavy metal,facil
-¿De qué banda es mascota Vic Rattlehead?,Megadeth,Metallica,Motörhead,Iron Maiden,Thrash metal,media
-¿De qué banda es mascota Snaggletooth?,Motörhead,Venom,Saxon,Judas Priest,Heavy metal,media
-¿Qué banda fundó Lemmy Kilmister en 1975?,Motörhead,Saxon,Venom,Diamond Head,Heavy metal,facil
-¿Qué miembro de AC/DC toca vestido de colegial?,Angus Young,Malcolm Young,Cliff Williams,Brian Johnson,Hard rock,facil
-"¿Quién cantaba en el álbum ""Highway to Hell"" de AC/DC?",Bon Scott,Brian Johnson,Dave Evans,,Hard rock,media
-"¿Qué cantante debutó con AC/DC en ""Back in Black"" (1980)?",Brian Johnson,Bon Scott,Axl Rose,,Hard rock,media
-"¿Qué banda española publicó ""Volumen brutal"" (1982)?",Barón Rojo,Obús,Ñu,Leño,Rock español,media
-¿De qué banda fue líder Rosendo Mercado?,Leño,Obús,Burning,Asfalto,Rock español,media
-"¿Qué banda canta ""Fiesta pagana""?",Mägo de Oz,Saratoga,Warcry,Tierra Santa,Rock español,facil
-¿Qué animal mordió Ozzy Osbourne en un concierto de 1982?,Un murciélago,Una serpiente,Una rata,Un gato,Curiosidades,facil
-"¿Qué banda publicó ""Paranoid"" (1970)?",Black Sabbath,Deep Purple,Led Zeppelin,Uriah Heep,Heavy metal,facil
-"¿De qué banda es el riff de ""Smoke on the Water""?",Deep Purple,Rainbow,Whitesnake,Black Sabbath,Hard rock,facil
-"¿En qué ciudad ocurrió el incendio que inspiró ""Smoke on the Water""?",Montreux,Berlín,Ámsterdam,Milán,Curiosidades,dificil
-¿Quién era el cantante de Led Zeppelin?,Robert Plant,Ian Gillan,Roger Daltrey,Paul Rodgers,Rock clásico,facil
-"¿En qué álbum aparece ""Stairway to Heaven""?",Led Zeppelin IV,Houses of the Holy,Physical Graffiti,Led Zeppelin II,Rock clásico,media
-¿Quién era el batería de Led Zeppelin?,John Bonham,Keith Moon,Ian Paice,Bill Ward,Rock clásico,media
-"¿En qué álbum de Queen está ""Bohemian Rhapsody""?",A Night at the Opera,News of the World,Jazz,Sheer Heart Attack,Rock clásico,media
-¿Quién es el guitarrista de Queen?,Brian May,Brian Johnson,Brian Robertson,Roger Taylor,Rock clásico,facil
-"¿Qué miembro de Kiss es ""The Demon""?",Gene Simmons,Paul Stanley,Ace Frehley,Peter Criss,Hard rock,media
-"¿Qué cantante es conocido como ""The Metal God""?",Rob Halford,Bruce Dickinson,Ronnie James Dio,Ozzy Osbourne,Heavy metal,media
-¿Cuál fue el primer disco de Black Sabbath con Ronnie James Dio?,Heaven and Hell,Mob Rules,Born Again,Sabotage,Heavy metal,dificil
-"¿A quién se atribuye haber popularizado los ""cuernos"" con la mano en el metal?",Ronnie James Dio,Ozzy Osbourne,Lemmy Kilmister,Gene Simmons,Curiosidades,media
-¿En qué país murió Cliff Burton en el accidente del autobús de Metallica (1986)?,Suecia,Alemania,Dinamarca,Noruega,Thrash metal,dificil
-¿Qué miembro de Metallica es danés?,Lars Ulrich,Kirk Hammett,Jason Newsted,Robert Trujillo,Thrash metal,media
-¿De qué banda fue expulsado Dave Mustaine antes de fundar Megadeth?,Metallica,Slayer,Anthrax,Exodus,Thrash metal,facil
-"¿Qué banda NO forma parte del ""Big Four"" del thrash?",Testament,Slayer,Anthrax,Megadeth,Thrash metal,media
-"¿Qué banda publicó ""Reign in Blood"" (1986)?",Slayer,Kreator,Sepultura,Exodus,Thrash metal,media
-¿De qué país es Sepultura?,Brasil,Argentina,Portugal,México,Metal internacional,facil
-¿De qué país es Rammstein?,Alemania,Austria,Suiza,Países Bajos,Metal internacional,facil
-¿De qué país es Nightwish?,Finlandia,Suecia,Noruega,Países Bajos,Metal internacional,facil
-¿Qué país es la cuna de la segunda ola del black metal?,Noruega,Suecia,Alemania,Polonia,Metal extremo,media
-"¿Qué banda grabó ""Ace of Spades"" (1980)?",Motörhead,Saxon,Girlschool,Venom,Heavy metal,facil
-"¿En qué año salió ""Appetite for Destruction"" de Guns N' Roses?",1987,1985,1989,1991,Hard rock,media
-¿Qué guitarrista es famoso por su sombrero de copa?,Slash,Zakk Wylde,Angus Young,Kirk Hammett,Hard rock,facil
-"¿Qué banda grabó ""Smells Like Teen Spirit""?",Nirvana,Pearl Jam,Soundgarden,Alice in Chains,Grunge,facil
-¿Qué batería de Nirvana fundó después Foo Fighters?,Dave Grohl,Krist Novoselic,Chad Channing,Taylor Hawkins,Grunge,facil
-"¿Qué banda publicó ""The Wall"" (1979)?",Pink Floyd,Genesis,Yes,The Who,Rock clásico,facil
-"¿Qué banda creó la ópera rock ""Tommy""?",The Who,Pink Floyd,Queen,Genesis,Rock clásico,media
-¿En qué festival quemó Jimi Hendrix su guitarra en 1967?,Monterey Pop,Woodstock,Isla de Wight,Altamont,Rock clásico,dificil
-¿En qué año se celebró el festival de Woodstock original?,1969,1967,1970,1971,Rock clásico,facil
-¿Qué banda tiene como logo unos labios con la lengua fuera?,The Rolling Stones,Kiss,Aerosmith,The Who,Rock clásico,facil
-¿Quién es el cantante de Aerosmith?,Steven Tyler,Joe Perry,Axl Rose,David Lee Roth,Hard rock,facil
-"¿Qué guitarrista popularizó el ""tapping"" a dos manos a finales de los 70?",Eddie Van Halen,Yngwie Malmsteen,Steve Vai,Randy Rhoads,Guitarristas,media
-"¿Con qué cantante grabó Randy Rhoads ""Blizzard of Ozz""?",Ozzy Osbourne,Ronnie James Dio,David Coverdale,Rob Halford,Guitarristas,facil
-¿Quién fundó Whitesnake?,David Coverdale,Ian Gillan,Glenn Hughes,Ronnie James Dio,Hard rock,media
-¿Qué batería siguió tocando con un solo brazo tras un accidente?,Rick Allen (Def Leppard),Tommy Lee (Mötley Crüe),Nicko McBrain (Iron Maiden),Alex Van Halen (Van Halen),Curiosidades,media
-¿En qué banda tocaba Tommy Lee?,Mötley Crüe,Poison,Ratt,Skid Row,Hard rock,facil
-"¿En qué álbum de Bon Jovi está ""Livin' on a Prayer""?",Slippery When Wet,New Jersey,7800° Fahrenheit,Keep the Faith,Hard rock,media
-"¿De qué país es Scorpions, autores de ""Wind of Change""?",Alemania,Suecia,Países Bajos,Austria,Metal internacional,facil
-"¿En qué álbum de Metallica está ""Enter Sandman""?",Metallica (el Black Album),...And Justice for All,Load,Ride the Lightning,Thrash metal,facil
-¿Quién es el bajista y fundador de Iron Maiden?,Steve Harris,Dave Murray,Adrian Smith,Nicko McBrain,Heavy metal,media
-¿Cómo se llamaba el avión de gira de Iron Maiden pilotado por Bruce Dickinson?,Ed Force One,Maiden Air,Trooper One,Beast Jet,Curiosidades,media
-¿Qué guitarrista de Black Sabbath perdió las puntas de dos dedos en un accidente?,Tony Iommi,Geezer Butler,Bill Ward,Ritchie Blackmore,Guitarristas,media
-¿Qué banda fundó Ritchie Blackmore tras dejar Deep Purple en 1975?,Rainbow,Whitesnake,Dio,Gillan,Hard rock,media
-¿En qué país se celebra el festival Wacken Open Air?,Alemania,Bélgica,Dinamarca,Austria,Festivales,facil
-¿En qué circuito se celebra el Download Festival británico?,Donington Park,Silverstone,Brands Hatch,Goodwood,Festivales,dificil
-¿Quién era el cantante de Héroes del Silencio?,Enrique Bunbury,Fito Cabrales,Robe Iniesta,Rosendo Mercado,Rock español,facil
-¿Quién fue el líder de Extremoduro?,Robe Iniesta,Fito Cabrales,Enrique Bunbury,Rosendo Mercado,Rock español,facil
-¿Quién era el cantante de Soundgarden?,Chris Cornell,Eddie Vedder,Layne Staley,Scott Weiland,Grunge,media
-¿Qué ascendencia comparten los miembros de System of a Down?,Armenia,Griega,Libanesa,Turca,Metal internacional,media
-¿Cuántos miembros tenía la formación clásica de Slipknot?,9,7,6,12,Metal internacional,media
-¿En qué banda tocaba Dimebag Darrell?,Pantera,Machine Head,Sepultura,Lamb of God,Groove metal,media
-¿En qué ciudad tiene su sede la Associació Liantes Metaleros?,Badalona,L'Hospitalet de Llobregat,Cornellà de Llobregat,Mataró,Liantes Metaleros,facil
-¿Qué tipo de entidad es Liantes Metaleros?,Una asociación sin ánimo de lucro,Una promotora de conciertos,Un sello discográfico,Un club de fans de una banda,Liantes Metaleros,facil
-¿Qué día se creó el grupo de Facebook LIANTES METALEROS?,8 de marzo de 2021,14 de marzo de 2020,1 de enero de 2021,9 de mayo de 2021,Liantes Metaleros,dificil
-¿En qué momento empezaron las quedadas que dieron origen a Liantes?,Durante el estado de alarma por la COVID-19,Tras un concierto de Barón Rojo,En un festival de verano,Al cerrar un bar del barrio,Liantes Metaleros,media
-¿Qué representa el logo de Liantes Metaleros?,Una calavera con gafas de sol,Una calavera con casco vikingo,Un cuervo con una guitarra,Un puño haciendo los cuernos,Liantes Metaleros,facil
-¿Qué lema acompaña al logo de Liantes?,"Live fast, die young",Born to be wild,Rock till you drop,Keep it heavy,Liantes Metaleros,media
-¿Qué llevan los Liantes en la espalda de su camiseta?,"Una jarra de cerveza con la frase ""FUCK COVID""",Una guitarra en llamas,El escudo de Badalona,"La frase ""UP THE IRONS""",Liantes Metaleros,dificil
-¿Cómo se llama la mascota de Liantes Metaleros?,Liant,Lianto,Metalín,Skully,Liantes Metaleros,media
-"¿De qué color son las bambas de Liant, la mascota?",Una roja y una negra,Las dos negras,Una blanca y una negra,Las dos rojas,Liantes Metaleros,dificil
-¿Qué instrumento lleva Liant?,Una guitarra,Un bajo,Unas baquetas,Un micrófono,Liantes Metaleros,media
-¿En qué locales se celebraron las quedadas de cientos de Liantes?,Cuatro Ases y Ca la Vera,Razzmatazz y Apolo,Rocksound y La Bóveda,Salamandra y Sala Bikini,Liantes Metaleros,dificil
-¿A qué entidad han hecho aportaciones los Liantes con el «Rockpelxuklis»?,AFANOC,Cruz Roja,Cáritas,UNICEF,Liantes Metaleros,media
-¿Cómo consiguieron los Liantes sus aportaciones a AFANOC?,Con la venta de merchandising,Con las cuotas de socios,Con una subasta de guitarras,Con la taquilla de un festival,Liantes Metaleros,media
-¿Cuál es el lema solidario de la asociación?,Hagamos entre todos una Vida mejor,El metal nos une,Música para todos,Rock contra el olvido,Liantes Metaleros,media
-¿Cuál es el gran objetivo de la Asociación Liantes Metaleros?,Juntar a la escena metalera para que nuestra música perdure,Grabar un disco recopilatorio cada año,Abrir una sala de conciertos propia,Organizar un festival internacional,Liantes Metaleros,facil
-¿Qué banda de las Bandas Liantes es un tributo a Barricada?,Barrena,Metal Hits,Azikate,Bunker,Bandas Liantes,media
-¿Qué banda de las Bandas Liantes incluye el himno de Liantes en su repertorio?,Azikate,Sirius,Tocho,Streamer,Bandas Liantes,dificil
-¿Qué banda badalonesa de las Bandas Liantes hace thrash metal con toques crossover?,Sirius,Tocho,Brote,Cruzada,Bandas Liantes,media
-¿En qué ciudad nació la banda de heavy metal tradicional Streamer?,Gavà,Badalona,Terrassa,Sabadell,Bandas Liantes,dificil
-¿Quién es la voz de la banda barcelonesa Alud?,Joana Amaro,Lou Angelson,Danny Bones,Nico Cattoni,Bandas Liantes,media
-¿Qué estilo toca Raptore?,Speed metal,Punk rock,Rock urbano,Stoner,Bandas Liantes,media
-¿Qué banda de rock urbano de Viladecans tiene influencias de Extremoduro y Rosendo?,Brote,Bunker,Cöntraband,La Cifra Negra,Bandas Liantes,media
-¿Quién fundó Wild Road Rollers?,Lou Angelson,Lazy Lane,Toni García,Danny Bones,Bandas Liantes,dificil
-¿Qué tipo de hard rock hace Jolly Joker?,Sleaze/glam,Progresivo,Southern,Rock urbano,Bandas Liantes,media
+pregunta,correcta,incorrecta1,incorrecta2,incorrecta3,categoria,dificultad,alta
+"¿Qué banda grabó el álbum ""Master of Puppets"" (1986)?",Metallica,Megadeth,Slayer,Anthrax,Thrash metal,facil,2026-11-19
+"¿Quién cantaba en Iron Maiden en el álbum ""The Number of the Beast""?",Bruce Dickinson,Paul Di'Anno,Blaze Bayley,Rob Halford,Heavy metal,media,2026-11-19
+¿De qué ciudad inglesa es Black Sabbath?,Birmingham,Liverpool,Londres,Mánchester,Heavy metal,media,2026-11-19
+¿Cómo se llama la mascota de Iron Maiden?,Eddie,Vic Rattlehead,Snaggletooth,Deathbat,Heavy metal,facil,2026-11-19
+¿De qué banda es mascota Vic Rattlehead?,Megadeth,Metallica,Motörhead,Iron Maiden,Thrash metal,media,2026-11-19
+¿De qué banda es mascota Snaggletooth?,Motörhead,Venom,Saxon,Judas Priest,Heavy metal,media,2026-11-19
+¿Qué banda fundó Lemmy Kilmister en 1975?,Motörhead,Saxon,Venom,Diamond Head,Heavy metal,facil,2026-11-19
+¿Qué miembro de AC/DC toca vestido de colegial?,Angus Young,Malcolm Young,Cliff Williams,Brian Johnson,Hard rock,facil,2026-11-19
+"¿Quién cantaba en el álbum ""Highway to Hell"" de AC/DC?",Bon Scott,Brian Johnson,Dave Evans,,Hard rock,media,2026-11-19
+"¿Qué cantante debutó con AC/DC en ""Back in Black"" (1980)?",Brian Johnson,Bon Scott,Axl Rose,,Hard rock,media,2026-11-19
+"¿Qué banda española publicó ""Volumen brutal"" (1982)?",Barón Rojo,Obús,Ñu,Leño,Rock español,media,2026-11-19
+¿De qué banda fue líder Rosendo Mercado?,Leño,Obús,Burning,Asfalto,Rock español,media,2026-11-19
+"¿Qué banda canta ""Fiesta pagana""?",Mägo de Oz,Saratoga,Warcry,Tierra Santa,Rock español,facil,2026-11-19
+¿Qué animal mordió Ozzy Osbourne en un concierto de 1982?,Un murciélago,Una serpiente,Una rata,Un gato,Curiosidades,facil,2026-11-19
+"¿Qué banda publicó ""Paranoid"" (1970)?",Black Sabbath,Deep Purple,Led Zeppelin,Uriah Heep,Heavy metal,facil,2026-11-19
+"¿De qué banda es el riff de ""Smoke on the Water""?",Deep Purple,Rainbow,Whitesnake,Black Sabbath,Hard rock,facil,2026-11-19
+"¿En qué ciudad ocurrió el incendio que inspiró ""Smoke on the Water""?",Montreux,Berlín,Ámsterdam,Milán,Curiosidades,dificil,2026-11-19
+¿Quién era el cantante de Led Zeppelin?,Robert Plant,Ian Gillan,Roger Daltrey,Paul Rodgers,Rock clásico,facil,2026-11-19
+"¿En qué álbum aparece ""Stairway to Heaven""?",Led Zeppelin IV,Houses of the Holy,Physical Graffiti,Led Zeppelin II,Rock clásico,media,2026-11-19
+¿Quién era el batería de Led Zeppelin?,John Bonham,Keith Moon,Ian Paice,Bill Ward,Rock clásico,media,2026-11-19
+"¿En qué álbum de Queen está ""Bohemian Rhapsody""?",A Night at the Opera,News of the World,Jazz,Sheer Heart Attack,Rock clásico,media,2026-11-19
+¿Quién es el guitarrista de Queen?,Brian May,Brian Johnson,Brian Robertson,Roger Taylor,Rock clásico,facil,2026-11-19
+"¿Qué miembro de Kiss es ""The Demon""?",Gene Simmons,Paul Stanley,Ace Frehley,Peter Criss,Hard rock,media,2026-11-19
+"¿Qué cantante es conocido como ""The Metal God""?",Rob Halford,Bruce Dickinson,Ronnie James Dio,Ozzy Osbourne,Heavy metal,media,2026-11-19
+¿Cuál fue el primer disco de Black Sabbath con Ronnie James Dio?,Heaven and Hell,Mob Rules,Born Again,Sabotage,Heavy metal,dificil,2026-11-19
+"¿A quién se atribuye haber popularizado los ""cuernos"" con la mano en el metal?",Ronnie James Dio,Ozzy Osbourne,Lemmy Kilmister,Gene Simmons,Curiosidades,media,2026-11-19
+¿En qué país murió Cliff Burton en el accidente del autobús de Metallica (1986)?,Suecia,Alemania,Dinamarca,Noruega,Thrash metal,dificil,2026-11-19
+¿Qué miembro de Metallica es danés?,Lars Ulrich,Kirk Hammett,Jason Newsted,Robert Trujillo,Thrash metal,media,2026-11-19
+¿De qué banda fue expulsado Dave Mustaine antes de fundar Megadeth?,Metallica,Slayer,Anthrax,Exodus,Thrash metal,facil,2026-11-19
+"¿Qué banda NO forma parte del ""Big Four"" del thrash?",Testament,Slayer,Anthrax,Megadeth,Thrash metal,media,2026-11-19
+"¿Qué banda publicó ""Reign in Blood"" (1986)?",Slayer,Kreator,Sepultura,Exodus,Thrash metal,media,2026-11-19
+¿De qué país es Sepultura?,Brasil,Argentina,Portugal,México,Metal internacional,facil,2026-11-19
+¿De qué país es Rammstein?,Alemania,Austria,Suiza,Países Bajos,Metal internacional,facil,2026-11-19
+¿De qué país es Nightwish?,Finlandia,Suecia,Noruega,Países Bajos,Metal internacional,facil,2026-11-19
+¿Qué país es la cuna de la segunda ola del black metal?,Noruega,Suecia,Alemania,Polonia,Metal extremo,media,2026-11-19
+"¿Qué banda grabó ""Ace of Spades"" (1980)?",Motörhead,Saxon,Girlschool,Venom,Heavy metal,facil,2026-11-19
+"¿En qué año salió ""Appetite for Destruction"" de Guns N' Roses?",1987,1985,1989,1991,Hard rock,media,2026-11-19
+¿Qué guitarrista es famoso por su sombrero de copa?,Slash,Zakk Wylde,Angus Young,Kirk Hammett,Hard rock,facil,2026-11-19
+"¿Qué banda grabó ""Smells Like Teen Spirit""?",Nirvana,Pearl Jam,Soundgarden,Alice in Chains,Grunge,facil,2026-11-19
+¿Qué batería de Nirvana fundó después Foo Fighters?,Dave Grohl,Krist Novoselic,Chad Channing,Taylor Hawkins,Grunge,facil,2026-11-19
+"¿Qué banda publicó ""The Wall"" (1979)?",Pink Floyd,Genesis,Yes,The Who,Rock clásico,facil,2026-11-19
+"¿Qué banda creó la ópera rock ""Tommy""?",The Who,Pink Floyd,Queen,Genesis,Rock clásico,media,2026-11-19
+¿En qué festival quemó Jimi Hendrix su guitarra en 1967?,Monterey Pop,Woodstock,Isla de Wight,Altamont,Rock clásico,dificil,2026-11-19
+¿En qué año se celebró el festival de Woodstock original?,1969,1967,1970,1971,Rock clásico,facil,2026-11-19
+¿Qué banda tiene como logo unos labios con la lengua fuera?,The Rolling Stones,Kiss,Aerosmith,The Who,Rock clásico,facil,2026-11-19
+¿Quién es el cantante de Aerosmith?,Steven Tyler,Joe Perry,Axl Rose,David Lee Roth,Hard rock,facil,2026-11-19
+"¿Qué guitarrista popularizó el ""tapping"" a dos manos a finales de los 70?",Eddie Van Halen,Yngwie Malmsteen,Steve Vai,Randy Rhoads,Guitarristas,media,2026-11-19
+"¿Con qué cantante grabó Randy Rhoads ""Blizzard of Ozz""?",Ozzy Osbourne,Ronnie James Dio,David Coverdale,Rob Halford,Guitarristas,facil,2026-11-19
+¿Quién fundó Whitesnake?,David Coverdale,Ian Gillan,Glenn Hughes,Ronnie James Dio,Hard rock,media,2026-11-19
+¿Qué batería siguió tocando con un solo brazo tras un accidente?,Rick Allen (Def Leppard),Tommy Lee (Mötley Crüe),Nicko McBrain (Iron Maiden),Alex Van Halen (Van Halen),Curiosidades,media,2026-11-19
+¿En qué banda tocaba Tommy Lee?,Mötley Crüe,Poison,Ratt,Skid Row,Hard rock,facil,2026-11-19
+"¿En qué álbum de Bon Jovi está ""Livin' on a Prayer""?",Slippery When Wet,New Jersey,7800° Fahrenheit,Keep the Faith,Hard rock,media,2026-11-19
+"¿De qué país es Scorpions, autores de ""Wind of Change""?",Alemania,Suecia,Países Bajos,Austria,Metal internacional,facil,2026-11-19
+"¿En qué álbum de Metallica está ""Enter Sandman""?",Metallica (el Black Album),...And Justice for All,Load,Ride the Lightning,Thrash metal,facil,2026-11-19
+¿Quién es el bajista y fundador de Iron Maiden?,Steve Harris,Dave Murray,Adrian Smith,Nicko McBrain,Heavy metal,media,2026-11-19
+¿Cómo se llamaba el avión de gira de Iron Maiden pilotado por Bruce Dickinson?,Ed Force One,Maiden Air,Trooper One,Beast Jet,Curiosidades,media,2026-11-19
+¿Qué guitarrista de Black Sabbath perdió las puntas de dos dedos en un accidente?,Tony Iommi,Geezer Butler,Bill Ward,Ritchie Blackmore,Guitarristas,media,2026-11-19
+¿Qué banda fundó Ritchie Blackmore tras dejar Deep Purple en 1975?,Rainbow,Whitesnake,Dio,Gillan,Hard rock,media,2026-11-19
+¿En qué país se celebra el festival Wacken Open Air?,Alemania,Bélgica,Dinamarca,Austria,Festivales,facil,2026-11-19
+¿En qué circuito se celebra el Download Festival británico?,Donington Park,Silverstone,Brands Hatch,Goodwood,Festivales,dificil,2026-11-19
+¿Quién era el cantante de Héroes del Silencio?,Enrique Bunbury,Fito Cabrales,Robe Iniesta,Rosendo Mercado,Rock español,facil,2026-11-19
+¿Quién fue el líder de Extremoduro?,Robe Iniesta,Fito Cabrales,Enrique Bunbury,Rosendo Mercado,Rock español,facil,2026-11-19
+¿Quién era el cantante de Soundgarden?,Chris Cornell,Eddie Vedder,Layne Staley,Scott Weiland,Grunge,media,2026-11-19
+¿Qué ascendencia comparten los miembros de System of a Down?,Armenia,Griega,Libanesa,Turca,Metal internacional,media,2026-11-19
+¿Cuántos miembros tenía la formación clásica de Slipknot?,9,7,6,12,Metal internacional,media,2026-11-19
+¿En qué banda tocaba Dimebag Darrell?,Pantera,Machine Head,Sepultura,Lamb of God,Metal internacional,media,2026-11-19
+¿En qué ciudad tiene su sede la Associació Liantes Metaleros?,Badalona,L'Hospitalet de Llobregat,Cornellà de Llobregat,Mataró,Liantes Metaleros,facil,2026-11-19
+¿Qué tipo de entidad es Liantes Metaleros?,Una asociación sin ánimo de lucro,Una promotora de conciertos,Un sello discográfico,Un club de fans de una banda,Liantes Metaleros,facil,2026-11-19
+¿Qué día se creó el grupo de Facebook LIANTES METALEROS?,8 de marzo de 2021,14 de marzo de 2020,1 de enero de 2021,9 de mayo de 2021,Liantes Metaleros,dificil,2026-11-19
+¿En qué momento empezaron las quedadas que dieron origen a Liantes?,Durante el estado de alarma por la COVID-19,Tras un concierto de Barón Rojo,En un festival de verano,Al cerrar un bar del barrio,Liantes Metaleros,media,2026-11-19
+¿Qué representa el logo de Liantes Metaleros?,Una calavera con gafas de sol,Una calavera con casco vikingo,Un cuervo con una guitarra,Un puño haciendo los cuernos,Liantes Metaleros,facil,2026-11-19
+¿Qué lema acompaña al logo de Liantes?,"Live fast, die young",Born to be wild,Rock till you drop,Keep it heavy,Liantes Metaleros,media,2026-11-19
+¿Qué llevan los Liantes en la espalda de su camiseta?,"Una jarra de cerveza con la frase ""FUCK COVID""",Una guitarra en llamas,El escudo de Badalona,"La frase ""UP THE IRONS""",Liantes Metaleros,dificil,2026-11-19
+¿Cómo se llama la mascota de Liantes Metaleros?,Liant,Lianto,Metalín,Skully,Liantes Metaleros,media,2026-11-19
+"¿De qué color son las bambas de Liant, la mascota?",Una roja y una negra,Las dos negras,Una blanca y una negra,Las dos rojas,Liantes Metaleros,dificil,2026-11-19
+¿Qué instrumento lleva Liant?,Una guitarra,Un bajo,Unas baquetas,Un micrófono,Liantes Metaleros,media,2026-11-19
+¿En qué locales se celebraron las quedadas de cientos de Liantes?,Cuatro Ases y Ca la Vera,Razzmatazz y Apolo,Rocksound y La Bóveda,Salamandra y Sala Bikini,Liantes Metaleros,dificil,2026-11-19
+¿A qué entidad han hecho aportaciones los Liantes con el «Rockpelxuklis»?,AFANOC,Cruz Roja,Cáritas,UNICEF,Liantes Metaleros,media,2026-11-19
+¿Cómo consiguieron los Liantes sus aportaciones a AFANOC?,Con la venta de merchandising,Con las cuotas de socios,Con una subasta de guitarras,Con la taquilla de un festival,Liantes Metaleros,media,2026-11-19
+¿Cuál es el lema solidario de la asociación?,Hagamos entre todos una Vida mejor,El metal nos une,Música para todos,Rock contra el olvido,Liantes Metaleros,media,2026-11-19
+¿Cuál es el gran objetivo de la Asociación Liantes Metaleros?,Juntar a la escena metalera para que nuestra música perdure,Grabar un disco recopilatorio cada año,Abrir una sala de conciertos propia,Organizar un festival internacional,Liantes Metaleros,facil,2026-11-19
+¿Qué banda de las Bandas Liantes es un tributo a Barricada?,Barrena,Metal Hits,Azikate,Bunker,Bandas Liantes,media,2026-11-19
+¿Qué banda de las Bandas Liantes incluye el himno de Liantes en su repertorio?,Azikate,Sirius,Tocho,Streamer,Bandas Liantes,dificil,2026-11-19
+¿Qué banda badalonesa de las Bandas Liantes hace thrash metal con toques crossover?,Sirius,Tocho,Brote,Cruzada,Bandas Liantes,media,2026-11-19
+¿En qué ciudad nació la banda de heavy metal tradicional Streamer?,Gavà,Badalona,Terrassa,Sabadell,Bandas Liantes,dificil,2026-11-19
+¿Quién es la voz de la banda barcelonesa Alud?,Joana Amaro,Lou Angelson,Danny Bones,Nico Cattoni,Bandas Liantes,media,2026-11-19
+¿Qué estilo toca Raptore?,Speed metal,Punk rock,Rock urbano,Stoner,Bandas Liantes,media,2026-11-19
+¿Qué banda de rock urbano de Viladecans tiene influencias de Extremoduro y Rosendo?,Brote,Bunker,Cöntraband,La Cifra Negra,Bandas Liantes,media,2026-11-19
+¿Quién fundó Wild Road Rollers?,Lou Angelson,Lazy Lane,Toni García,Danny Bones,Bandas Liantes,dificil,2026-11-19
+¿Qué tipo de hard rock hace Jolly Joker?,Sleaze/glam,Progresivo,Southern,Rock urbano,Bandas Liantes,media,2026-11-19
+"¿Cómo se llamó el movimiento musical vasco de los 80 con bandas como La Polla Records, Eskorbuto o Kortatu?",Rock radical vasco,Movida vasca,Punk del norte,Rock urbano vasco,Punk rock español,media,2026-11-19
+¿De qué localidad alavesa es La Polla Records?,Salvatierra (Agurain),Vitoria,Llodio,Amurrio,Punk rock español,dificil,2026-11-19
+¿Quién era el cantante de La Polla Records?,Evaristo Páramos,Fermin Muguruza,Iosu Expósito,El Drogas,Punk rock español,facil,2026-11-19
+¿Qué banda formó Evaristo Páramos tras La Polla Records?,Gatillazo,Lendakaris Muertos,Soziedad Alkoholika,Negu Gorriak,Punk rock español,media,2026-11-19
+"¿Qué banda canta ""Ellos dicen mierda""?",La Polla Records,Eskorbuto,Siniestro Total,Kortatu,Punk rock español,media,2026-11-19
+¿De qué localidad vizcaína es Eskorbuto?,Santurtzi,Barakaldo,Getxo,Sestao,Punk rock español,dificil,2026-11-19
+"¿Qué banda grabó ""Mucha policía, poca diversión""?",Eskorbuto,La Polla Records,RIP,Cicatriz,Punk rock español,media,2026-11-19
+¿Cómo se titula el disco de Eskorbuto de 1986?,Anti todo,Salve,Ilegales,"Sarri, Sarri",Punk rock español,dificil,2026-11-19
+¿Quién lideraba Kortatu?,Fermin Muguruza,Evaristo Páramos,Natxo Etxebarrieta,Iosu Expósito,Punk rock español,media,2026-11-19
+¿De qué ciudad es Kortatu?,Irun,Bilbao,Pamplona,Donostia,Punk rock español,dificil,2026-11-19
+¿Qué banda formaron los hermanos Muguruza tras Kortatu?,Negu Gorriak,Gatillazo,Su Ta Gar,Berri Txarrak,Punk rock español,media,2026-11-19
+¿Qué banda punk era de Vitoria y estaba liderada por Natxo Etxebarrieta?,Cicatriz,RIP,Eskorbuto,Kortatu,Punk rock español,dificil,2026-11-19
+¿De qué ciudad es Barricada?,Pamplona,Bilbao,Zaragoza,Logroño,Punk rock español,media,2026-11-19
+"¿Cómo se apodaba el cantante y bajista de Barricada, Enrique Villarreal?",El Drogas,El Boni,El Fortu,El Robe,Punk rock español,media,2026-11-19
+¿De qué ciudad es Siniestro Total?,Vigo,A Coruña,Ourense,Santiago de Compostela,Punk rock español,media,2026-11-19
+"¿Qué banda grabó el disco ""¿Cuándo se come aquí?"" (1982)?",Siniestro Total,Los Nikis,Kaka de Luxe,Ilegales,Punk rock español,media,2026-11-19
+"¿Qué banda canta ""Bailaré sobre tu tumba""?",Siniestro Total,Parálisis Permanente,Barricada,Eskorbuto,Punk rock español,media,2026-11-19
+¿De qué barrio madrileño es Ska-P?,Vallecas,Lavapiés,Carabanchel,Malasaña,Punk rock español,media,2026-11-19
+¿Cómo se llama el gato mascota de Ska-P?,López,Garfio,Ramón,Paco,Punk rock español,dificil,2026-11-19
+"¿Qué banda canta ""El vals del obrero""?",Ska-P,Reincidentes,Boikot,Sin Dios,Punk rock español,facil,2026-11-19
+¿Qué estilo mezcla Ska-P?,Ska y punk,Rap y metal,Reggae y blues,Folk y thrash,Punk rock español,facil,2026-11-19
+¿De qué ciudad es la banda Reincidentes?,Sevilla,Cádiz,Málaga,Granada,Punk rock español,media,2026-11-19
+¿De qué ciudad es la banda punk Los Muertos de Cristo?,Badalona,Terrassa,Sabadell,Mataró,Punk rock español,media,2026-11-19
+"¿Qué banda de Algete grabó ""El imperio contraataca""?",Los Nikis,Siniestro Total,Kaka de Luxe,Burning,Punk rock español,dificil,2026-11-19
+¿Quién lideraba Parálisis Permanente?,Eduardo Benavente,Fermin Muguruza,Julián Hernández,Germán Coppini,Punk rock español,dificil,2026-11-19
+¿En qué grupo punk madrileño empezaron Alaska y Nacho Canut?,Kaka de Luxe,Parálisis Permanente,Los Nikis,Burning,Punk rock español,media,2026-11-19
+"¿De qué comunidad es la banda Ilegales, de Jorge Martínez?",Asturias,Cantabria,Galicia,País Vasco,Punk rock español,media,2026-11-19
+¿De qué ciudad es Soziedad Alkoholika?,Vitoria,Bilbao,Donostia,Pamplona,Punk rock español,media,2026-11-19
+¿De qué ciudad es la banda Lendakaris Muertos?,Pamplona,Vitoria,Logroño,Bilbao,Punk rock español,dificil,2026-11-19
+¿Qué banda madrileña es un referente del anarcopunk español?,Sin Dios,Ska-P,Los Nikis,Burning,Punk rock español,dificil,2026-11-19
+"¿En qué ciudad se encuentra la mítica sala Rock-Ola, templo de la Movida?",Madrid,Barcelona,Bilbao,Valencia,Punk rock español,media,2026-11-19
+¿Qué cantante de Siniestro Total se fue después a Golpes Bajos?,Germán Coppini,Julián Hernández,Miguel Costas,Alberto Torrado,Punk rock español,dificil,2026-11-19
+¿Qué banda punk de Rentería formó parte del rock radical vasco?,RIP,Kortatu,Cicatriz,Eskorbuto,Punk rock español,dificil,2026-11-19
+¿Con qué palabra se conoce el pelo de punta del punk?,Cresta,Tupé,Melena,Rastas,Punk rock español,facil,2026-11-19
+¿Quién era el cantante de los Sex Pistols?,Johnny Rotten,Sid Vicious,Joe Strummer,Joey Ramone,Punk internacional,facil,2026-11-19
+¿Cómo se titula el único álbum de estudio de los Sex Pistols (1977)?,Never Mind the Bollocks,London Calling,Ramones,Fresh Fruit for Rotting Vegetables,Punk internacional,media,2026-11-19
+¿De qué barrio de Nueva York eran los Ramones?,Queens,Brooklyn,El Bronx,Manhattan,Punk internacional,media,2026-11-19
+"¿Qué banda grabó ""London Calling"" (1979)?",The Clash,Sex Pistols,The Damned,Buzzcocks,Punk internacional,facil,2026-11-19
+¿Quién era el cantante de The Clash?,Joe Strummer,Johnny Rotten,Henry Rollins,Jello Biafra,Punk internacional,media,2026-11-19
+¿Qué club neoyorquino es considerado la cuna del punk?,CBGB,Studio 54,The Roxy,Whisky a Go Go,Punk internacional,media,2026-11-19
+¿Quién era el cantante de Dead Kennedys?,Jello Biafra,Glenn Danzig,Henry Rollins,Fat Mike,Punk internacional,media,2026-11-19
+"¿Qué banda punk tiene como logo una calavera llamada ""Crimson Ghost""?",Misfits,Ramones,Black Flag,Bad Religion,Punk internacional,media,2026-11-19
+"¿En qué año publicó Green Day ""Dookie""?",1994,1991,1997,2000,Punk internacional,media,2026-11-19
+"¿Qué banda publicó ""American Idiot"" (2004)?",Green Day,The Offspring,Blink-182,Sum 41,Punk internacional,facil,2026-11-19
+¿Quién es el cantante de The Offspring?,Dexter Holland,Billie Joe Armstrong,Tim Armstrong,Mark Hoppus,Punk internacional,media,2026-11-19
+¿Qué cantante de Black Flag es famoso también por su spoken word?,Henry Rollins,Jello Biafra,Greg Graffin,Glenn Danzig,Punk internacional,media,2026-11-19
+"¿Qué sello discográfico punk fundó Fat Mike, de NOFX?",Fat Wreck Chords,Epitaph,SST Records,Sub Pop,Punk internacional,dificil,2026-11-19
+¿Qué bajista de los Sex Pistols sustituyó a Glen Matlock?,Sid Vicious,Paul Cook,Steve Jones,Rat Scabies,Punk internacional,media,2026-11-19
+¿En qué año publicó Iron Maiden su primer álbum?,1980,1978,1982,1984,Heavy metal,media,2026-11-19
+"¿En qué álbum de Iron Maiden está ""Run to the Hills""?",The Number of the Beast,Piece of Mind,Powerslave,Killers,Heavy metal,media,2026-11-19
+"¿En qué álbum de Iron Maiden está ""The Trooper""?",Piece of Mind,Powerslave,Somewhere in Time,The Number of the Beast,Heavy metal,dificil,2026-11-19
+"¿En qué álbum de Iron Maiden está ""Aces High""?",Powerslave,Piece of Mind,Seventh Son of a Seventh Son,Fear of the Dark,Heavy metal,dificil,2026-11-19
+¿Quién es el batería de Iron Maiden desde 1982?,Nicko McBrain,Clive Burr,Cozy Powell,Bill Ward,Heavy metal,media,2026-11-19
+"¿Qué es una ""iron maiden"", que da nombre a la banda?",Un instrumento de tortura,Un barco de guerra,Una armadura,Una espada medieval,Heavy metal,media,2026-11-19
+"¿Con qué cantante grabó Iron Maiden ""The X Factor"" (1995)?",Blaze Bayley,Bruce Dickinson,Paul Di'Anno,Tim Owens,Heavy metal,dificil,2026-11-19
+¿Cuántos guitarristas tiene Iron Maiden desde 1999?,Tres,Dos,Cuatro,Uno,Heavy metal,media,2026-11-19
+"¿Qué banda grabó ""Breaking the Law""?",Judas Priest,Saxon,Accept,Iron Maiden,Heavy metal,facil,2026-11-19
+"¿En qué año salió ""British Steel"" de Judas Priest?",1980,1976,1984,1990,Heavy metal,dificil,2026-11-19
+"¿Qué banda grabó ""Painkiller"" (1990)?",Judas Priest,Accept,Helloween,Manowar,Heavy metal,media,2026-11-19
+¿Quién sustituyó a Rob Halford en Judas Priest en los 90?,"Tim ""Ripper"" Owens",Blaze Bayley,Udo Dirkschneider,Ronnie James Dio,Heavy metal,dificil,2026-11-19
+¿Qué significan las siglas NWOBHM?,New Wave of British Heavy Metal,New World of Brutal Heavy Metal,North Wave of British Hard Music,New Wave of Black Heavy Metal,Heavy metal,media,2026-11-19
+"¿Qué banda grabó ""Holy Diver"" (1983)?",Dio,Rainbow,Black Sabbath,Whitesnake,Heavy metal,media,2026-11-19
+"¿En qué álbum de Ozzy Osbourne está ""Crazy Train""?",Blizzard of Ozz,Diary of a Madman,No More Tears,Bark at the Moon,Heavy metal,media,2026-11-19
+¿Cómo se apoda a Ozzy Osbourne?,El Príncipe de las Tinieblas,El Dios del Metal,El Rey del Rock,El Caballero Oscuro,Heavy metal,facil,2026-11-19
+¿Quién es la esposa y mánager de Ozzy Osbourne?,Sharon Osbourne,Kelly Osbourne,Lita Ford,Doro Pesch,Heavy metal,facil,2026-11-19
+¿De qué banda alemana fue cantante Udo Dirkschneider?,Accept,Scorpions,Helloween,Running Wild,Heavy metal,media,2026-11-19
+"¿Qué banda grabó ""Balls to the Wall""?",Accept,Saxon,Twisted Sister,W.A.S.P.,Heavy metal,media,2026-11-19
+"¿Qué banda alemana grabó ""Keeper of the Seven Keys""?",Helloween,Gamma Ray,Blind Guardian,Accept,Heavy metal,media,2026-11-19
+"¿Qué banda canta ""Kings of Metal""?",Manowar,Hammerfall,Saxon,Grave Digger,Heavy metal,media,2026-11-19
+¿De qué país es King Diamond?,Dinamarca,Suecia,Noruega,Alemania,Heavy metal,media,2026-11-19
+¿Quién es el cantante de Twisted Sister?,Dee Snider,Blackie Lawless,Vince Neil,Sebastian Bach,Heavy metal,media,2026-11-19
+¿Quién es el líder de W.A.S.P.?,Blackie Lawless,Dee Snider,Nikki Sixx,Kip Winger,Heavy metal,dificil,2026-11-19
+¿Quién era el bajista y principal letrista de Black Sabbath?,Geezer Butler,Bill Ward,Tony Iommi,Glenn Hughes,Heavy metal,media,2026-11-19
+¿En qué año publicó Black Sabbath su primer álbum?,1970,1968,1972,1974,Heavy metal,facil,2026-11-19
+¿Qué instrumento tocaba Lemmy en Motörhead?,Bajo,Guitarra,Batería,Teclados,Heavy metal,facil,2026-11-19
+¿En qué año murió Lemmy Kilmister?,2015,2010,2018,2012,Heavy metal,media,2026-11-19
+¿En qué año murió Ronnie James Dio?,2010,2005,2014,2008,Heavy metal,dificil,2026-11-19
+¿De qué ciudad inglesa es Def Leppard?,Sheffield,Mánchester,Leeds,Newcastle,Heavy metal,dificil,2026-11-19
+"¿En qué año salió ""Hysteria"" de Def Leppard?",1987,1983,1990,1985,Heavy metal,dificil,2026-11-19
+¿Quién es el cantante de Scorpions?,Klaus Meine,Udo Dirkschneider,Michael Kiske,Rudolf Schenker,Heavy metal,media,2026-11-19
+"¿Qué banda grabó ""Rock You Like a Hurricane""?",Scorpions,Accept,Def Leppard,Europe,Heavy metal,facil,2026-11-19
+"Además de cantar, ¿qué hace Bruce Dickinson?",Pilota aviones,Es cirujano,Diseña guitarras,Es chef,Heavy metal,facil,2026-11-19
+"¿Qué ilustrador creó a Eddie, la mascota de Iron Maiden?",Derek Riggs,Ed Repka,H.R. Giger,Frank Frazetta,Heavy metal,dificil,2026-11-19
+¿Qué día salió el primer álbum de Black Sabbath?,Viernes 13,Halloween,Navidad,Día de los Inocentes,Heavy metal,media,2026-11-19
+¿Cómo se titula el primer álbum de Metallica (1983)?,Kill 'Em All,Ride the Lightning,Master of Puppets,Garage Inc.,Thrash metal,media,2026-11-19
+¿Quién sustituyó a Cliff Burton en Metallica?,Jason Newsted,Robert Trujillo,Ron McGovney,Dave Ellefson,Thrash metal,media,2026-11-19
+¿Quién es el bajista actual de Metallica?,Robert Trujillo,Jason Newsted,Cliff Burton,Frank Bello,Thrash metal,facil,2026-11-19
+¿En qué ciudad se formó Metallica?,Los Ángeles,San Francisco,Nueva York,Seattle,Thrash metal,dificil,2026-11-19
+"¿En qué álbum de Metallica está ""One""?",...And Justice for All,Master of Puppets,Ride the Lightning,Metallica,Thrash metal,media,2026-11-19
+¿Contra qué servicio de descargas demandó Metallica en el año 2000?,Napster,Kazaa,eMule,LimeWire,Thrash metal,media,2026-11-19
+"¿Con qué orquesta grabó Metallica ""S&M"" (1999)?",Sinfónica de San Francisco,Filarmónica de Berlín,Sinfónica de Londres,Filarmónica de Viena,Thrash metal,dificil,2026-11-19
+"¿En qué continente tocó Metallica en 2013, siendo la primera banda en tocar en los siete?",Antártida,Oceanía,África,Asia,Thrash metal,media,2026-11-19
+"¿Qué banda grabó ""Symphony of Destruction""?",Megadeth,Metallica,Testament,Anthrax,Thrash metal,facil,2026-11-19
+"¿Qué banda grabó ""Rust in Peace"" (1990)?",Megadeth,Slayer,Exodus,Metallica,Thrash metal,media,2026-11-19
+"¿En qué país nació Tom Araya, cantante de Slayer?",Chile,México,Argentina,Estados Unidos,Thrash metal,media,2026-11-19
+¿Quiénes eran los guitarristas clásicos de Slayer?,Kerry King y Jeff Hanneman,Kirk Hammett y James Hetfield,Dave Mustaine y Marty Friedman,Scott Ian y Dan Spitz,Thrash metal,media,2026-11-19
+¿De qué ciudad es Anthrax?,Nueva York,Los Ángeles,San Francisco,Chicago,Thrash metal,media,2026-11-19
+¿Cómo se llama el disco debut de Exodus (1985)?,Bonded by Blood,Show No Mercy,Kill 'Em All,Hell Awaits,Thrash metal,dificil,2026-11-19
+"¿En qué zona de California nació el thrash de Metallica, Exodus o Testament?",Bay Area (San Francisco),Sunset Strip,Orange County,San Diego,Thrash metal,media,2026-11-19
+¿De qué ciudad alemana es Kreator?,Essen,Berlín,Hamburgo,Múnich,Thrash metal,dificil,2026-11-19
+"¿Qué banda NO forma parte del ""Big Teutonic Four"" del thrash alemán?",Accept,Sodom,Destruction,Tankard,Thrash metal,dificil,2026-11-19
+¿Qué hermanos fundaron Sepultura?,Max e Igor Cavalera,Angus y Malcolm Young,Eddie y Alex Van Halen,Chris y Rich Robinson,Thrash metal,media,2026-11-19
+¿Qué banda fundó Max Cavalera al salir de Sepultura?,Soulfly,Cavalera Conspiracy,Nailbomb,Machine Head,Thrash metal,media,2026-11-19
+¿Qué álbum de Sepultura (1996) mezcla metal con música indígena brasileña?,Roots,Chaos A.D.,Arise,Beneath the Remains,Thrash metal,media,2026-11-19
+¿Qué documental de 2004 muestra la crisis interna de Metallica?,Some Kind of Monster,Through the Never,Cunning Stunts,A Year and a Half,Thrash metal,media,2026-11-19
+¿De qué país es AC/DC?,Australia,Reino Unido,Estados Unidos,Nueva Zelanda,Hard rock,facil,2026-11-19
+¿Qué hermanos fundaron AC/DC?,Angus y Malcolm Young,Noel y Liam Gallagher,Ray y Dave Davies,Eddie y Alex Van Halen,Hard rock,facil,2026-11-19
+¿En qué año murió Bon Scott?,1980,1977,1983,1986,Hard rock,media,2026-11-19
+"¿En qué álbum de AC/DC está ""Thunderstruck""?",The Razors Edge,Back in Black,For Those About to Rock,Ballbreaker,Hard rock,dificil,2026-11-19
+¿Quién es el cantante de Guns N' Roses?,Axl Rose,Slash,Duff McKagan,Izzy Stradlin,Hard rock,facil,2026-11-19
+"¿En qué disco de Guns N' Roses está ""November Rain""?",Use Your Illusion I,Appetite for Destruction,Use Your Illusion II,Chinese Democracy,Hard rock,dificil,2026-11-19
+¿Quién sustituyó a David Lee Roth en Van Halen en 1985?,Sammy Hagar,Gary Cherone,David Coverdale,Jon Bon Jovi,Hard rock,media,2026-11-19
+"¿Cuál es el título del álbum de Van Halen con ""Jump""?",1984,5150,Fair Warning,Diver Down,Hard rock,media,2026-11-19
+¿Con qué álbum se quitó Kiss el maquillaje en 1983?,Lick It Up,Creatures of the Night,Destroyer,Animalize,Hard rock,dificil,2026-11-19
+¿De qué ciudad es Kiss?,Nueva York,Los Ángeles,Detroit,Chicago,Hard rock,media,2026-11-19
+"¿Qué miembro de Kiss es ""The Starchild""?",Paul Stanley,Gene Simmons,Ace Frehley,Peter Criss,Hard rock,media,2026-11-19
+¿De qué ciudad es Aerosmith?,Boston,Nueva York,Filadelfia,Chicago,Hard rock,media,2026-11-19
+"¿Con qué grupo de rap versionó Aerosmith ""Walk This Way"" en 1986?",Run-DMC,Public Enemy,Beastie Boys,N.W.A,Hard rock,media,2026-11-19
+"¿En qué álbum de Deep Purple está ""Smoke on the Water""?",Machine Head,In Rock,Fireball,Burn,Hard rock,media,2026-11-19
+"¿Quién cantaba en Deep Purple en ""Machine Head""?",Ian Gillan,David Coverdale,Glenn Hughes,Ronnie James Dio,Hard rock,media,2026-11-19
+¿Quién era el organista de Deep Purple?,Jon Lord,Rick Wakeman,Keith Emerson,Don Airey,Hard rock,dificil,2026-11-19
+¿Quién fue el primer cantante de Rainbow?,Ronnie James Dio,Graham Bonnet,Joe Lynn Turner,Doogie White,Hard rock,media,2026-11-19
+¿De qué estado de EE. UU. es Bon Jovi?,Nueva Jersey,Nueva York,California,Texas,Hard rock,media,2026-11-19
+¿Quién es el bajista de Mötley Crüe?,Nikki Sixx,Vince Neil,Mick Mars,Tommy Lee,Hard rock,media,2026-11-19
+¿Quién es el cantante de Poison?,Bret Michaels,Vince Neil,Sebastian Bach,Jon Bon Jovi,Hard rock,media,2026-11-19
+¿Quién fue el cantante de Skid Row en su etapa clásica?,Sebastian Bach,Bret Michaels,Axl Rose,Joey Tempest,Hard rock,media,2026-11-19
+"¿De qué país es Europe, autores de ""The Final Countdown""?",Suecia,Noruega,Finlandia,Dinamarca,Hard rock,facil,2026-11-19
+¿De qué país es Thin Lizzy?,Irlanda,Escocia,Gales,Inglaterra,Hard rock,media,2026-11-19
+¿Quién era el líder de Thin Lizzy?,Phil Lynott,Gary Moore,Paul Rodgers,Ian Gillan,Hard rock,media,2026-11-19
+¿De qué estado de EE. UU. es ZZ Top?,Texas,Tennessee,Georgia,Alabama,Hard rock,media,2026-11-19
+"¿Qué banda grabó ""Here I Go Again""?",Whitesnake,Rainbow,Foreigner,Deep Purple,Hard rock,facil,2026-11-19
+"¿Qué banda grabó ""Don't Stop Believin'""?",Journey,Foreigner,Boston,Toto,Hard rock,facil,2026-11-19
+¿Cuál es el nombre real de Alice Cooper?,Vincent Furnier,Brian Warner,Paul Hewson,Gordon Sumner,Hard rock,dificil,2026-11-19
+¿De qué banda surgió Led Zeppelin?,The Yardbirds,Cream,The Animals,The Who,Rock clásico,media,2026-11-19
+¿Quién era el bajista de Led Zeppelin?,John Paul Jones,John Deacon,John Entwistle,Jack Bruce,Rock clásico,media,2026-11-19
+¿Quién era el guitarrista de Led Zeppelin?,Jimmy Page,Jeff Beck,Eric Clapton,Ritchie Blackmore,Rock clásico,facil,2026-11-19
+"¿A quién está dedicado ""Wish You Were Here"" de Pink Floyd?",Syd Barrett,John Lennon,Jim Morrison,Brian Jones,Rock clásico,media,2026-11-19
+¿Qué álbum de Pink Floyd tiene en la portada un prisma que descompone la luz?,The Dark Side of the Moon,The Wall,Animals,Meddle,Rock clásico,facil,2026-11-19
+¿Quién era el bajista y principal compositor de Pink Floyd en los 70?,Roger Waters,David Gilmour,Nick Mason,Richard Wright,Rock clásico,media,2026-11-19
+¿Dónde nació Freddie Mercury?,Zanzíbar,Bombay,Londres,El Cairo,Rock clásico,media,2026-11-19
+¿En qué estadio actuó Queen en el Live Aid de 1985?,Wembley,Old Trafford,Hyde Park,Anfield,Rock clásico,media,2026-11-19
+"¿Qué miembro de Queen compuso ""Another One Bites the Dust""?",John Deacon,Brian May,Roger Taylor,Freddie Mercury,Rock clásico,dificil,2026-11-19
+¿Qué actor ganó el Óscar por interpretar a Freddie Mercury?,Rami Malek,Sacha Baron Cohen,Joaquin Phoenix,Taron Egerton,Rock clásico,facil,2026-11-19
+"¿Qué banda grabó ""(I Can't Get No) Satisfaction""?",The Rolling Stones,The Beatles,The Who,The Kinks,Rock clásico,facil,2026-11-19
+¿Quién era el batería de The Who?,Keith Moon,Ringo Starr,Charlie Watts,Ginger Baker,Rock clásico,media,2026-11-19
+¿Quién era el cantante de The Doors?,Jim Morrison,Robby Krieger,Ray Manzarek,Eric Burdon,Rock clásico,facil,2026-11-19
+¿En qué ciudad está enterrado Jim Morrison?,París,Los Ángeles,Londres,Roma,Rock clásico,media,2026-11-19
+"¿Qué tienen en común Hendrix, Janis Joplin, Jim Morrison y Kurt Cobain?",Murieron a los 27 años,Nacieron en Seattle,Tocaron en Woodstock,Eran zurdos,Rock clásico,facil,2026-11-19
+¿Cuál es el apodo de Eric Clapton?,Slowhand,The Boss,The Edge,Mr. Big,Rock clásico,media,2026-11-19
+¿En qué trío tocó Eric Clapton con Jack Bruce y Ginger Baker?,Cream,The Jimi Hendrix Experience,Blind Faith,Derek and the Dominos,Rock clásico,media,2026-11-19
+"¿Quién grabó ""Johnny B. Goode""?",Chuck Berry,Little Richard,Elvis Presley,Buddy Holly,Rock clásico,facil,2026-11-19
+"¿A quién apodan ""The Boss""?",Bruce Springsteen,Bob Dylan,Tom Petty,Bon Jovi,Rock clásico,facil,2026-11-19
+¿Quién era el guitarrista y cantante de Dire Straits?,Mark Knopfler,Sting,Eric Clapton,David Gilmour,Rock clásico,facil,2026-11-19
+¿De qué ciudad es U2?,Dublín,Belfast,Londres,Glasgow,Rock clásico,facil,2026-11-19
+¿Qué artista cerró el festival de Woodstock en 1969?,Jimi Hendrix,Janis Joplin,The Who,Santana,Rock clásico,media,2026-11-19
+¿En qué ciudad está el Rock and Roll Hall of Fame?,Cleveland,Nueva York,Memphis,Nashville,Rock clásico,dificil,2026-11-19
+"¿A quién se conoce como ""el Rey del Rock and Roll""?",Elvis Presley,Chuck Berry,Little Richard,Jerry Lee Lewis,Rock clásico,facil,2026-11-19
+¿En qué ciudad nació el grunge?,Seattle,Portland,Los Ángeles,Chicago,Grunge,facil,2026-11-19
+"¿En qué año se publicó ""Nevermind"" de Nirvana?",1991,1989,1993,1995,Grunge,facil,2026-11-19
+¿Quién es el cantante de Pearl Jam?,Eddie Vedder,Chris Cornell,Layne Staley,Scott Weiland,Grunge,facil,2026-11-19
+¿Cómo se titula el primer álbum de Pearl Jam (1991)?,Ten,Vs.,Vitalogy,Yield,Grunge,media,2026-11-19
+¿Quién era el cantante de Alice in Chains?,Layne Staley,Chris Cornell,Eddie Vedder,Scott Weiland,Grunge,media,2026-11-19
+"¿Qué banda grabó ""Black Hole Sun""?",Soundgarden,Pearl Jam,Alice in Chains,Nirvana,Grunge,facil,2026-11-19
+¿Qué sello de Seattle lanzó a Nirvana y Soundgarden?,Sub Pop,Epitaph,Geffen,Matador,Grunge,media,2026-11-19
+¿En qué ciudad grabó Nirvana su famoso MTV Unplugged (1993)?,Nueva York,Seattle,Los Ángeles,Londres,Grunge,media,2026-11-19
+¿Qué proyecto unió a Chris Cornell con miembros de Pearl Jam?,Temple of the Dog,Mad Season,Audioslave,Mother Love Bone,Grunge,dificil,2026-11-19
+¿Qué grupo formó Chris Cornell con miembros de Rage Against the Machine?,Audioslave,Velvet Revolver,Temple of the Dog,Mad Season,Grunge,media,2026-11-19
+¿En qué grupo cantó Scott Weiland antes de Velvet Revolver?,Stone Temple Pilots,Alice in Chains,Bush,Candlebox,Grunge,media,2026-11-19
+¿Quién era el bajista de Nirvana?,Krist Novoselic,Dave Grohl,Pat Smear,Jeff Ament,Grunge,media,2026-11-19
+¿Quién es el cantante de Rammstein?,Till Lindemann,Richard Kruspe,Peter Tägtgren,Klaus Meine,Metal internacional,facil,2026-11-19
+¿Quién fue la primera cantante de Nightwish?,Tarja Turunen,Floor Jansen,Anette Olzon,Simone Simons,Metal internacional,media,2026-11-19
+¿De qué país es Within Temptation?,Países Bajos,Bélgica,Alemania,Suecia,Metal internacional,media,2026-11-19
+¿Qué estilo popularizaron Korn y Limp Bizkit?,Nu metal,Power metal,Black metal,Glam metal,Metal internacional,facil,2026-11-19
+¿Cómo se titula el álbum debut de Linkin Park (2000)?,Hybrid Theory,Meteora,Minutes to Midnight,Reanimation,Metal internacional,media,2026-11-19
+¿Quién es el cantante de System of a Down?,Serj Tankian,Daron Malakian,Chester Bennington,Chino Moreno,Metal internacional,media,2026-11-19
+"¿Qué álbum de System of a Down incluye ""Chop Suey!""?",Toxicity,Mezmerize,Steal This Album!,Hypnotize,Metal internacional,media,2026-11-19
+¿De qué ciudad es Slipknot?,Des Moines,Chicago,Detroit,Phoenix,Metal internacional,dificil,2026-11-19
+¿Qué llevan siempre en escena los miembros de Slipknot?,Máscaras,Kilts,Capas,Corpse paint,Metal internacional,facil,2026-11-19
+¿Quién es el cantante de Slipknot?,Corey Taylor,Jonathan Davis,Chester Bennington,Chad Gray,Metal internacional,facil,2026-11-19
+¿Quién es el guitarrista de Rage Against the Machine?,Tom Morello,Wes Borland,Brad Delson,Daron Malakian,Metal internacional,media,2026-11-19
+¿Quién es el cantante de Tool?,Maynard James Keenan,Mike Patton,Chino Moreno,Serj Tankian,Metal internacional,media,2026-11-19
+¿De qué país es Ghost?,Suecia,Noruega,Finlandia,Alemania,Metal internacional,media,2026-11-19
+¿De qué país es Gojira?,Francia,Bélgica,Canadá,Suiza,Metal internacional,media,2026-11-19
+¿De qué país es Babymetal?,Japón,Corea del Sur,China,Taiwán,Metal internacional,facil,2026-11-19
+¿Qué estilo toca Dream Theater?,Metal progresivo,Death metal,Nu metal,Glam metal,Metal internacional,facil,2026-11-19
+¿Quién es el guitarrista de Dream Theater?,John Petrucci,Steve Vai,Joe Satriani,Paul Gilbert,Metal internacional,media,2026-11-19
+¿De qué país es Rhapsody of Fire?,Italia,España,Grecia,Portugal,Metal internacional,media,2026-11-19
+¿De qué país es Stratovarius?,Finlandia,Suecia,Noruega,Alemania,Metal internacional,media,2026-11-19
+¿Qué banda finlandesa versiona a Metallica con violonchelos?,Apocalyptica,Nightwish,Stratovarius,Sonata Arctica,Metal internacional,media,2026-11-19
+"¿Qué banda de monstruos ganó Eurovisión 2006 con ""Hard Rock Hallelujah""?",Lordi,Turisas,Children of Bodom,Babymetal,Metal internacional,facil,2026-11-19
+¿Quién es la cantante de Evanescence?,Amy Lee,Sharon den Adel,Tarja Turunen,Cristina Scabbia,Metal internacional,facil,2026-11-19
+¿Cómo se titula el disco de Pantera de 1990 con el que cambiaron su estilo?,Cowboys from Hell,Vulgar Display of Power,Far Beyond Driven,Power Metal,Metal internacional,media,2026-11-19
+¿Quién era el cantante de Pantera?,Phil Anselmo,Rob Flynn,Randy Blythe,Max Cavalera,Metal internacional,media,2026-11-19
+¿De qué estado de EE. UU. es Pantera?,Texas,Florida,California,Luisiana,Metal internacional,media,2026-11-19
+"¿Qué banda grabó ""Down with the Sickness""?",Disturbed,Korn,Godsmack,Drowning Pool,Metal internacional,media,2026-11-19
+"¿A quién se considera el ""padre del death metal""?",Chuck Schuldiner,Lemmy Kilmister,Quorthon,Tom Araya,Metal extremo,media,2026-11-19
+¿Qué estado de EE. UU. fue la cuna del death metal en los 80?,Florida,Texas,California,Nueva York,Metal extremo,media,2026-11-19
+¿Cómo se llama el maquillaje blanco y negro típico del black metal?,Corpse paint,War paint,Dead face,Skull make-up,Metal extremo,facil,2026-11-19
+"¿Qué banda grabó ""You Suffer"", récord Guinness de canción más corta?",Napalm Death,Carcass,Terrorizer,Brutal Truth,Metal extremo,media,2026-11-19
+¿Qué disco de Venom (1982) dio nombre a un género?,Black Metal,Death Metal,Speed Metal,Doom Metal,Metal extremo,media,2026-11-19
+¿Qué banda sueca de Quorthon es pionera del viking metal?,Bathory,Amon Amarth,Enslaved,Opeth,Metal extremo,dificil,2026-11-19
+¿De qué país es Behemoth?,Polonia,Rusia,Noruega,Hungría,Metal extremo,media,2026-11-19
+¿Qué ciudad sueca da nombre a un estilo de death metal melódico?,Gotemburgo,Estocolmo,Malmö,Uppsala,Metal extremo,media,2026-11-19
+"¿De qué país es Amon Amarth, famosos por sus temas vikingos?",Suecia,Noruega,Islandia,Dinamarca,Metal extremo,facil,2026-11-19
+"¿Qué banda sueca grabó ""Epicus Doomicus Metallicus""?",Candlemass,Opeth,Bathory,Katatonia,Metal extremo,dificil,2026-11-19
+¿De qué país es Opeth?,Suecia,Noruega,Finlandia,Países Bajos,Metal extremo,media,2026-11-19
+¿De qué país es Cradle of Filth?,Reino Unido,Noruega,Suecia,Estados Unidos,Metal extremo,media,2026-11-19
+¿Qué hermanos fundaron Barón Rojo?,Armando y Carlos de Castro,José y Juan Carmona,Ángel y Manolo Celada,Fito y Robe,Rock español,media,2026-11-19
+"¿Qué banda canta ""Vamos muy bien""?",Obús,Barón Rojo,Leño,Burning,Rock español,media,2026-11-19
+¿De qué ciudad es Medina Azahara?,Córdoba,Sevilla,Granada,Jaén,Rock español,media,2026-11-19
+¿De qué ciudad es Héroes del Silencio?,Zaragoza,Madrid,Huesca,Pamplona,Rock español,facil,2026-11-19
+"¿Qué banda canta ""Entre dos tierras""?",Héroes del Silencio,Extremoduro,Marea,Platero y Tú,Rock español,facil,2026-11-19
+¿De qué ciudad es Extremoduro?,Plasencia,Cáceres,Badajoz,Mérida,Rock español,media,2026-11-19
+¿En qué banda estuvo Fito Cabrales antes de Fito & Fitipaldis?,Platero y Tú,Extremoduro,Marea,Barricada,Rock español,facil,2026-11-19
+¿De qué ciudad es Platero y Tú?,Bilbao,Vitoria,Santander,Donostia,Rock español,media,2026-11-19
+¿Quién es el cantante de Marea?,Kutxi Romero,Robe Iniesta,Fito Cabrales,El Drogas,Rock español,media,2026-11-19
+"¿Qué banda grabó ""Maneras de vivir""?",Leño,Burning,Barón Rojo,Asfalto,Rock español,media,2026-11-19
+"¿Qué banda grabó ""Días de escuela""?",Asfalto,Leño,Obús,Topo,Rock español,dificil,2026-11-19
+"¿Qué banda grabó ""¿Qué hace una chica como tú en un sitio como este?""",Burning,Leño,Loquillo y Trogloditas,Los Secretos,Rock español,media,2026-11-19
+"¿Quién grabó el famoso directo ""Rock & Ríos"" (1982)?",Miguel Ríos,Rosendo,Loquillo,Barón Rojo,Rock español,media,2026-11-19
+¿De qué ciudad es Los Suaves?,Ourense,Vigo,Lugo,A Coruña,Rock español,media,2026-11-19
+¿Qué disco de Mägo de Oz (1998) está basado en el Quijote?,La leyenda de la Mancha,Finisterra,Gaia,Jesús de Chamberlain,Rock español,media,2026-11-19
+¿Quién fundó Mägo de Oz?,Txus di Fellatio,José Andrëa,Fortu,Leize,Rock español,media,2026-11-19
+¿De qué comunidad son Warcry y Avalanch?,Asturias,Galicia,Cantabria,León,Rock español,media,2026-11-19
+¿Qué canción es una de las más conocidas de Fito & Fitipaldis?,Soldadito marinero,Entre dos tierras,Maneras de vivir,Cadillac solitario,Rock español,facil,2026-11-19
+"¿Quién canta ""Cadillac solitario""?",Loquillo,Rosendo,Miguel Ríos,Bunbury,Rock español,facil,2026-11-19
+"¿Qué banda canta ""Dolores se llamaba Lola""?",Los Suaves,Barricada,Platero y Tú,Marea,Rock español,media,2026-11-19
+¿Qué estilo representaban Triana y Medina Azahara?,Rock andaluz,Rock urbano,Heavy metal,Punk,Rock español,media,2026-11-19
+¿De qué país es Yngwie Malmsteen?,Suecia,Noruega,Dinamarca,Finlandia,Guitarristas,media,2026-11-19
+¿Quién fue profesor de guitarra de Steve Vai y Kirk Hammett?,Joe Satriani,Eddie Van Halen,Randy Rhoads,Jeff Beck,Guitarristas,dificil,2026-11-19
+"¿Qué guitarrista grabó ""Surfing with the Alien""?",Joe Satriani,Steve Vai,Yngwie Malmsteen,Paul Gilbert,Guitarristas,media,2026-11-19
+¿Cómo se llama la guitarra casera de Brian May?,Red Special,Lucille,Frankenstrat,Blackie,Guitarristas,media,2026-11-19
+¿Cómo llamaba B.B. King a sus guitarras?,Lucille,Red Special,Betsy,Trigger,Guitarristas,media,2026-11-19
+¿Cómo se llamaba la famosa guitarra rayada de Eddie Van Halen?,Frankenstrat,Red Special,Black Beauty,Lucille,Guitarristas,media,2026-11-19
+"¿Qué guitarrista popularizó el paso del pato (""duck walk"")?",Chuck Berry,Angus Young,Jimi Hendrix,Pete Townshend,Guitarristas,media,2026-11-19
+"¿Qué guitarrista usaba una guitarra de doble mástil para tocar ""Stairway to Heaven""?",Jimmy Page,Ritchie Blackmore,Slash,Tony Iommi,Guitarristas,media,2026-11-19
+¿Cuál es el nombre real de Slash?,Saul Hudson,Steven Adler,Jeffrey Isbell,Michael McKagan,Guitarristas,media,2026-11-19
+¿Qué himno tocó Jimi Hendrix con su guitarra en Woodstock?,El himno de Estados Unidos,God Save the Queen,La Marsellesa,La Internacional,Guitarristas,media,2026-11-19
+"¿Qué guitarrista norirlandés grabó ""Still Got the Blues""?",Gary Moore,Rory Gallagher,Phil Lynott,Mark Knopfler,Guitarristas,media,2026-11-19
+¿Con qué mano rasguea las cuerdas Tony Iommi?,Con la izquierda (es zurdo),Con la derecha,Con las dos,Usa arco de violín,Guitarristas,dificil,2026-11-19
+¿Qué banda fundó Zakk Wylde?,Black Label Society,Pride & Glory,Ozzy Osbourne Band,Pantera,Guitarristas,media,2026-11-19
+¿En qué banda tocaba Marty Friedman en los 90?,Megadeth,Metallica,Slayer,Testament,Guitarristas,media,2026-11-19
+¿En qué ciudad nació el festival Rock in Rio?,Río de Janeiro,São Paulo,Lisboa,Buenos Aires,Festivales,facil,2026-11-19
+¿En qué país se celebra el Hellfest?,Francia,Bélgica,Alemania,Suiza,Festivales,facil,2026-11-19
+¿En qué localidad gallega se celebra el Resurrection Fest?,Viveiro,Ortigueira,Vigo,Lugo,Festivales,media,2026-11-19
+¿En qué localidad alicantina se celebra el Leyendas del Rock?,Villena,Elche,Benidorm,Alcoy,Festivales,media,2026-11-19
+¿En qué ciudad se celebra el Azkena Rock Festival?,Vitoria,Bilbao,Donostia,Pamplona,Festivales,media,2026-11-19
+¿En qué municipio se celebra el Rock Fest Barcelona?,Santa Coloma de Gramenet,Badalona,Montmeló,Terrassa,Festivales,media,2026-11-19
+¿En qué país se celebra el Graspop Metal Meeting?,Bélgica,Países Bajos,Alemania,Francia,Festivales,media,2026-11-19
+¿En qué año se celebró el primer Monsters of Rock en Donington?,1980,1976,1985,1988,Festivales,dificil,2026-11-19
+¿Quiénes fundaron el Ozzfest?,Ozzy y Sharon Osbourne,Lemmy y Phil Taylor,James Hetfield y Lars Ulrich,Gene Simmons y Paul Stanley,Festivales,facil,2026-11-19
+¿Qué músico de Jane's Addiction creó Lollapalooza?,Perry Farrell,Eddie Vedder,Dave Navarro,Chris Cornell,Festivales,dificil,2026-11-19
+¿En qué ciudad española se celebró el Download Festival?,Madrid,Barcelona,Valencia,Bilbao,Festivales,media,2026-11-19
+¿En qué ciudad se celebra el festival Z! Live Rock Fest?,Zamora,Zaragoza,Salamanca,Valladolid,Festivales,media,2026-11-19
+¿En qué estado de EE. UU. se celebró el festival de Woodstock de 1969?,Nueva York,California,Nueva Jersey,Pensilvania,Festivales,media,2026-11-19
+¿En qué dos ciudades se celebró el Live Aid de 1985?,Londres y Filadelfia,Londres y Nueva York,París y Los Ángeles,Berlín y Chicago,Festivales,dificil,2026-11-19
+"En la película ""This Is Spinal Tap"", ¿hasta qué número llegan sus amplificadores?",11,10,12,20,Curiosidades,media,2026-11-19
+¿Cómo se llama el baile en el que el público se separa en dos y choca en el centro?,Wall of death,Circle pit,Stage diving,Pogo,Curiosidades,media,2026-11-19
+¿Cómo se llama lanzarse desde el escenario sobre el público?,Stage diving,Crowd surfing,Headbanging,Moshing,Curiosidades,facil,2026-11-19
+¿Cómo se llama el club de fans oficial de Kiss?,Kiss Army,Kiss Nation,Kiss Legion,Kiss Family,Curiosidades,media,2026-11-19
+¿Cómo se llama la cerveza oficial de Iron Maiden?,Trooper,Eddie Ale,Beast,Powerslave,Curiosidades,media,2026-11-19
+¿Qué rockero usa una guillotina en sus conciertos?,Alice Cooper,Ozzy Osbourne,Marilyn Manson,King Diamond,Curiosidades,facil,2026-11-19
+¿Cómo se llamaba el reality de MTV sobre la familia de Ozzy?,The Osbournes,Ozzy's House,Prince of Darkness,Meet the Ozzys,Curiosidades,facil,2026-11-19
+¿Qué miembro de Kiss escupe fuego y sangre falsa en escena?,Gene Simmons,Paul Stanley,Ace Frehley,Peter Criss,Curiosidades,facil,2026-11-19
+"¿En qué película de 1992 headbanguean con ""Bohemian Rhapsody"" en un coche?",Wayne's World,Bill & Ted,Airheads,School of Rock,Curiosidades,media,2026-11-19
+"¿Qué actor protagoniza ""School of Rock"" y lidera Tenacious D?",Jack Black,Adam Sandler,Will Ferrell,Seth Rogen,Curiosidades,facil,2026-11-19
+"¿Con qué banda tocó Dave Grohl la batería en ""Songs for the Deaf"" (2002)?",Queens of the Stone Age,Them Crooked Vultures,Probot,Tenacious D,Curiosidades,dificil,2026-11-19
+¿Qué videojuego popularizó tocar con una guitarra de plástico?,Guitar Hero,Just Dance,SingStar,Beat Saber,Curiosidades,facil,2026-11-19
+¿Cómo se llama mover la cabeza al ritmo del metal?,Headbanging,Moshing,Pogo,Air guitar,Curiosidades,facil,2026-11-19
+¿En qué festival debutó la banda Bunker en 2017?,Can Mercader Festival,Rock Fest Barcelona,Resurrection Fest,Leyendas del Rock,Bandas Liantes,dificil,2026-11-19
+¿De qué ciudad es la banda Bunker?,Cornellà de Llobregat,Badalona,Gavà,Viladecans,Bandas Liantes,media,2026-11-19
+¿Quién fundó Crash Bones?,Danny Bones,Lou Angelson,Nico Cattoni,Toni García,Bandas Liantes,media,2026-11-19
+¿Cómo se titula el primer LP de Crash Bones (2020)?,Tendencia Homicida,Mi Adicción,Titanes,Respira,Bandas Liantes,dificil,2026-11-19
+¿Qué disco publicó Cruzada en 2022?,Titanes,Entre Andenes,Blackfire,Light of Death,Bandas Liantes,dificil,2026-11-19
+¿Qué estilo toca Irthangaz?,Power metal,Punk rock,Rock urbano,Stoner,Bandas Liantes,media,2026-11-19
+¿Cómo se titula el primer LP de Irthangaz (2019)?,"Acero, sangre y Honor",Titanes,Now Or Never,Bajo la Niebla,Bandas Liantes,dificil,2026-11-19
+¿Qué banda Liante es un tributo a la época dorada del heavy de los 80 y 90?,Metal Hits,Barrena,Cruzada,Mescaleros,Bandas Liantes,media,2026-11-19
+¿En qué idioma canta Silverfeet?,Inglés,Castellano,Catalán,Euskera,Bandas Liantes,media,2026-11-19
+¿Cómo se titula el EP de 2018 de la banda Tayo?,Bajo la Niebla,Besos a Destiempo,Take This One,Entre Andenes,Bandas Liantes,dificil,2026-11-19
+"¿De qué ciudad es la banda Tocho, formada en 1990?",Badalona,Cornellà de Llobregat,Gavà,Viladecans,Bandas Liantes,media,2026-11-19
+¿De qué comarca es la banda Siixs?,Bajo Aragón,Baix Llobregat,Maresme,Vallès,Bandas Liantes,dificil,2026-11-19
+¿Con qué baterías legendarios ha trabajado el cantante Luis Blanco?,Ian Paice y Vinny Appice,Lars Ulrich y Dave Lombardo,Nicko McBrain y Cozy Powell,Phil Rudd y Tommy Lee,Bandas Liantes,dificil,2026-11-19
+¿De qué barrio de L'Hospitalet es la banda Blutaxt?,Bellvitge,Collblanc,La Florida,Santa Eulàlia,Bandas Liantes,dificil,2026-11-19
+"¿De qué ciudad es Nico Cattoni, fundador de Raptore?",Buenos Aires,Montevideo,Rosario,Santiago de Chile,Bandas Liantes,media,2026-11-19
+¿Cómo se titula el álbum de 2020 de Wild Road Rollers?,Imperial Stout Motor Oil,Loud & Proud,"No Fear, No Limits",Light of Death,Bandas Liantes,dificil,2026-11-19
+¿Qué disco publicó Jolly Joker en 2022?,Loud & Proud,Never Say Forever,Here Come the Jokers,"Sex, Booze and Tattoos",Bandas Liantes,dificil,2026-11-19
+"¿Qué banda de los Liantes tiene influencias de ZZ Top, Thin Lizzy y AC/DC?",Mescaleros,Sirius,Siixs,Raptore,Bandas Liantes,media,2026-11-19
+¿En qué red social nació el grupo Liantes Metaleros?,Facebook,Instagram,WhatsApp,Telegram,Liantes Metaleros,facil,2026-11-19
+"¿Qué significa el lema ""Live fast, die young"" de los Liantes?","Vive rápido, muere joven","Vive libre, muere de pie","Vive a tope, muere feliz","Toca rápido, toca fuerte",Liantes Metaleros,facil,2026-11-19
+"¿Qué es Liant, la mascota de los Liantes?",Una calavera con pinchos andante,Un murciélago con guitarra,Un lobo con chupa de cuero,Un cuervo rockero,Liantes Metaleros,media,2026-11-19
