@@ -129,6 +129,17 @@
   .tabs button{flex:1;appearance:none;border:0;cursor:pointer;background:#000;color:var(--muted);font-family:"Red Hat Display";font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:13px;padding:12px}
   .tabs button.on{background:var(--text);color:#1a1a1a}
   .hof-title{font-family:"Rubik Dirt",cursive;font-weight:400;text-align:center;font-size:clamp(44px,11vw,72px);margin:0;color:var(--text);line-height:1}
+  .champ{margin-top:14px;text-align:center;font-family:"Red Hat Display";font-weight:700;font-size:14px;padding:10px;border:1px solid rgba(255,215,106,.45);background:rgba(255,215,106,.08);color:#ffd76a}
+  .champ b{color:#fff}
+  .champ-month{border:1px solid var(--line);background:#131415;padding:12px 14px;margin-bottom:10px}
+  .champ-month h4{margin:0 0 8px;font-family:"Red Hat Display";font-weight:900;font-size:16px;text-transform:capitalize}
+  .champ-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-top:1px solid var(--line)}
+  .champ-row:first-of-type{border-top:0}
+  .champ-row .medal{font-size:20px;width:28px;text-align:center}
+  .champ-row .nm{flex:1} .champ-row .pt{font-family:"Red Hat Display";font-weight:900}
+  .champ-row.top1{color:#ffd76a} .champ-row.top2{color:#d7d9e0} .champ-row.top3{color:#e2a36b}
+  .tabs button{padding:12px 6px}
+  @media (max-width:400px){ .tabs button{font-size:11px;letter-spacing:.3px} }
   .hof-sub{text-align:center;color:var(--muted);font-size:13px;margin:6px 0 14px}
   table.hof th{font-family:"Red Hat Display";font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--line);font-weight:700}
   table.hof th.r, table.hof td.r{text-align:right}
@@ -346,6 +357,7 @@
     <button id="btn-start" class="btn block">¡A liarla!</button>
     <button id="btn-hof-start" class="btn ghost hof">🏆 Hall of Fame</button>
     <div id="start-err" class="err hidden"></div>
+    <div id="champ" class="champ hidden"></div>
     <div id="source" class="source">Cargando preguntas…</div>
   </section>
 
@@ -405,8 +417,9 @@
     <h2 class="hof-title">Hall of Fame</h2>
     <div class="hof-sub" id="hof-sub">Las leyendas Liantes</div>
     <div class="tabs" role="tablist">
-      <button id="tab-total" class="on" role="tab">Puntos acumulados</button>
+      <button id="tab-total" class="on" role="tab">Ranking del mes</button>
       <button id="tab-best" role="tab">Mejores partidas</button>
+      <button id="tab-champs" role="tab">👑 Campeones</button>
     </div>
     <div id="hof-body" class="table-wrap"></div>
     <div class="actions">
@@ -679,7 +692,7 @@ function finish(){
       const pos = totals.findIndex(p => p.key === record.key);
       const me = totals[pos];
       $("mypos").innerHTML = me
-        ? `🏆 <b>${esc(me.name)}</b>, estás en el puesto <b>#${pos+1}</b> del Hall of Fame con <b>${me.score}</b> puntos acumulados en ${me.games} ${me.games === 1 ? "partida" : "partidas"}.`
+        ? `🏆 <b>${esc(me.name)}</b>, estás en el puesto <b>#${pos+1}</b> del ranking de ${MESES[+madridMonthKey().split("-")[1] - 1]} con <b>${me.score}</b> puntos en ${me.games} ${me.games === 1 ? "partida" : "partidas"}.`
         : "";
     }catch(e){
       console.warn(e);
@@ -712,6 +725,15 @@ const Stats = (() => {
   return {track};
 })();
 
+/* ---------- Hall of Fame mensual + campeones ---------- */
+const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+function madridMonthKey(ts = Date.now()){
+  const p = new Intl.DateTimeFormat("en-CA", {timeZone: "Europe/Madrid", year: "numeric", month: "2-digit"}).formatToParts(new Date(ts));
+  return p.find(x => x.type === "year").value + "-" + p.find(x => x.type === "month").value;
+}
+function monthLabel(key){ const [y, m] = key.split("-"); return MESES[+m - 1] + " " + y; }
+function nextMonthLabel(){ const [y, m] = madridMonthKey().split("-").map(Number); return "1 de " + MESES[m % 12]; }
+
 const HOF = (() => {
   const online = !!(SUPABASE_URL && SUPABASE_KEY);
   const base = SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/";
@@ -725,20 +747,27 @@ const HOF = (() => {
     if (!res.ok) throw new Error("Supabase " + res.status + ": " + (await res.text()).slice(0, 200));
     return res.status === 204 || res.status === 201 ? null : res.json();
   }
+  function aggregate(games){
+    const map = new Map();
+    for (const g of games){
+      const p = map.get(g.key) || {key: g.key, name: g.name, score: 0, games: 0, ok: 0, total: 0, best: 0, last: 0};
+      p.score += g.score; p.games++; p.ok += g.ok; p.total += g.total; p.best = Math.max(p.best, g.score);
+      if (g.t >= p.last){ p.last = g.t; p.name = g.name; }
+      map.set(g.key, p);
+    }
+    return [...map.values()].sort((a,b) => b.score - a.score || b.best - a.best);
+  }
   const local = {
-    async save(g){ const a = store("rmq-games") || []; a.push(g); store("rmq-games", a.slice(-1000)); },
-    async totals(){
-      const map = new Map();
-      for (const g of (store("rmq-games") || [])){
-        const p = map.get(g.key) || {key: g.key, name: g.name, score: 0, games: 0, ok: 0, total: 0, best: 0, last: 0};
-        p.score += g.score; p.games++; p.ok += g.ok; p.total += g.total; p.best = Math.max(p.best, g.score);
-        if (g.t >= p.last){ p.last = g.t; p.name = g.name; }
-        map.set(g.key, p);
-      }
-      return [...map.values()].sort((a,b) => b.score - a.score || b.best - a.best);
+    all(){ return store("rmq-games") || []; },
+    async save(g){ const a = this.all(); a.push(g); store("rmq-games", a.slice(-2000)); },
+    async totals(){ const k = madridMonthKey(); return aggregate(this.all().filter(g => madridMonthKey(g.t) === k)); },
+    async best(){ const k = madridMonthKey(); return this.all().filter(g => madridMonthKey(g.t) === k).sort((a,b) => b.score - a.score || a.t - b.t).slice(0, 25); },
+    async champions(){
+      const cur = madridMonthKey(), byMonth = {};
+      for (const g of this.all()){ const k = madridMonthKey(g.t); if (k < cur) (byMonth[k] = byMonth[k] || []).push(g); }
+      return Object.keys(byMonth).sort().reverse().slice(0, 12).map(k => ({mes: k, top: aggregate(byMonth[k]).slice(0, 3)}));
     },
-    async best(){ return (store("rmq-games") || []).slice().sort((a,b) => b.score - a.score || a.t - b.t).slice(0, 25); },
-    async count(){ return (store("rmq-games") || []).length; },
+    async count(){ return this.all().length; },
     async reset(){ store("rmq-games", []); }
   };
   const remote = {
@@ -747,12 +776,23 @@ const HOF = (() => {
         body: JSON.stringify({nombre: g.name.slice(0, 24), clave: g.key.slice(0, 40), puntos: g.score, aciertos: g.ok, total: g.total})});
     },
     async totals(){
-      const rows = await api("hall_of_fame?select=*&order=puntos.desc,mejor.desc&limit=1000");
+      let rows;
+      try{ rows = await api("hall_of_fame_mes?select=*&order=puntos.desc,mejor.desc&limit=1000"); }
+      catch(e){ rows = await api("hall_of_fame?select=*&order=puntos.desc,mejor.desc&limit=1000"); }   // respaldo si aún no existe la vista mensual
       return rows.map(r => ({key: r.clave, name: r.nombre, score: r.puntos, games: r.partidas, ok: r.aciertos, total: r.total, best: r.mejor}));
     },
     async best(){
-      const rows = await api("partidas?select=nombre,puntos,aciertos,total,creado&order=puntos.desc,creado.asc&limit=25");
+      let rows;
+      try{ rows = await api("mejores_partidas_mes?select=nombre,puntos,aciertos,total,creado&order=puntos.desc,creado.asc&limit=25"); }
+      catch(e){ rows = await api("partidas?select=nombre,puntos,aciertos,total,creado&order=puntos.desc,creado.asc&limit=25"); }
       return rows.map(r => ({name: r.nombre, score: r.puntos, ok: r.aciertos, total: r.total, t: Date.parse(r.creado)}));
+    },
+    async champions(){
+      let rows;
+      try{ rows = await api("campeones_mensuales?select=*&order=mes.desc,puesto.asc&limit=36"); } catch(e){ rows = []; }
+      const by = {};
+      for (const r of rows) (by[r.mes] = by[r.mes] || []).push({name: r.nombre, score: r.puntos, games: r.partidas, best: r.mejor, puesto: r.puesto});
+      return Object.keys(by).sort().reverse().map(k => ({mes: k, top: by[k]}));
     },
     async count(){ return 1; },
     async reset(){ throw new Error("El Hall of Fame compartido solo se borra desde Supabase."); }
@@ -763,9 +803,11 @@ const HOF = (() => {
 let hofTab = "total";
 const MEDALS = ["🥇","🥈","🥉"];
 async function renderHof(){
-  $("tab-total").classList.toggle("on", hofTab === "total");
-  $("tab-best").classList.toggle("on", hofTab === "best");
-  $("hof-sub").textContent = HOF.online ? "Las leyendas Liantes de todos los jugadores" : "Las leyendas Liantes de este dispositivo";
+  ["total","best","champs"].forEach(k => $("tab-" + k).classList.toggle("on", hofTab === k));
+  const mes = monthLabel(madridMonthKey());
+  $("hof-sub").textContent = hofTab === "champs"
+    ? "Los tres mejores de cada mes 👑"
+    : `Ranking de ${mes} · se reinicia el ${nextMonthLabel()}` + (HOF.online ? "" : " · este dispositivo");
   $("btn-hof-reset").classList.add("hidden");
   $("hof-body").innerHTML = `<div class="empty">Cargando leyendas… 🤘</div>`;
   const cls = i => i < 3 ? `top${i+1}` : "";
@@ -775,14 +817,21 @@ async function renderHof(){
     if (hofTab === "total"){
       const rows = (await HOF.totals()).slice(0, 25);
       html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r xs-hide">Partidas</th><th class="r">Aciertos</th><th class="r">Puntos</th></tr></thead><tbody>` +
-        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(p.name)}</td><td class="r xs-hide">${p.games}</td><td class="r">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}</td></tr>`).join("") + `</tbody></table>` : "";
-    } else {
+        rows.map((p,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(p.name)}</td><td class="r xs-hide">${p.games}</td><td class="r">${Math.round(p.ok/p.total*100)}%</td><td class="r s">${p.score}</td></tr>`).join("") + `</tbody></table>`
+        : `<div class="empty">Nuevo mes, ranking a cero. ¡Juega y sé el primer Liante de ${mes}! 🤘</div>`;
+    } else if (hofTab === "best"){
       const rows = await HOF.best();
       html = rows.length ? `<table class="hof"><thead><tr><th></th><th>Liante</th><th class="r">Aciertos</th><th class="r xs-hide">Fecha</th><th class="r">Puntos</th></tr></thead><tbody>` +
-        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(g.name)}</td><td class="r">${g.ok}/${g.total}</td><td class="r xs-hide">${new Date(g.t).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit"})}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>` : "";
+        rows.map((g,i) => `<tr class="${cls(i)}"><td class="medal">${medal(i)}</td><td>${esc(g.name)}</td><td class="r">${g.ok}/${g.total}</td><td class="r xs-hide">${new Date(g.t).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit",timeZone:"Europe/Madrid"})}</td><td class="r s">${g.score}</td></tr>`).join("") + `</tbody></table>`
+        : `<div class="empty">Aún no hay partidas este mes. ¡Estrénalo! 🤘</div>`;
+    } else {
+      const months = await HOF.champions();
+      html = months.length ? months.map(m => `<div class="champ-month"><h4>👑 ${monthLabel(m.mes)}</h4>` +
+        m.top.map((p,i) => `<div class="champ-row ${cls(i)}"><span class="medal">${MEDALS[i] || ""}</span><span class="nm">${esc(p.name)}</span><span class="pt">${p.score} pts</span></div>`).join("") + `</div>`).join("")
+        : `<div class="empty">Todavía no hay campeones. El primero se coronará el ${nextMonthLabel()}. 👑</div>`;
     }
-    $("hof-body").innerHTML = html || `<div class="empty">Todavía no hay leyendas. ¡Juega una partida y estrena el Hall of Fame! 🤘</div>`;
-    if (!HOF.online && await HOF.count()) $("btn-hof-reset").classList.remove("hidden");
+    $("hof-body").innerHTML = html;
+    if (!HOF.online && hofTab !== "champs" && await HOF.count()) $("btn-hof-reset").classList.remove("hidden");
   }catch(e){
     console.warn(e);
     $("hof-body").innerHTML = `<div class="err">No se pudo cargar el Hall of Fame. Comprueba la conexión e inténtalo de nuevo.</div>`;
@@ -790,6 +839,19 @@ async function renderHof(){
 }
 let hofReturn = "scr-start";
 function openHof(from){ hofReturn = from; show("scr-hof"); renderHof(); }
+
+/* Campeón del mes pasado en la pantalla de inicio */
+(async () => {
+  try{
+    const months = await HOF.champions();
+    if (!months.length) return;
+    const last = months[0], [y, m] = madridMonthKey().split("-").map(Number);
+    const prev = (m === 1 ? (y - 1) + "-12" : y + "-" + String(m - 1).padStart(2, "0"));
+    if (last.mes !== prev || !last.top.length) return;
+    $("champ").innerHTML = `👑 Campeón de ${MESES[+prev.split("-")[1] - 1]}: <b>${esc(last.top[0].name)}</b> · ${last.top[0].score} pts`;
+    $("champ").classList.remove("hidden");
+  }catch(e){}
+})();
 
 /* ---------- Diálogo de confirmación ---------- */
 let modalResolve = null;
@@ -849,6 +911,7 @@ $("btn-hof-end").addEventListener("click", () => openHof("scr-end"));
 $("btn-hof-back").addEventListener("click", () => show(hofReturn));
 $("tab-total").addEventListener("click", () => { hofTab = "total"; renderHof(); });
 $("tab-best").addEventListener("click", () => { hofTab = "best"; renderHof(); });
+$("tab-champs").addEventListener("click", () => { hofTab = "champs"; renderHof(); });
 $("btn-hof-reset").addEventListener("click", async () => {
   if (await askConfirm("¿Borrar el Hall of Fame?", "Se borrarán todas las puntuaciones guardadas en este dispositivo. No se puede deshacer.", "Sí, borrar", "Cancelar")){
     await HOF.reset(); renderHof();
