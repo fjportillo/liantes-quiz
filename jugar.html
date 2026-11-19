@@ -56,6 +56,17 @@
   .stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
   a.link{color:var(--blue2);text-align:center;display:block;margin-top:14px}
   @media (min-width:700px){ main{max-width:640px;margin:0 auto;width:100%} }
+
+  .exit-btn{appearance:none;background:transparent;border:1px solid #555;color:var(--text);font-family:"Red Hat Display";font-weight:800;font-size:14px;letter-spacing:1px;padding:9px 14px;cursor:pointer;text-transform:uppercase}
+  .exit-btn:hover{border-color:var(--bad);color:var(--bad)}
+  .xmodal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:grid;place-items:center;padding:20px;z-index:100}
+  .xmodal .box{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--bad);max-width:440px;width:100%;padding:24px}
+  .xmodal h4{margin:0 0 8px;font-family:"Red Hat Display";font-weight:900;font-size:22px}
+  .xmodal p{margin:0 0 18px;color:var(--muted);line-height:1.45}
+  .xmodal .acts{display:flex;gap:10px;flex-wrap:wrap}
+  .xmodal .acts button{flex:1;min-width:140px;appearance:none;border:0;cursor:pointer;font-family:"Red Hat Display";font-weight:900;text-transform:uppercase;letter-spacing:1px;font-size:15px;padding:14px}
+  .xmodal .yes{background:var(--bad);color:#fff} .xmodal .no{background:#000;color:var(--text);border:1px solid var(--line) !important}
+  header .exit-btn{margin-left:12px;padding:8px 10px;font-size:12px}
 </style>
 </head>
 <body>
@@ -63,6 +74,7 @@
   <img src="logo.png" alt="Liantes Metaleros">
   <div class="t">LIANTES</div>
   <div class="me hidden" id="me"><b id="me-name"></b><br>Sala <span id="me-room"></span></div>
+  <button class="exit-btn" id="b-exit" title="Salir">✕ Salir</button>
 </header>
 <main>
   <!-- UNIRSE -->
@@ -108,6 +120,10 @@
     <a class="link" href="./">Jugar al quiz normal →</a>
   </section>
 </main>
+<div class="xmodal hidden" id="x-modal" role="dialog" aria-modal="true">
+  <div class="box"><h4>¿Salir de la partida?</h4><p id="x-text"></p>
+    <div class="acts"><button class="yes" id="x-yes">Sí, salir</button><button class="no" id="x-no">Cancelar</button></div></div>
+</div>
 <script>
 const SUPABASE_URL = "https://zfrwdqenyvtuvjvbxcwo.supabase.co";
 const SUPABASE_KEY = "sb_publishable_arztBfRZYNWnpV8A7zCTBg_M2il4O0B";
@@ -220,6 +236,7 @@ async function render(s){
     if (st){ $("end-pos").textContent = st.pos ? "#" + st.pos : "–"; $("end-pts").textContent = st.pts; $("end-ok").textContent = st.ok + "/" + s.total;
       $("end-emoji").textContent = st.pos === 1 ? "👑" : st.pos === 2 ? "🥈" : st.pos === 3 ? "🥉" : "🤘";
       $("end-title").textContent = st.pos === 1 ? "¡Eres el campeón!" : st.pos && st.pos <= 3 ? "¡Al podio!" : "¡Gracias por jugar!"; }
+    if (s.idx + 1 < s.total){ $("end-emoji").textContent = "🚪"; $("end-title").textContent = "El presentador ha cerrado la partida"; }
     sessionStorage.removeItem("ev-player");
   }
 }
@@ -235,6 +252,22 @@ async function answer(idx, k){
   try{ await rpc("ev_responder", {p_codigo: P.codigo, p_jugador: P.jugador, p_token: P.token, p_idx: idx, p_opcion: k}); $("q-msg").textContent = "Respuesta enviada ✅ Mira la pantalla…"; }
   catch(e){ $("q-msg").textContent = nice(e.message); if (!String(e.message).includes("FUERA_DE_TIEMPO")) { delete myAnswer[idx]; saveAns(); $("q-opts").querySelectorAll(".opt").forEach(b => { b.disabled = false; b.classList.remove("mine"); }); } }
 }
+
+/* ---------- Salir ---------- */
+function exitGame(){
+  if (!P){ location.href = "./"; return; }
+  $("x-text").textContent = "Saldrás de la sala " + P.codigo + " y tus puntos de esta partida se perderán. Podrás volver a entrar con el código, pero empezarás de cero.";
+  $("x-modal").classList.remove("hidden");
+}
+async function doExit(){
+  $("x-yes").disabled = true; clearTimeout(pollT); clearInterval(tick);
+  if (P){ try{ await rpc("ev_salir", {p_jugador: P.jugador, p_token: P.token}); }catch(e){} try{ sessionStorage.removeItem("ev-player"); sessionStorage.removeItem("ev-ans-" + P.codigo); }catch(e){} }
+  location.href = "./";
+}
+$("b-exit").addEventListener("click", exitGame);
+$("x-yes").addEventListener("click", doExit);
+$("x-no").addEventListener("click", () => $("x-modal").classList.add("hidden"));
+$("x-modal").addEventListener("click", e => { if (e.target.id === "x-modal") $("x-modal").classList.add("hidden"); });
 
 $("b-join").addEventListener("click", join);
 $("in-name").addEventListener("keydown", e => { if (e.key === "Enter") join(); });

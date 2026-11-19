@@ -154,3 +154,9 @@ group by j.codigo, j.id, j.nombre;
 grant select on public.ev_estado, public.ev_jugadores, public.ev_votos, public.ev_ranking to anon, authenticated;
 grant execute on function public.ev_crear_sala(text,int,int), public.ev_pregunta(text,text,int,jsonb), public.ev_revelar(text,text,int),
   public.ev_fin(text,text), public.ev_unirse(text,text), public.ev_responder(text,uuid,uuid,int,int) to anon, authenticated;
+create or replace function public.ev_salir(p_jugador uuid, p_token uuid)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+  delete from sala_jugadores where id = p_jugador and token = p_token;
+end $$;
+grant execute on function public.ev_salir(uuid, uuid) to anon, authenticated;
