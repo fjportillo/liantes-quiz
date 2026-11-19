@@ -138,6 +138,13 @@
   footer .social svg{width:34px;height:34px;fill:currentColor}
   footer .shop{display:inline-block;background:#000;color:#fff;text-decoration:none;font-family:"Red Hat Display";font-size:13px;padding:10px 16px;border:1px solid var(--line);margin-bottom:14px}
   footer .shop:hover{background:var(--blue)}
+  .coffee{display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:"Red Hat Display";font-weight:800;
+    letter-spacing:.5px;font-size:15px;color:#1a1a1a;background:#ffc439;padding:12px 18px;min-height:48px;border:0;transition:filter .15s,transform .1s}
+  .coffee:hover{filter:brightness(1.06)} .coffee:active{transform:translateY(1px)}
+  .coffee small{font-weight:600;opacity:.75}
+  .coffee-box{margin-top:18px;text-align:center}
+  .coffee-box p{margin:0 0 10px;color:var(--muted);font-size:14px}
+  footer .coffee{display:inline-flex;margin:0 0 16px}
   footer p{margin:6px 0;color:var(--muted);font-size:13px}
   footer .motto{font-family:"Red Hat Display";font-weight:700;color:var(--text)}
   @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
@@ -327,6 +334,10 @@
       <div class="stat"><b id="st-streak">0</b><span>Mejor racha</span></div>
     </div>
     <div class="mypos" id="mypos"></div>
+    <div class="coffee-box hidden" data-coffee>
+      <p>¿Te has echado unas risas? Ayuda a mantener el quiz vivo 🤘</p>
+      <a class="coffee" data-coffee-link href="#" target="_blank" rel="noopener">☕ Invítame a un café <small>· 1 € con PayPal</small></a>
+    </div>
     <div id="review-wrap">
       <h3>Tus fallos</h3>
       <div class="review" id="review"></div>
@@ -365,6 +376,7 @@
   </div>
 </div>
 <footer>
+  <div class="hidden" data-coffee><a class="coffee" data-coffee-link href="#" target="_blank" rel="noopener">☕ Invítame a un café <small>· 1 € con PayPal</small></a></div>
   <a class="shop" href="https://liantesmetaleros.yupopstore.com/products" target="_blank" rel="noopener">TIENDA LIANTES METALEROS 💀🛒</a>
   <div class="social">
     <a href="https://www.instagram.com/asociacion_liantesmetaleros" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4 6.2 6.2 0 000-12.4zM12 16a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.9 1.4 1.4 0 000-2.9z"/></svg></a>
@@ -396,6 +408,11 @@ const STREAK_BONUS         = 50;   // bonus a partir de 3 aciertos seguidos
    Hall of Fame se guarda solo en cada dispositivo. */
 const SUPABASE_URL = "https://zfrwdqenyvtuvjvbxcwo.supabase.co";   // p. ej. "https://abcdxyz.supabase.co"
 const SUPABASE_KEY = "sb_publishable_arztBfRZYNWnpV8A7zCTBg_M2il4O0B";   // clave pública "publishable" o "anon"
+
+/* BOTÓN "INVÍTAME A UN CAFÉ" (PayPal.Me). Pon tu usuario de paypal.me
+   (lo que va después de paypal.me/). Si se deja vacío, el botón no aparece. */
+const PAYPAL_ME = "";
+const DONATION_EUR = 1;
 
 /* Preguntas incluidas de respaldo (se usan si no se puede leer la hoja ni el CSV) */
 const EMBEDDED_CSV = /*__PREGUNTAS_CSV__*/"";
@@ -915,6 +932,15 @@ const Deco = (() => {
   return {apply, pick};
 })();
 Deco.apply();
+
+/* ---------- Invítame a un café ---------- */
+(() => {
+  const user = PAYPAL_ME.trim().replace(/^https?:\/\/(www\.)?(paypal\.me|paypal\.com\/paypalme)\//i, "").replace(/\/.*$/, "");
+  if (!user) return;
+  const url = `https://www.paypal.com/paypalme/${encodeURIComponent(user)}/${DONATION_EUR}EUR`;
+  document.querySelectorAll("[data-coffee-link]").forEach(a => a.href = url);
+  document.querySelectorAll("[data-coffee]").forEach(el => el.classList.remove("hidden"));
+})();
 
 (async () => {
   $("btn-start").disabled = true;
