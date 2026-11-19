@@ -202,7 +202,11 @@
   .pin-in{width:100%;text-align:center;font-family:"Red Hat Display";font-weight:900;font-size:30px;letter-spacing:14px;padding:12px;margin-bottom:10px}
   .pin-in::placeholder{letter-spacing:4px;font-size:18px}
   #pin-name{width:100%;margin-bottom:10px;font-size:17px}
-  .login-row{margin-top:6px}
+  .login-h{font-family:"Red Hat Display";font-weight:900;text-transform:uppercase;letter-spacing:1px;margin:0 0 6px;font-size:22px}
+  .login-sub{color:var(--muted);font-size:14px;margin:0 0 14px;line-height:1.45}
+  .login-msg{font-size:14px;margin:12px 0 4px;line-height:1.45}
+  #scr-login .pin-in{letter-spacing:8px;font-size:22px;text-align:center}
+  #l-back{display:block;margin:12px auto 0}
   .logged{margin-top:8px;font-size:14px;color:var(--ok);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .logged b{color:var(--text)}
   .logged .report-link{margin:0;padding:0}
@@ -463,8 +467,32 @@
 <div class="wrap">
   <div class="tag" data-t>Live fast, die young… y contesta rápido. ¿Cuánto sabes de rock, metal y de los Liantes?</div>
 
+  <!-- ACCESO -->
+  <section id="scr-login" class="card hidden">
+    <h2 class="login-h" data-t>🤘 Entra para jugar</h2>
+    <p class="login-sub" data-t>Tu nombre de Liante y un PIN de 4 cifras protegen tus puntos en el ranking.</p>
+    <form id="login-form" autocomplete="on" novalidate>
+      <label for="l-name" data-t>Tu nombre</label>
+      <input id="l-name" name="username" maxlength="24" placeholder="Tu nombre de Liante" data-t-ph autocomplete="username">
+      <div id="l-pins" class="hidden">
+        <p class="login-msg" id="l-msg"></p>
+        <label for="l-pin1" id="l-pin1-lab" data-t>PIN</label>
+        <input id="l-pin1" name="password" class="pin-in" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="current-password">
+        <div id="l-pin2-wrap" class="hidden">
+          <label for="l-pin2" data-t>Repite el PIN</label>
+          <input id="l-pin2" class="pin-in" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="new-password">
+        </div>
+        <p class="pin-help" id="l-help"></p>
+      </div>
+      <div id="l-err" class="err hidden"></div>
+      <button id="l-go" class="btn block" type="submit" data-t>Continuar</button>
+      <button id="l-back" class="report-link hidden" type="button" data-t>← Usar otro nombre</button>
+    </form>
+    <div class="start-2"><button id="btn-hof-login" class="btn ghost hof" type="button" data-t>🏆 Ver el Hall of Fame</button></div>
+  </section>
+
   <!-- INICIO -->
-  <section id="scr-start" class="card">
+  <section id="scr-start" class="card hidden">
     <div class="reto-box" id="reto-box">
       <div class="reto-head"><span class="reto-tag" data-t>📅 Reto diario <b id="reto-num"></b></span><span class="reto-cd" id="reto-cd"></span></div>
       <div id="reto-todo"><p class="reto-prize" id="reto-prize"></p><p class="reto-txt" data-t>10 preguntas, <b>las mismas para todos</b>. Una sola oportunidad al día. ¿Quién es el Liante del día?</p>
@@ -472,10 +500,8 @@
       <div id="reto-done" class="hidden"><p class="reto-txt" id="reto-res"></p><div class="reto-grid" id="reto-grid"></div>
         <div class="reto-acts"><button id="btn-reto-share" class="btn sm" data-t>📤 Compartir</button><button id="btn-reto-rank" class="btn ghost sm" data-t>🏆 Ranking de hoy</button></div></div>
     </div>
-    <label for="name" data-t>Tu nombre</label>
-    <input id="name" maxlength="24" placeholder="Tu nombre de Liante" data-t-ph autocomplete="off">
-    <div class="login-row hidden" id="login-row"><button class="report-link" id="btn-login" type="button" data-t>🔒 ¿Ya tienes PIN? Entra con tu nombre</button></div>
-    <div class="logged hidden" id="logged"><span data-t>🔒 Conectado como</span> <b id="logged-name"></b><button class="report-link" id="btn-logout" type="button" data-t>Cerrar sesión</button></div>
+    <input id="name" type="hidden">
+    <div class="logged" id="logged"><span data-t>🔒 Jugando como</span> <b id="logged-name"></b><button class="report-link" id="btn-logout" type="button" data-t>Cambiar de usuario</button></div>
     <div class="kind-sw hidden" id="kind-sw" role="radiogroup" aria-label="Tipo de partida">
       <button type="button" data-kind="campeonato" role="radio"><b data-t>🏆 Campeonato</b><span data-t>Puntúa para el ranking</span></button>
       <button type="button" data-kind="practica" role="radio"><b data-t>🎸 Práctica</b><span data-t>A tu aire, no puntúa</span></button>
@@ -947,7 +973,9 @@ function fillCategories(){
 
 function esc(s){ return s.replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
 
-function show(id){ if (id === "scr-start" && typeof refreshLogin === "function") setTimeout(() => { refreshLogin(); Reto.refresh(); }, 0); ["scr-start","scr-game","scr-end","scr-hof","scr-profile"].forEach(s => $(s).classList.toggle("hidden", s !== id)); document.body.classList.toggle("playing", id === "scr-game"); window.scrollTo(0,0); }
+function show(id){ if (id === "scr-start" && typeof isLogged === "function" && !isLogged()) id = "scr-login";
+  if (id === "scr-login" && typeof Login === "object") Login.reset();
+  if (id === "scr-start" && typeof refreshLogin === "function") setTimeout(() => { refreshLogin(); Reto.refresh(); }, 0); ["scr-login","scr-start","scr-game","scr-end","scr-hof","scr-profile"].forEach(s => $(s).classList.toggle("hidden", s !== id)); document.body.classList.toggle("playing", id === "scr-game"); window.scrollTo(0,0); }
 
 function store(key, val){ try{ if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); }catch(e){ return null; } }
 
@@ -1002,75 +1030,99 @@ $("pin-ok").addEventListener("click", () => {
 $("pin-name").addEventListener("keydown", e => { if (e.key === "Enter") $("pin-1").focus(); });
 
 /* ---------- Entrar con PIN / sesión ---------- */
-function refreshLogin(){
-  if (!HOF.online){ $("login-row").classList.add("hidden"); $("logged").classList.add("hidden"); return; }
-  const name = $("name").value.trim(), key = norm(name), has = !!(name && pins()[key]);
-  $("logged").classList.toggle("hidden", !has);
-  $("login-row").classList.toggle("hidden", has);
-  if (has) $("logged-name").textContent = name;
+function isLogged(){
+  const name = $("name").value.trim(), key = norm(name);
+  return !!name && key !== "anonimo" && (!HOF.online || !!pins()[key]);
 }
-async function doLogin(){
-  let msg = "", name = $("name").value.trim();
-  while (true){
-    const d = await pinDialog("login", name, msg);
-    if (d.action !== "ok") return;
-    name = d.name; const key = norm(name);
-    const r = await rpcCall("pin_comprobar", {p_clave: key, p_pin: d.pin}).catch(() => "error");
-    if (r === "ok"){ savePin(key, d.pin); rememberName(key); $("name").value = name; store("rmq-opts", {...(store("rmq-opts") || {}), name}); refreshLogin(); return; }
-    msg = r === "sin_pin" ? T("Ese nombre aún no tiene PIN. Escríbelo en «Tu nombre» y pulsa ¡A liarla! para crearlo.")
-        : r === "bloqueado" ? T("Demasiados intentos. Espera 15 minutos.")
-        : r === "error" ? T("No se pudo comprobar. Inténtalo de nuevo.") : T("Nombre o PIN incorrecto.");
-  }
+function refreshLogin(){ $("logged-name").textContent = $("name").value.trim(); }
+function setUser(name){
+  const key = norm(name);
+  rememberName(key); $("name").value = name;
+  store("rmq-opts", {...(store("rmq-opts") || {}), name});
+  refreshLogin(); Reto.refresh();
 }
 function doLogout(){
   const key = norm($("name").value.trim());
   forgetPin(key);
   const s = myNames(); s.delete(key); store("rmq-mynames", [...s]);
   $("name").value = ""; store("rmq-opts", {...(store("rmq-opts") || {}), name: ""});
-  refreshLogin(); $("name").focus();
+  show("scr-login");
 }
-$("btn-login").addEventListener("click", doLogin);
+/* Pantalla de acceso: nombre + PIN obligatorios para jugar */
+const Login = (() => {
+  let step = "name", estado = null, busy = false;
+  const err = m => { $("l-err").textContent = m; $("l-err").classList.toggle("hidden", !m); };
+  function reset(){
+    step = "name"; estado = null; err("");
+    $("l-name").disabled = false; $("l-pins").classList.add("hidden"); $("l-back").classList.add("hidden");
+    $("l-pin1").value = ""; $("l-pin2").value = ""; $("l-go").textContent = T("Continuar");
+    if (!$("l-name").value) $("l-name").value = (store("rmq-opts") || {}).name || "";
+    setTimeout(() => $("l-name").focus(), 50);
+  }
+  function askPin(){
+    const name = $("l-name").value.trim(), crear = estado !== "con_pin";
+    step = "pin"; $("l-name").disabled = true;
+    $("l-pins").classList.remove("hidden"); $("l-back").classList.remove("hidden");
+    $("l-pin2-wrap").classList.toggle("hidden", !crear);
+    $("l-pin1-lab").textContent = crear ? T("Crea tu PIN de 4 cifras") : T("PIN");
+    $("l-pin1").autocomplete = crear ? "new-password" : "current-password";
+    $("l-msg").innerHTML = estado === "con_pin" ? T("¡Hola, <b>{name}</b>! Escribe tu PIN para entrar.", {name: esc(name)})
+      : estado === "sin_pin" ? T("«{name}» ya tiene puntos en el Hall of Fame pero todavía no tiene PIN. Si es tu nombre, crea ahora tu PIN de 4 cifras para protegerlo.", {name: esc(name)})
+      : T("«{name}» está libre. Crea un PIN de 4 cifras para que nadie más pueda jugar con tu nombre.", {name: esc(name)});
+    $("l-help").textContent = crear ? T("Apúntalo: lo necesitarás si juegas desde otro móvil u ordenador.") : T("¿Has olvidado tu PIN? Pide a Liantes Metaleros que lo restablezca.");
+    $("l-go").textContent = crear ? T("Crear PIN y entrar") : T("Entrar");
+    setTimeout(() => $("l-pin1").focus(), 50);
+  }
+  async function submit(){
+    if (busy) return; err("");
+    const name = $("l-name").value.trim().replace(/\s+/g, " "), key = norm(name);
+    if (!name || key === "anonimo") return err(T("Escribe tu nombre."));
+    if (step === "name"){
+      if (!HOF.online){ setUser(name); return show("scr-start"); }
+      busy = true; $("l-go").disabled = true;
+      try{ estado = await rpcCall("pin_estado", {p_clave: key}); }
+      catch(e){ estado = null; }
+      finally{ busy = false; $("l-go").disabled = false; }
+      if (!["con_pin", "libre", "sin_pin"].includes(estado)) return err(T("No se pudo comprobar. Inténtalo de nuevo."));
+      $("l-name").value = name; return askPin();
+    }
+    const a = $("l-pin1").value.trim(), b = $("l-pin2").value.trim(), crear = estado !== "con_pin";
+    if (!/^\d{4}$/.test(a)) return err(T("El PIN tiene que ser de 4 números."));
+    if (crear && a !== b) return err(T("Los dos PIN no coinciden."));
+    busy = true; $("l-go").disabled = true;
+    try{
+      if (crear){
+        const ok = await rpcCall("pin_crear", {p_clave: key, p_pin: a}).catch(() => "error");
+        if (ok === "error") return err(T("No se pudo comprobar. Inténtalo de nuevo."));
+        if (!ok){ estado = "con_pin"; askPin(); return err(T("Otra persona acaba de proteger este nombre. Elige otro.")); }
+      } else {
+        const r = await rpcCall("pin_comprobar", {p_clave: key, p_pin: a}).catch(() => "error");
+        if (r !== "ok"){ $("l-pin1").value = ""; $("l-pin1").focus();
+          return err(r === "bloqueado" ? T("Demasiados intentos. Espera 15 minutos.") : r === "error" ? T("No se pudo comprobar el PIN. Inténtalo de nuevo.") : T("PIN incorrecto. Prueba otra vez.")); }
+      }
+      savePin(key, a); setUser(name); show("scr-start");
+    } finally { busy = false; $("l-go").disabled = false; }
+  }
+  $("login-form").addEventListener("submit", e => { e.preventDefault(); submit(); });
+  $("l-back").addEventListener("click", () => { $("l-name").value = ""; reset(); });
+  $("btn-hof-login").addEventListener("click", () => openHof("scr-login"));
+  return {reset};
+})();
 $("btn-logout").addEventListener("click", doLogout);
-$("name").addEventListener("input", () => { refreshLogin(); Reto.refresh(); });
 ["pin-1","pin-2"].forEach(id => $(id).addEventListener("keydown", e => { if (e.key === "Enter") $("pin-ok").click(); }));
 
 let checkingName = false;
 async function tryStart(mode){
   if (checkingName) return;
   const reto = mode === "reto";
-  const go = () => reto ? Reto.start() : startGame();
+  if (!isLogged()) return show("scr-login");
   const name = $("name").value.trim(), key = norm(name);
-  if (reto && (!name || key === "anonimo")){ alertPin(T("Escribe tu nombre para jugar el reto diario y entrar en su ranking.")); $("name").focus(); return; }
-  if (!HOF.online || !name || key === "anonimo") return go();
-  checkingName = true; $("btn-start").disabled = true;
-  try{
-    let estado;
-    try{ estado = await rpcCall("pin_estado", {p_clave: key}); }
-    catch(e){ estado = null; }                         // sin SQL de PIN todavía o sin conexión: se juega igual
-    if (estado === "con_pin"){
-      let pin = pins()[key];
-      if (pin){ const r = await rpcCall("pin_comprobar", {p_clave: key, p_pin: pin}).catch(() => "ok"); if (r !== "ok"){ forgetPin(key); pin = null; } }
-      let msg = "";
-      while (!pin){
-        const d = await pinDialog("pedir", name, msg);
-        if (d.action !== "ok"){ $("name").focus(); $("name").select(); return; }
-        const r = await rpcCall("pin_comprobar", {p_clave: key, p_pin: d.pin}).catch(() => "error");
-        if (r === "ok"){ pin = d.pin; savePin(key, pin); break; }
-        msg = r === "bloqueado" ? T("Demasiados intentos. Espera 15 minutos o usa otro nombre.") : r === "error" ? T("No se pudo comprobar el PIN. Inténtalo de nuevo.") : T("PIN incorrecto. Prueba otra vez.");
-      }
-    } else if (estado === "libre" || estado === "sin_pin"){
-      const d = await pinDialog(estado === "libre" ? "crear-libre" : "crear-existente", name);
-      if (d.action === "cancel"){ $("name").focus(); $("name").select(); return; }
-      if (d.action === "ok"){
-        const ok = await rpcCall("pin_crear", {p_clave: key, p_pin: d.pin}).catch(() => false);
-        if (ok) savePin(key, d.pin);
-        else { alertPin(T("Otra persona acaba de proteger este nombre. Elige otro.")); return; }
-      }
-    }
-    rememberName(key);
-    if (reto && await Reto.playedRemote(key, name)) return;
-    go();
-  } finally { checkingName = false; $("btn-start").disabled = false; }
+  if (reto && HOF.online){
+    checkingName = true; $("btn-reto").disabled = true;
+    try{ if (await Reto.playedRemote(key, name)) return; }
+    finally{ checkingName = false; $("btn-reto").disabled = false; }
+  }
+  reto ? Reto.start() : startGame();
 }
 function alertPin(msg){ $("start-err").textContent = msg; $("start-err").classList.remove("hidden"); setTimeout(() => $("start-err").classList.add("hidden"), 6000); }
 
@@ -1408,13 +1460,13 @@ const HOF = (() => {
       let rows;
       try{ rows = await api("hall_of_fame_mes?select=*&order=puntos.desc,mejor.desc&limit=1000"); }
       catch(e){ rows = await api("hall_of_fame?select=*&order=puntos.desc,mejor.desc&limit=1000"); }   // respaldo si aún no existe la vista mensual
-      return rows.map(r => ({key: r.clave, name: r.nombre, score: r.puntos, games: r.partidas, ok: r.aciertos, total: r.total, best: r.mejor, bonus: r.bonus_reto || 0, wins: r.retos_ganados || 0, days: r.dias ?? null}));
+      return rows.filter(r => r.clave !== "anonimo").map(r => ({key: r.clave, name: r.nombre, score: r.puntos, games: r.partidas, ok: r.aciertos, total: r.total, best: r.mejor, bonus: r.bonus_reto || 0, wins: r.retos_ganados || 0, days: r.dias ?? null}));
     },
     async best(){
       let rows;
       try{ rows = await api("mejores_partidas_mes?select=nombre,puntos,aciertos,total,creado&order=puntos.desc,creado.asc&limit=25"); }
       catch(e){ rows = await api("partidas?select=nombre,puntos,aciertos,total,creado&order=puntos.desc,creado.asc&limit=25"); }
-      return rows.map(r => ({name: r.nombre, score: r.puntos, ok: r.aciertos, total: r.total, t: Date.parse(r.creado)}));
+      return rows.filter(r => r.nombre !== "Anónimo").map(r => ({name: r.nombre, score: r.puntos, ok: r.aciertos, total: r.total, t: Date.parse(r.creado)}));
     },
     async champions(){
       let rows;
@@ -2170,9 +2222,15 @@ const Install = (() => {
     BANK = qs;
     fillCategories();
     const o = store("rmq-opts");
-    if (o){ $("name").value = o.name === "Anónimo" ? "" : o.name; $("count").value = String(o.n);
+    if (o){ $("name").value = !o.name || o.name === "Anónimo" ? "" : o.name;
+            if ([...$("count").options].some(x => x.value === String(o.n))) $("count").value = String(o.n);
             $("diff").value = (o.diff === "" && !o.v && NEW_RULES) ? "auto" : (o.diff || ""); if ([...$("cat").options].some(x => x.value === o.cat)) $("cat").value = o.cat; }
     refreshLogin(); Reto.refresh(); countHint(); setTimeout(showNews, 700);
+    show("scr-start");                                   // sin sesión válida, show() lleva a la pantalla de acceso
+    const k = norm($("name").value.trim()), pin = pins()[k];
+    if (HOF.online && k && pin) rpcCall("pin_comprobar", {p_clave: k, p_pin: pin}).then(r => {   // PIN cambiado o restablecido: volver a entrar
+      if (r === "mal" || r === "sin_pin"){ forgetPin(k); if (!$("scr-start").classList.contains("hidden")) show("scr-login"); }
+    }).catch(() => {});
     $("source").innerHTML = T("<b>{n}</b> preguntas cargadas · fuente: {src}", {n: BANK.length, src: esc(label)});
   }catch(e){
     $("source").textContent = "";
