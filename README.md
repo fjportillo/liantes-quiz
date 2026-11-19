@@ -9,6 +9,8 @@ Web: https://fjportillo.github.io/liantes-quiz/
 - `plantilla.html` — plantilla del juego; `index.html` se genera a partir de ella
 - `preguntas.csv` — banco de preguntas
 - `supabase.sql` — base de datos del Hall of Fame compartido
+- `hall_of_fame_mensual.sql`, `estadisticas.sql`, `reportes.sql`, `evento.sql`, `pin.sql` — ranking mensual, estadísticas, reportes de errores, modo evento y PIN
+- `retos_perfil.sql` — reto diario (10 preguntas iguales para todos cada día, una partida por jugador) y perfiles de jugador con logros
 
 ## Formato de `preguntas.csv`
 `pregunta,correcta,incorrecta1,incorrecta2,incorrecta3,categoria,dificultad,alta,visual`
