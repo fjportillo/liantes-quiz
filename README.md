@@ -72,3 +72,20 @@ Puntuación: 100 puntos por acierto + hasta 100 por rapidez. Las salas se borran
 - **Aviso de novedades:** el 1 de diciembre la web muestra una vez en cada dispositivo una ventana con los cambios.
 - **Premio del reto diario:** el podio de cada día suma +500 / +300 / +150 al ranking del mes si jugaron al menos 3 personas (vista `reto_premios`).
 - Para probar las reglas antes de esa fecha, añade `#nuevas-reglas` a la dirección.
+
+## Retos monográficos (retos especiales)
+
+Un día concreto, el reto diario puede ser un monográfico sobre una banda o un tema. Se programa en `retos_especiales.csv`, una línea por día:
+
+```
+fecha,tema,palabras,reparto
+2026-11-21,Metallica,metallica|cliff burton|hetfield|lars ulrich|kirk hammett,1-2-7
+```
+
+- **fecha**: AAAA-MM-DD (hora de Madrid).
+- **tema**: el nombre que se muestra («Reto diario #3 · 🤘 Especial Metallica»).
+- **palabras**: separadas por `|`. Entran las preguntas que contengan alguna de ellas en la pregunta o en la respuesta correcta (sin importar mayúsculas ni tildes). Usa palabras precisas: «eddie» también encontraría a Eddie Vedder.
+- **reparto** (opcional): cuántas fáciles-medias-difíciles; por defecto `1-2-7`.
+- Hacen falta al menos 10 preguntas que coincidan; si no, ese día el reto es normal.
+
+Se puede editar directamente en GitHub: la web lee el archivo al abrirse (y además lo lleva incluido al regenerar `index.html` con `python3 build.py`). Prográmalo con antelación, nunca el mismo día del reto, para que todos jueguen las mismas preguntas. `promo.html` y la publicación diaria por correo anuncian el especial automáticamente, y la renovación semanal añade preguntas del tema si faltan.

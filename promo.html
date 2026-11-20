@@ -85,13 +85,16 @@ const TAILS = [
   "Gana quien más sepa… y quien conteste más rápido. ⏱️",
   "Comparte tu cuadro 🟩🟥 y a ver quién de tus colegas lo supera.",
 ];
+let tema = null;   // reto especial (monográfico) de hoy, según retos_especiales.csv
 let winner = null, players = 0, format = "feed", short = false, file = null, url = null;
 
 function text(){
   const hook = HOOKS[N % HOOKS.length], tail = TAILS[N % TAILS.length];
   const w = winner ? `👑 Ayer ganó ${winner.nombre} con ${winner.aciertos}/${winner.total} y ${winner.puntos} puntos${players > 1 ? ` (jugaron ${players} liantes)` : ""}. ¿Le quitas el trono?` : "";
-  if (short) return `📅 Reto diario #${N} del Liantes Quiz Metalero ya disponible. ${hook}\n👉 ${SITE}`;
-  return [`📅 RETO DIARIO #${N} YA DISPONIBLE`, "", hook, "", "10 preguntas de rock, heavy metal y punk · las mismas para todos · una sola oportunidad al día.", w ? "\n" + w : "", "", tail, "", `👉 Juega aquí: ${SITE}`, "", "#LiantesMetaleros #LiantesQuiz #HeavyMetal #Rock #Punk #Badalona"].join("\n").replace(/\n{3,}/g, "\n\n");
+  if (short) return tema ? `🤘 Reto diario #${N} del Liantes Quiz Metalero: ¡ESPECIAL ${tema.toUpperCase()}! 10 preguntas solo para muy fans.\n👉 ${SITE}`
+    : `📅 Reto diario #${N} del Liantes Quiz Metalero ya disponible. ${hook}\n👉 ${SITE}`;
+  return [tema ? `🤘 RETO DIARIO #${N} · ESPECIAL ${tema.toUpperCase()}` : `📅 RETO DIARIO #${N} YA DISPONIBLE`, "", tema ? `Hoy el reto es un monográfico: 10 preguntas sobre ${tema}, casi todas difíciles. Solo para muy fans. 🔥` : hook, "",
+    tema ? `Las mismas preguntas para todos · una sola oportunidad.` : "10 preguntas de rock, heavy metal y punk · las mismas para todos · una sola oportunidad al día.", w ? "\n" + w : "", "", tail, "", `👉 Juega aquí: ${SITE}`, "", "#LiantesMetaleros #LiantesQuiz #HeavyMetal #Rock #Punk #Badalona"].join("\n").replace(/\n{3,}/g, "\n\n");
 }
 
 const logo = new Image(); logo.src = "logo.png";
@@ -123,7 +126,7 @@ function draw(){
   x.textAlign = "left"; x.fillStyle = "#F2F2EC"; x.fillText(a, sx, off + 422); x.fillStyle = "#9aa5ff"; x.fillText(b, sx + wa, off + 422); x.textAlign = "center";
   // etiqueta
   sp(x, 4); x.font = '800 34px "Red Hat Display", sans-serif';
-  const tag = "RETO DIARIO #" + N, tw = x.measureText(tag).width + 60;
+  const tag = "RETO DIARIO #" + N + (tema ? " · ESPECIAL " + tema.toUpperCase() : ""), tw = x.measureText(tag).width + 60;
   x.fillStyle = "#5b6cf0"; x.fillRect(W / 2 - tw / 2, off + 480, tw, 70); x.fillStyle = "#fff";
   x.font = '800 34px "Red Hat Display", sans-serif, "Noto Color Emoji"'; x.fillText(tag, W / 2, off + 528);
   sp(x, 2); x.fillStyle = "#9a9a94"; x.font = '700 30px "Red Hat Display", sans-serif'; x.fillText(longDate.toUpperCase(), W / 2, off + 610);
@@ -131,7 +134,7 @@ function draw(){
   const sz = 64, gap = 12, gx = W / 2 - (10 * sz + 9 * gap) / 2;
   cols.forEach((cl, i) => { x.fillStyle = cl; x.fillRect(gx + i * (sz + gap), off + 960, sz, sz); });
   sp(x, 1); x.fillStyle = "#F2F2EC"; fit(x, "10 preguntas · las mismas para todos · 1 oportunidad", 800, 36, '"Red Hat Display", sans-serif', W - 120);
-  x.fillText("10 preguntas · las mismas para todos · 1 oportunidad", W / 2, off + 1095);
+  x.fillText(tema ? `10 preguntas sobre ${tema} · 1 oportunidad` : "10 preguntas · las mismas para todos · 1 oportunidad", W / 2, off + 1095);
   if (winner){
     const wt = `👑 Ayer ganó ${winner.nombre} · ${winner.puntos} pts`;
     x.fillStyle = "#ffd76a"; fit(x, wt, 800, 36, '"Red Hat Display", sans-serif, "Noto Color Emoji"', W - 120); x.fillText(wt, W / 2, off + 1160);
@@ -164,7 +167,11 @@ $("b-copy").onclick = async () => { try{ await navigator.clipboard.writeText($("
 $("b-short").onclick = () => { short = !short; $("b-short").textContent = short ? "📝 Versión completa" : "✂️ Versión corta"; $("txt").value = text(); };
 
 (async () => {
-  $("sub").textContent = `Reto diario #${N} · ${longDate}`;
+  try{
+    const t = await (await fetch("retos_especiales.csv?t=" + Date.now(), {cache: "no-store"})).text();
+    for (const l of t.split(/\r?\n/).slice(1)){ const [f, tm] = l.split(","); if (f === today && tm) tema = tm.trim(); }
+  }catch(e){}
+  $("sub").textContent = `Reto diario #${N}${tema ? " · Especial " + tema : ""} · ${longDate}`;
   try{
     const r = await fetch(`${SUPABASE_URL}/rest/v1/retos?select=nombre,puntos,aciertos,total&fecha=eq.${yesterday}&order=puntos.desc,creado.asc&limit=500`, {headers: {apikey: SUPABASE_KEY}});
     if (r.ok){ const rows = await r.json(); players = rows.length; winner = rows[0] || null; }
