@@ -1,6 +1,6 @@
 {
  "nombre": "Sabelotodo",
- "salida": "../../../sabelotodo-web",
+ "salida": "../../../sabelotodo",
  "preguntas": "preguntas.csv",
  "copiar": [
   "i18n/preguntas_ca.csv",

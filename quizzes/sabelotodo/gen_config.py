@@ -25,7 +25,7 @@ CSS = """
 """
 cfg = {
   "nombre": "Sabelotodo",
-  "salida": "../../../sabelotodo-web",
+  "salida": "../../../sabelotodo",
   "preguntas": "preguntas.csv",
   "copiar": ["i18n/preguntas_ca.csv", "i18n/preguntas_en.csv", "logo.png", "icons", "manifest.webmanifest", "retos_especiales.csv"],
   "cfg": {
