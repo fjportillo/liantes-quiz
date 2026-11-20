@@ -71,6 +71,11 @@ def otro(nombre):
             shutil.copy(origen, destino)
     # service worker con su propia caché
     sw = leer(os.path.join(AQUI, "sw.js")).replace('const CACHE = "liantes-quiz-', 'const CACHE = "%s-' % nombre)
+    # en la caché sin conexión, solo los archivos que existen en este quiz
+    m = re.search(r'const SHELL = \[([\s\S]*?)\];', sw)
+    lista = [x for x in re.findall(r'"([^"]+)"', m.group(1)) if x == "./" or os.path.exists(os.path.join(salida, x))]
+    sw = sw[:m.start()] + "const SHELL = " + json.dumps(lista) + ";" + sw[m.end():]
+    sw = sw.replace("Service worker de Liantes Quiz Metalero", "Service worker de " + cfg.get("nombre", nombre))
     open(os.path.join(salida, "sw.js"), "w", encoding="utf-8").write(sw)
     print("%s generado en %s" % (nombre, salida))
 

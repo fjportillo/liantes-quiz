@@ -89,3 +89,12 @@ fecha,tema,palabras,reparto
 - Hacen falta al menos 10 preguntas que coincidan; si no, ese día el reto es normal.
 
 Se puede editar directamente en GitHub: la web lee el archivo al abrirse (y además lo lleva incluido al regenerar `index.html` con `python3 build.py`). Prográmalo con antelación, nunca el mismo día del reto, para que todos jueguen las mismas preguntas. `promo.html` y la publicación diaria por correo anuncian el especial automáticamente, y la renovación semanal añade preguntas del tema si faltan.
+
+## Varios quizzes con el mismo motor
+
+`plantilla.html` es el motor común. Lo propio de cada quiz va en bloques de marca (`<!--#marca:…-->`) y constantes (`/*#cfg:…*/`) que `build.py` sustituye:
+
+- `python3 build.py` → Liantes Quiz Metalero (este repositorio, sin configuración: se usan los valores por defecto).
+- `python3 build.py sabelotodo` → Sabelotodo, a partir de `quizzes/sabelotodo/` (`config.json` generado con `gen_config.py` desde `marca.py`; preguntas y traducciones propias). Se genera en la carpeta indicada en `"salida"` (el repositorio `sabelotodo`).
+
+Cada quiz tiene su propio proyecto de Supabase (`quizzes/sabelotodo/supabase.sql`), sus textos (`MARCA`) y guarda sus datos del navegador con su prefijo (`STORE_PREFIX`), así que usuarios y rankings no se mezclan aunque compartan dominio.

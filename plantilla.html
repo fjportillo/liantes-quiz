@@ -577,10 +577,10 @@
     </div>
     <button id="btn-start" class="btn block" data-t>¡A liarla!</button>
     <div class="start-2"><button id="btn-hof-start" class="btn ghost hof" data-t>🏆 Hall of Fame</button><button id="btn-prof-start" class="btn ghost hof" data-t>👤 Mi perfil</button></div>
-    <div class="group-links">
+<!--#marca:evento-->    <div class="group-links">
       <a href="jugar.html" data-t>📱 Tengo un código de sala</a>
       <a href="evento.html" data-t>📺 Modo evento (jugar en grupo)</a>
-    </div>
+    </div><!--#/marca-->
     <button id="btn-install" class="install-link hidden" type="button" data-t>📲 Descarga la app en tu móvil <small>gratis · sin tiendas · 1 toque</small></button>
     <div id="start-err" class="err hidden"></div>
     <div id="champ" class="champ hidden"></div>
@@ -909,8 +909,9 @@ document.querySelectorAll("#kind-sw [data-kind]").forEach(b => b.addEventListene
 applyKind();
 $("count").addEventListener("change", countHint);
 /* Novedades de diciembre: se muestran una vez en cada dispositivo */
+const NOVEDADES_DIC = /*#cfg:NOVEDADES_DIC*/true;   // aviso de las reglas nuevas del 1-12-2026
 function showNews(){
-  if (!NEW_RULES || store("rmq-news-2026-12")) return;
+  if (!NOVEDADES_DIC || !NEW_RULES || store("rmq-news-2026-12")) return;
   $("news-title").textContent = T("🤘 ¡Novedades en Liantes Quiz!");
   $("news-sub").textContent = T("Desde el 1 de diciembre cambian las reglas del ranking:");
   const items = [
