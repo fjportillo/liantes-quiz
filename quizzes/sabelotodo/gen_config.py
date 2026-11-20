@@ -48,6 +48,10 @@ cfg = {
     "STORE_PREFIX": "sab:",
     "NOVEDADES_DIC": False,
     "MARCA": marca,
+    "IMG_PESO": "800",
+    "IMG_COLORES": {"fondo": "#0b1324", "brillo": "rgba(13,148,136,.35)", "franja": "", "logoFondo": "", "titulo": "#f1f5f9", "acento": "#ffd166", "caja": "#121c33", "borde": "#26365a", "banda": "#0d9488"},
+    "ICONO_NIVEL": "🧠",
+    "ICONOS_LOGROS": {"Debut": "🌱", "Habitual": "📘", "Leyenda": "🌟", "Inmortal": "🏛️", "Finde metalero": "☕", "Noctámbulo": "🌙", "Monográfico": "🎯"},
   },
   "bloques": {
     "cabeza1": '<meta name="theme-color" content="#0f172a">\n<link rel="icon" type="image/png" href="logo.png">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">',
