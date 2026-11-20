@@ -3,6 +3,7 @@
 
 Uso:  python3 tools/check_i18n.py            -> informe
       python3 tools/check_i18n.py --limpiar  -> además borra las filas huérfanas (preguntas retiradas)
+      python3 tools/check_i18n.py --quiz sabelotodo [--limpiar]  -> lo mismo para quizzes/sabelotodo/
 
 Formato de i18n/preguntas_XX.csv (XX = ca, en):
   pregunta_es,visual,correcta_es,pregunta,correcta,incorrecta1,incorrecta2,incorrecta3
@@ -15,6 +16,8 @@ Formato de i18n/preguntas_XX.csv (XX = ca, en):
 import csv, io, sys, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# --quiz sabelotodo -> comprueba quizzes/sabelotodo/ en lugar del quiz de Liantes
+if "--quiz" in sys.argv: ROOT = os.path.join(ROOT, "quizzes", sys.argv[sys.argv.index("--quiz") + 1])
 LANGS = ["ca", "en"]
 HEAD = ["pregunta_es", "visual", "correcta_es", "pregunta", "correcta", "incorrecta1", "incorrecta2", "incorrecta3"]
 
