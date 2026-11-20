@@ -472,6 +472,13 @@
   .badge span{display:block;font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3}
   .badge.on{border-color:var(--blue2);background:linear-gradient(180deg,rgba(91,108,240,.2),#131415)}
   .badge.off{opacity:.42}.badge.off .ic{filter:grayscale(1)}
+  .bg-h{font-family:"Red Hat Display";font-weight:900;text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--blue2);margin:14px 0 6px}
+  .lv{margin:12px auto 0;max-width:360px;text-align:left}
+  .lv-t{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
+  .lv-t b{font-family:"Red Hat Display";font-weight:900;color:#ffd76a}
+  .lv-bar{height:8px;background:#2a2b2f;margin-top:5px;overflow:hidden}
+  .lv-bar i{display:block;height:100%;background:linear-gradient(90deg,#5b6cf0,#ffd76a)}
+  .logged-lv{color:#ffd76a;font-size:13px;font-weight:700}
   .new-badges{margin:14px 0;padding:14px;border:2px solid #ffd76a;background:linear-gradient(180deg,rgba(255,215,106,.14),rgba(255,215,106,.03));text-align:center;animation:nbPop .5s ease-out}
   @keyframes nbPop{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}
   .new-badges .nb-k{font-family:"Red Hat Display";font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#ffd76a;margin-bottom:8px}
@@ -535,7 +542,7 @@
         <div class="reto-acts"><button id="btn-reto-share" class="btn sm" data-t>📤 Compartir</button><button id="btn-reto-rank" class="btn ghost sm" data-t>🏆 Ranking de hoy</button></div></div>
     </div>
     <input id="name" type="hidden">
-    <div class="logged" id="logged"><span data-t>🔒 Jugando como</span> <b id="logged-name"></b><button class="report-link" id="btn-logout" type="button" data-t>Cambiar de usuario</button></div>
+    <div class="logged" id="logged"><span data-t>🔒 Jugando como</span> <b id="logged-name"></b> <span class="logged-lv" id="logged-lv"></span><button class="report-link" id="btn-logout" type="button" data-t>Cambiar de usuario</button></div>
     <div class="kind-sw hidden" id="kind-sw" role="radiogroup" aria-label="Tipo de partida">
       <button type="button" data-kind="campeonato" role="radio"><b data-t>🏆 Campeonato</b><span data-t>Puntúa para el ranking</span></button>
       <button type="button" data-kind="practica" role="radio"><b data-t>🎸 Práctica</b><span data-t>A tu aire, no puntúa</span></button>
@@ -1088,7 +1095,7 @@ function doLogout(){
   const key = norm($("name").value.trim());
   forgetPin(key);
   const s = myNames(); s.delete(key); store("rmq-mynames", [...s]);
-  $("name").value = ""; store("rmq-opts", {...(store("rmq-opts") || {}), name: ""});
+  $("name").value = ""; store("rmq-opts", {...(store("rmq-opts") || {}), name: ""}); $("logged-lv").textContent = "";
   show("scr-login");
 }
 /* Pantalla de acceso: nombre + PIN obligatorios para jugar */
@@ -2152,36 +2159,87 @@ const ShareImg = (() => {
    ===================================================================== */
 const Profile = (() => {
   let from = "scr-start";
+  // [icono, nombre, descripción, condición, grupo]. El nombre es también el identificador del logro: no cambiar los ya publicados.
+  const G_CONST = "Constancia", G_SABER = "Conocimiento", G_PUNT = "Puntería y puntos", G_RETO = "Reto diario", G_COMP = "Competición", G_RARO = "Rarezas";
+  const nCats = p => Object.values(p.categorias || {}).filter(([ok, tot]) => tot >= 1).length;
+  const nMaestro = p => Object.values(p.categorias || {}).filter(([ok, tot]) => tot >= 20 && ok / tot >= .8).length;
+  const allCats = () => new Set(BANK.map(q => q.cat)).size;
+  const espJugados = p => (p.fechas_reto || []).filter(f => typeof Reto === "object" && Reto.especial(f)).length;
   const BADGES_ES = [
-    ["🎸", "Debut", "Juega tu primera partida", p => p.partidas >= 1],
-    ["🤘", "Habitual", "25 partidas jugadas", p => p.partidas >= 25],
-    ["💀", "Leyenda", "100 partidas jugadas", p => p.partidas >= 100],
-    ["🧠", "Enciclopedia", "500 aciertos en total", p => p.aciertos >= 500],
-    ["💯", "Perfecto", "Una partida de 10 o más sin fallos", p => p.perfectas >= 1],
-    ["🔥", "Imparable", "10 aciertos seguidos", p => p.racha >= 10],
-    ["⚡", "Bestia", "Más de 2.000 puntos en una partida", p => p.mejor >= 2000],
-    ["🎯", "Francotirador", "80 % de aciertos con 100 preguntas o más", p => p.total >= 100 && p.aciertos / p.total >= .8],
-    ["📅", "Retador", "Juega tu primer reto diario", p => p.retos >= 1],
-    ["🗓️", "Fiel al reto", "7 días seguidos jugando el reto", p => (p.racha_reto_max || 0) >= 7],
-    ["🥇", "Liante del día", "Gana un reto diario", p => p.retos_ganados >= 1],
-    ["🏅", "Podio", "Top 3 de un mes", p => p.podios >= 1],
-    ["👑", "Campeón", "Campeón de un mes", p => p.campeon >= 1],
-    ["🦇", "Noctámbulo", "Juega entre las 0:00 y las 6:00", p => p.noche >= 1],
+    ["🎸", "Debut", "Juega tu primera partida", p => p.partidas >= 1, G_CONST],
+    ["🤘", "Habitual", "25 partidas jugadas", p => p.partidas >= 25, G_CONST],
+    ["💀", "Leyenda", "100 partidas jugadas", p => p.partidas >= 100, G_CONST],
+    ["🔱", "Inmortal", "500 partidas jugadas", p => p.partidas >= 500, G_CONST],
+    ["📆", "Asiduo", "Juega 7 días distintos", p => (p.dias || 0) >= 7, G_CONST],
+    ["🗿", "Veterano", "Juega 30 días distintos", p => (p.dias || 0) >= 30, G_CONST],
+    ["🔁", "Sin descanso", "Juega 5 días seguidos", p => (p.racha_dias_max || 0) >= 5, G_CONST],
+    ["🌋", "Maratón", "10 partidas en un mismo día", p => (p.max_dia || 0) >= 10, G_CONST],
+    ["🧠", "Enciclopedia", "500 aciertos en total", p => p.aciertos >= 500, G_SABER],
+    ["📚", "Erudito", "2.500 aciertos en total", p => p.aciertos >= 2500, G_SABER],
+    ["🎓", "Catedrático del metal", "10.000 aciertos en total", p => p.aciertos >= 10000, G_SABER],
+    ["🧭", "Explorador", "Responde preguntas de 10 categorías distintas", p => nCats(p) >= 10, G_SABER],
+    ["🗺️", "Trotamundos", "Responde preguntas de todas las categorías", p => nCats(p) >= allCats(), G_SABER],
+    ["🎖️", "Polifacético", "Maestro en 3 categorías", p => nMaestro(p) >= 3, G_SABER],
+    ["🦉", "Sabio", "Maestro en 6 categorías", p => nMaestro(p) >= 6, G_SABER],
+    ["💯", "Perfecto", "Una partida de 10 o más sin fallos", p => p.perfectas >= 1, G_PUNT],
+    ["💎", "Diamante", "5 partidas sin fallos", p => p.perfectas >= 5, G_PUNT],
+    ["✨", "Calentando", "5 aciertos seguidos", p => p.racha >= 5, G_PUNT],
+    ["🔥", "Imparable", "10 aciertos seguidos", p => p.racha >= 10, G_PUNT],
+    ["☄️", "Meteoro", "20 aciertos seguidos", p => p.racha >= 20, G_PUNT],
+    ["🎯", "Francotirador", "80 % de aciertos con 100 preguntas o más", p => p.total >= 100 && p.aciertos / p.total >= .8, G_PUNT],
+    ["⚡", "Bestia", "Más de 2.000 puntos en una partida", p => p.mejor >= 2000, G_PUNT],
+    ["💥", "Brutal", "Más de 3.000 puntos en una partida", p => p.mejor >= 3000, G_PUNT],
+    ["🌪️", "Apocalipsis", "Más de 4.000 puntos en una partida", p => p.mejor >= 4000, G_PUNT],
+    ["💿", "Disco de oro", "10.000 puntos en total", p => p.puntos >= 10000, G_PUNT],
+    ["📀", "Disco de platino", "50.000 puntos en total", p => p.puntos >= 50000, G_PUNT],
+    ["🏟️", "Estadio lleno", "100.000 puntos en total", p => p.puntos >= 100000, G_PUNT],
+    ["📅", "Retador", "Juega tu primer reto diario", p => p.retos >= 1, G_RETO],
+    ["🗓️", "Fiel al reto", "7 días seguidos jugando el reto", p => (p.racha_reto_max || 0) >= 7, G_RETO],
+    ["⛓️", "Racha de hierro", "30 días seguidos jugando el reto", p => (p.racha_reto_max || 0) >= 30, G_RETO],
+    ["🧾", "Coleccionista", "30 retos diarios jugados", p => p.retos >= 30, G_RETO],
+    ["🌟", "Reto perfecto", "10 de 10 en un reto diario", p => (p.retos_perfectos || 0) >= 1, G_RETO],
+    ["🥉", "Podio del día", "Top 3 en un reto diario", p => (p.retos_podio || 0) >= 1, G_RETO],
+    ["🥇", "Liante del día", "Gana un reto diario", p => p.retos_ganados >= 1, G_RETO],
+    ["🎖", "Rey del reto", "Gana 5 retos diarios", p => p.retos_ganados >= 5, G_RETO],
+    ["🎤", "Monográfico", "Juega un reto especial", p => espJugados(p) >= 1, G_RETO],
+    ["🏁", "Campeonato", "Juega tu primera partida de campeonato", p => (p.campeonato || 0) >= 1, G_COMP],
+    ["🏆", "Aspirante", "Más de 3.000 puntos en una partida de campeonato", p => (p.campeonato_mejor || 0) >= 3000, G_COMP],
+    ["🏅", "Podio", "Top 3 de un mes", p => p.podios >= 1, G_COMP],
+    ["👑", "Campeón", "Campeón de un mes", p => p.campeon >= 1, G_COMP],
+    ["🐉", "Dinastía", "Campeón de 3 meses", p => p.campeon >= 3, G_COMP],
+    ["🦇", "Noctámbulo", "Juega entre las 0:00 y las 6:00", p => p.noche >= 1, G_RARO],
+    ["🌅", "Madrugador", "Juega entre las 6:00 y las 9:00", p => (p.madrugador || 0) >= 1, G_RARO],
+    ["🍻", "Finde metalero", "10 partidas en fin de semana", p => (p.finde || 0) >= 10, G_RARO],
   ];
-  const BADGES = BADGES_ES.map(([ic, t, d, f]) => [ic, T(t), T(d), f]);
+  /* Niveles según los puntos totales */
+  const NIVELES_ES = [[0, "Novato"], [2500, "Grupi"], [7500, "Headbanger"], [15000, "Moshero"], [30000, "Roadie"], [50000, "Telonero"],
+                      [80000, "Cabeza de cartel"], [120000, "Leyenda del Sunset Strip"], [180000, "Dios del metal"], [250000, "Inmortal del rock"]];
+  function nivel(pts){
+    pts = Number(pts || 0); let i = 0;
+    while (i + 1 < NIVELES_ES.length && pts >= NIVELES_ES[i + 1][0]) i++;
+    const [base, nombre] = NIVELES_ES[i], next = NIVELES_ES[i + 1];
+    return {n: i + 1, nombre: T(nombre), base, next: next ? next[0] : null, nextNombre: next ? T(next[1]) : null,
+            pct: next ? Math.min(100, Math.round((pts - base) / (next[0] - base) * 100)) : 100};
+  }
+  const BADGES = BADGES_ES.map(([ic, t, d, f, g]) => [ic, T(t), T(d), f, g]);
   const n = v => Number(v || 0).toLocaleString(LOCALE);
   function render(p){
     const cats = Object.entries(p.categorias || {}).map(([c, [ok, tot]]) => ({c, ok, tot, pct: tot ? ok / tot : 0})).sort((a, b) => b.tot - a.tot);
     const masters = cats.filter(c => c.tot >= 20 && c.pct >= .8);
     const fav = cats.filter(c => c.tot >= 5).sort((a, b) => b.pct - a.pct || b.tot - a.tot)[0];
-    const badges = BADGES.map(([ic, t, d, f]) => ({ic, t, d, on: !!f(p)}))
-      .concat(masters.length ? masters.map(m => ({ic: "🏆", t: T("Maestro"), d: catLabel(m.c), on: true})) : [{ic: "🏆", t: T("Maestro"), d: T("80 % de aciertos con 20+ preguntas de una categoría"), on: false}]);
-    badges.sort((a, b) => b.on - a.on);
-    const got = badges.filter(b => b.on).length;
+    const badges = BADGES.map(([ic, t, d, f, g]) => ({ic, t, d, g, on: !!f(p)}))
+      .concat(masters.length ? masters.map(m => ({ic: "🏆", t: T("Maestro"), d: catLabel(m.c), g: G_SABER, on: true})) : [{ic: "🏆", t: T("Maestro"), d: T("80 % de aciertos con 20+ preguntas de una categoría"), g: G_SABER, on: false}]);
+    const got = badges.filter(b => b.on).length, lv = nivel(p.puntos);
+    const groups = [G_CONST, G_SABER, G_PUNT, G_RETO, G_COMP, G_RARO].map(g => {
+      const list = badges.filter(b => b.g === g).sort((a, b) => b.on - a.on);
+      return `<div class="bg-h">${T(g)} <span class="muted small">${list.filter(b => b.on).length}/${list.length}</span></div>
+        <div class="badges">${list.map(b => `<div class="badge ${b.on ? "on" : "off"}" title="${esc(b.d)}"><div class="ic">${b.ic}</div><b>${esc(b.t)}</b><span>${esc(b.d)}</span></div>`).join("")}</div>`;
+    }).join("");
     const desde = p.desde ? new Date(p.desde).toLocaleDateString(LOCALE, {month: "long", year: "numeric", timeZone: "Europe/Madrid"}) : "";
     return `<div class="prof-head"><div class="prof-av">${esc((p.nombre || "?").trim()[0].toUpperCase())}</div>
         <h2 class="prof-name">${esc(p.nombre)}</h2>
-        <div class="prof-sub">${T("Liante desde {desde} · {pts} puntos este mes", {desde: esc(desde), pts: n(p.mes_puntos)})}</div></div>
+        <div class="prof-sub">${T("Liante desde {desde} · {pts} puntos este mes", {desde: esc(desde), pts: n(p.mes_puntos)})}</div>
+        <div class="lv"><div class="lv-t"><b>${T("Nivel {n}", {n: lv.n})} · ${esc(lv.nombre)}</b><span class="muted small">${lv.next ? T("{f} puntos para {nom}", {f: n(lv.next - p.puntos), nom: esc(lv.nextNombre)}) : T("¡Nivel máximo!")}</span></div><div class="lv-bar"><i style="width:${lv.pct}%"></i></div></div></div>
       <div class="prof-stats">
         <div><b>${n(p.partidas)}</b><span>${T("Partidas")}</span></div>
         <div><b>${n(p.puntos)}</b><span>${T("Puntos totales")}</span></div>
@@ -2192,7 +2250,7 @@ const Profile = (() => {
       </div>
       ${fav ? `<div class="prof-fav">${T("⭐ Su fuerte: {cat} ({pct} %)", {cat: esc(catLabel(fav.c)), pct: Math.round(fav.pct * 100)})}</div>` : ""}
       <h3>${T("Logros")} <span class="muted small">${got}/${badges.length}</span></h3>
-      <div class="badges">${badges.map(b => `<div class="badge ${b.on ? "on" : "off"}" title="${esc(b.d)}"><div class="ic">${b.ic}</div><b>${esc(b.t)}</b><span>${esc(b.d)}</span></div>`).join("")}</div>
+      ${groups}
       <h3>${T("Por categorías")}</h3>
       ${cats.length ? cats.slice(0, 10).map(c => `<div class="cat-bar"><span>${esc(catLabel(c.c))}</span><span class="muted">${c.ok}/${c.tot} · ${Math.round(c.pct * 100)} %</span><i style="--w:${Math.round(c.pct * 100)}%"></i></div>`).join("")
         : `<div class="empty">${T("Las categorías se cuentan desde las partidas que se jueguen a partir de ahora.")}</div>`}`;
@@ -2217,18 +2275,30 @@ const Profile = (() => {
     const out = BADGES_ES.map(([ic, t, d, f], i) => f(p) ? {id: t, ic, t: BADGES[i][1], d: BADGES[i][2]} : null).filter(Boolean);
     for (const [c, [ok, tot]] of Object.entries(p.categorias || {}))
       if (tot >= 20 && ok / tot >= .8) out.push({id: "Maestro:" + c, ic: "🏆", t: T("Maestro"), d: catLabel(c)});
+    const lv = nivel(p.puntos);
+    if (lv.n > 1) out.push({id: "Nivel:" + lv.n, ic: "⬆️", t: T("Nivel {n}", {n: lv.n}) + " · " + lv.nombre, d: T("¡Subes de nivel!")});
     return out;
   }
-  const known = () => store("rmq-logros") || {};
-  function remember(key, ids){ const k = known(); k[key] = ids; store("rmq-logros", k); }
+  const known = () => store("rmq-logros2") || {};
+  function remember(key, ids){ const k = known(); k[key] = ids; store("rmq-logros2", k); }
   async function seed(key){                       // al entrar: apunta los logros que ya tenía, sin avisar
-    if (!HOF.online || !key || known()[key]) return;
-    try{ const p = await rpcCall("perfil", {p_clave: key}); if (p) remember(key, unlocked(p).map(b => b.id)); }catch(e){}
+    if (!HOF.online || !key) return;
+    try{
+      const p = await rpcCall("perfil", {p_clave: key});
+      if (p && !known()[key]) remember(key, unlocked(p).map(b => b.id));
+      showLevel(key, p);
+    }catch(e){}
+  }
+  function showLevel(key, p){
+    if (norm($("name").value.trim()) !== key) return;
+    const lv = p ? nivel(p.puntos) : null;
+    $("logged-lv").textContent = lv ? "🤘 " + T("Nv. {n}", {n: lv.n}) + " · " + lv.nombre : "";
   }
   async function checkNew(key){                   // al terminar una partida guardada: ¿hay logros nuevos?
     if (!HOF.online || !key) return [];
     const p = await rpcCall("perfil", {p_clave: key}).catch(() => null);
     if (!p) return [];
+    showLevel(key, p);
     const all = unlocked(p), prev = known()[key];
     remember(key, all.map(b => b.id));
     if (!prev) return (p.partidas || 0) <= 1 ? all : [];   // sin registro previo: solo avisa si es su primera partida
