@@ -27,7 +27,7 @@ cfg = {
   "nombre": "Sabelotodo",
   "salida": "../../../sabelotodo",
   "preguntas": "preguntas.csv",
-  "copiar": ["i18n/preguntas_ca.csv", "i18n/preguntas_en.csv", "logo.png", "icons", "manifest.webmanifest", "retos_especiales.csv"],
+  "copiar": ["preguntas.csv", "i18n/preguntas_ca.csv", "i18n/preguntas_en.csv", "logo.png", "icons", "manifest.webmanifest", "retos_especiales.csv"],
   "cfg": {
     "SUPABASE_URL": "https://bdtkngisgjarnyabzhsy.supabase.co",
     "SUPABASE_KEY": "sb_publishable_LaMPVutoRf9rrjdmOWzBOw_ZDVX-W-1",

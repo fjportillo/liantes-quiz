@@ -3,6 +3,7 @@
  "salida": "../../../sabelotodo",
  "preguntas": "preguntas.csv",
  "copiar": [
+  "preguntas.csv",
   "i18n/preguntas_ca.csv",
   "i18n/preguntas_en.csv",
   "logo.png",
