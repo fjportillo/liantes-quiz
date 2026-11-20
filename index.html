@@ -394,6 +394,13 @@
   .reto-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
   .reto-tag{font-family:"Red Hat Display";font-weight:900;font-size:18px;text-transform:uppercase;letter-spacing:1px}
   .reto-tag b{color:var(--blue2)}
+  /* Aviso de reto especial (monográfico): hoy, en grande; mañana, como adelanto */
+  .reto-esp{margin:10px 0 4px;padding:12px 14px;border:2px solid #c9c9c9;background:repeating-linear-gradient(135deg,#1b1b1d 0 10px,#232326 10px 20px);text-align:center}
+  .reto-esp .esp-k{display:block;font-family:"Red Hat Display";font-weight:900;font-size:12px;letter-spacing:4px;color:#ffd76a;text-transform:uppercase}
+  .reto-esp .esp-t{display:block;font-family:"Rubik Dirt","Red Hat Display",cursive;font-size:34px;line-height:1.1;margin:4px 0 2px;color:#e8e8e8;text-transform:uppercase;letter-spacing:2px}
+  .reto-esp .esp-s{display:block;font-size:13px;color:var(--muted)}
+  .reto-esp.manana{border-style:dashed;border-color:#ffd76a;padding:8px 12px}
+  .reto-esp.manana .esp-t{font-size:22px}
   .reto-cd{font-size:12px;color:var(--muted)}
   .reto-txt{margin:8px 0 10px;font-size:14px;color:#d8d8d2}
   .reto-btn{margin-top:0}
@@ -513,6 +520,7 @@
   <section id="scr-start" class="card hidden">
     <div class="reto-box" id="reto-box">
       <div class="reto-head"><span class="reto-tag" data-t>📅 Reto diario <b id="reto-num"></b></span><span class="reto-cd" id="reto-cd"></span></div>
+      <div class="reto-esp hidden" id="reto-esp"></div>
       <div id="reto-todo"><p class="reto-prize" id="reto-prize"></p><p class="reto-txt" data-t>10 preguntas, <b>las mismas para todos</b>. Una sola oportunidad al día. ¿Quién es el Liante del día?</p>
         <button id="btn-reto" class="btn block reto-btn" data-t>Jugar el reto de hoy</button></div>
       <div id="reto-done" class="hidden"><p class="reto-txt" id="reto-res"></p><div class="reto-grid" id="reto-grid"></div>
@@ -749,7 +757,7 @@
   <p class="small muted" style="font-size:11px;opacity:.7" data-t>Esta web recoge estadísticas anónimas de uso, sin cookies ni datos personales.</p>
 </footer>
 
-<script src="i18n/ui.js?v=4cd58bbd"></script>
+<script src="i18n/ui.js?v=85b6727f"></script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN
@@ -1979,7 +1987,12 @@ const Reto = (() => {
     shownDay = day();
     $("reto-prize").textContent = NEW_RULES ? T("🏅 El podio del día suma +500, +300 y +150 puntos al ranking del mes (mínimo 3 jugadores).")
       : T("🏅 Desde el 1 de diciembre, el podio del reto suma +500, +300 y +150 puntos al ranking del mes.");
-    $("reto-num").textContent = num();
+    $("reto-num").textContent = num().split(" · ")[0];
+    const espHoy = especial(shownDay), manana = new Date(Date.parse(shownDay + "T12:00:00Z") + 864e5).toISOString().slice(0, 10), espMan = especial(manana);
+    $("reto-esp").classList.toggle("hidden", !espHoy && !espMan);
+    $("reto-esp").classList.toggle("manana", !espHoy && !!espMan);
+    $("reto-esp").innerHTML = espHoy ? `<span class="esp-k">🤘 ${T("Reto especial")} 🤘</span><span class="esp-t">${esc(espHoy.tema)}</span><span class="esp-s">${T("Hoy, 10 preguntas sobre {tema}, casi todas difíciles. Solo para muy fans.", {tema: esc(espHoy.tema)})}</span>`
+      : espMan ? `<span class="esp-k">🔜 ${T("Mañana, reto especial")}</span><span class="esp-t">${esc(espMan.tema)}</span><span class="esp-s">${T("¡Ve repasando!")}</span>` : "";
     countdown();
     const key = norm($("name").value.trim()), r = mine(shownDay, key), pr = store("rmq-reto-prog");
     $("reto-todo").classList.toggle("hidden", !!r);
