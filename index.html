@@ -472,6 +472,14 @@
   .badge span{display:block;font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3}
   .badge.on{border-color:var(--blue2);background:linear-gradient(180deg,rgba(91,108,240,.2),#131415)}
   .badge.off{opacity:.42}.badge.off .ic{filter:grayscale(1)}
+  .new-badges{margin:14px 0;padding:14px;border:2px solid #ffd76a;background:linear-gradient(180deg,rgba(255,215,106,.14),rgba(255,215,106,.03));text-align:center;animation:nbPop .5s ease-out}
+  @keyframes nbPop{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}
+  .new-badges .nb-k{font-family:"Red Hat Display";font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#ffd76a;margin-bottom:8px}
+  .new-badges .nb-item{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0;text-align:left}
+  .new-badges .nb-ic{font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:34px}
+  .new-badges b{display:block;font-family:"Red Hat Display";font-weight:900}
+  .new-badges small{display:block;color:var(--muted);font-size:12px}
+  .new-badges .btn{margin-top:10px}
 </style>
 </head>
 <body>
@@ -613,6 +621,7 @@
     </div>
     <div class="reto-grid big-grid hidden" id="end-grid"></div>
     <div class="mypos" id="mypos"></div>
+    <div class="new-badges hidden" id="new-badges"></div>
     <div class="share-row">
       <button id="btn-share-img" class="btn" data-t>📤 Compartir en redes</button>
     </div>
@@ -757,7 +766,7 @@
   <p class="small muted" style="font-size:11px;opacity:.7" data-t>Esta web recoge estadísticas anónimas de uso, sin cookies ni datos personales.</p>
 </footer>
 
-<script src="i18n/ui.js?v=85b6727f"></script>
+<script src="i18n/ui.js?v=a8cfc0ff"></script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN
@@ -1068,7 +1077,7 @@ function isLogged(){
   const name = $("name").value.trim(), key = norm(name);
   return !!name && key !== "anonimo" && (!HOF.online || !!pins()[key]);
 }
-function refreshLogin(){ $("logged-name").textContent = $("name").value.trim(); }
+function refreshLogin(){ $("logged-name").textContent = $("name").value.trim(); const k = norm($("name").value.trim()); if (k && typeof Profile === "object") Profile.seed(k); }
 function setUser(name){
   const key = norm(name);
   rememberName(key); $("name").value = name;
@@ -1326,6 +1335,7 @@ function finish(){
   $("btn-again").classList.toggle("hidden", isReto);
   if (isReto) $("verdict").textContent = T("📅 Reto diario {num}", {num: game.num}) + " · " + $("verdict").textContent;
   $("mypos").textContent = T("Guardando en el Hall of Fame…");
+  $("new-badges").classList.add("hidden");
   const res = game.result;
   const longGame = total > 20;
   if (total > 200){                            // la base de datos no admite partidas tan largas: es de práctica
@@ -1354,6 +1364,7 @@ function finish(){
       if (game && game.kind === "practica") html = T("🎸 Partida de práctica: no puntúa para el ranking.") + (html ? "<br>" + html : "");
       else if (NEW_RULES && longGame) html = T("ℹ️ Esta partida no puntúa para el ranking (tiene más de 20 preguntas).") + (html ? "<br>" + html : "");
       $("mypos").innerHTML = html;
+      Profile.checkNew(record.key).then(Profile.showNew).catch(() => {});
     }catch(e){
       console.warn(e);
       $("mypos").textContent = String(e.message).includes("PIN_INCORRECTO")
@@ -2201,7 +2212,44 @@ const Profile = (() => {
       body.innerHTML = `<div class="err">${e.status === 404 ? T("Los perfiles se activarán en cuanto se actualice la base de datos.") : T("No se pudo cargar el perfil. Comprueba la conexión.")}</div>`;
     }
   }
-  return {open, back: () => { show(from); if (from === "scr-hof") renderHof(); }, render};
+  /* Aviso de logros nuevos: cada dispositivo recuerda qué logros ya conocía cada nombre (rmq-logros) */
+  function unlocked(p){
+    const out = BADGES_ES.map(([ic, t, d, f], i) => f(p) ? {id: t, ic, t: BADGES[i][1], d: BADGES[i][2]} : null).filter(Boolean);
+    for (const [c, [ok, tot]] of Object.entries(p.categorias || {}))
+      if (tot >= 20 && ok / tot >= .8) out.push({id: "Maestro:" + c, ic: "🏆", t: T("Maestro"), d: catLabel(c)});
+    return out;
+  }
+  const known = () => store("rmq-logros") || {};
+  function remember(key, ids){ const k = known(); k[key] = ids; store("rmq-logros", k); }
+  async function seed(key){                       // al entrar: apunta los logros que ya tenía, sin avisar
+    if (!HOF.online || !key || known()[key]) return;
+    try{ const p = await rpcCall("perfil", {p_clave: key}); if (p) remember(key, unlocked(p).map(b => b.id)); }catch(e){}
+  }
+  async function checkNew(key){                   // al terminar una partida guardada: ¿hay logros nuevos?
+    if (!HOF.online || !key) return [];
+    const p = await rpcCall("perfil", {p_clave: key}).catch(() => null);
+    if (!p) return [];
+    const all = unlocked(p), prev = known()[key];
+    remember(key, all.map(b => b.id));
+    if (!prev) return (p.partidas || 0) <= 1 ? all : [];   // sin registro previo: solo avisa si es su primera partida
+    return all.filter(b => !prev.includes(b.id));
+  }
+  function showNew(list){
+    const box = $("new-badges");
+    box.classList.toggle("hidden", !list.length);
+    if (!list.length) return;
+    box.innerHTML = `<div class="nb-k">${TP(list.length, "🏅 ¡Nuevo logro desbloqueado!", "🏅 ¡{n} logros nuevos desbloqueados!", {n: list.length})}</div>`
+      + list.map(b => `<div class="nb-item"><span class="nb-ic">${b.ic}</span><span><b>${esc(b.t)}</b><small>${esc(b.d)}</small></span></div>`).join("")
+      + `<button class="btn ghost" id="btn-brag" type="button">${T("📣 Presumir del logro")}</button>`;
+    $("btn-brag").onclick = async () => {
+      const b = list[0];
+      const txt = T("🏅 ¡He desbloqueado el logro «{ic} {t}» ({d}) en el Liantes Quiz Metalero! 🤘 ¿Te atreves?", {ic: b.ic, t: b.t, d: b.d}) + " " + SITE_URL;
+      Stats.track("compartir", {categoria: "Logro", dificultad: "logro"});
+      try{ if (navigator.share){ await navigator.share({text: txt}); return; } }catch(e){ if (e && e.name === "AbortError") return; }
+      try{ await navigator.clipboard.writeText(txt); toast(T("¡Texto copiado! Pégalo donde quieras 🤘")); }catch(e){ toast(txt); }
+    };
+  }
+  return {open, back: () => { show(from); if (from === "scr-hof") renderHof(); }, render, seed, checkNew, showNew};
 })();
 
 
