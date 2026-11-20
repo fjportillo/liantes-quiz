@@ -1860,19 +1860,25 @@ const Reto = (() => {
   const EPOCH = "2026-11-19";                       // reto #1
   const TIMEOUT = T("Sin respuesta (tiempo agotado)");
   const day = (ts = Date.now()) => new Intl.DateTimeFormat("en-CA", {timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit"}).format(ts);
-  const num = (d = day()) => "#" + (Math.round((Date.parse(d) - Date.parse(EPOCH)) / 86400000) + 1);
+  /* Retos especiales: un día concreto, todas las preguntas sobre un tema (más difíciles que un reto normal) */
+  const ESPECIALES = {
+    "2026-11-21": {tema: "Metallica", want: {facil: 1, media: 2, dificil: 7},
+                   es: q => /metallica|cliff burton|hetfield|lars ulrich|kirk hammett|jason newsted|robert trujillo|lloyd grant|ron mcgovney/i.test((q.key || q.q) + " " + (q.cEs || q.c))}
+  };
+  const especial = (d = day()) => ESPECIALES[d] || null;
+  const num = (d = day()) => "#" + (Math.round((Date.parse(d) - Date.parse(EPOCH)) / 86400000) + 1) + (especial(d) ? " · 🤘 " + T("Especial {tema}", {tema: especial(d).tema}) : "");
   function hash(s){ let h = 2166136261; for (const c of s){ h ^= c.codePointAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
   function rng(seed){ return () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
   function sshuffle(a, r){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
   // Mismas preguntas y mismo orden de respuestas en todos los dispositivos
   function questions(d){
-    const r = rng(hash("liantes-reto-" + d));
-    const bank = d >= NEW_RULES_FROM ? BANK.filter(q => !isLocalQ(q)) : BANK;
-    const older = bank.filter(q => q.alta !== d);           // las añadidas ese mismo día no entran (por si se publican a media mañana)
+    const r = rng(hash("liantes-reto-" + d)), esp = especial(d);
+    const bank = esp ? BANK.filter(esp.es) : d >= NEW_RULES_FROM ? BANK.filter(q => !isLocalQ(q)) : BANK;
+    const older = esp ? bank : bank.filter(q => q.alta !== d);           // las añadidas ese mismo día no entran (por si se publican a media mañana)
     const pool = (older.length >= 100 ? older : bank).map(q => [qid(q) + "|" + (q.key || q.q), q]).sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0).map(x => x[1]);
-    const order = sshuffle(pool, r), want = {facil: 3, media: 4, dificil: 3}, picked = [], cats = new Map();
-    for (const pass of [1, 2, 99]) for (const q of order){
+    const order = sshuffle(pool, r), want = esp ? {...esp.want} : {facil: 3, media: 4, dificil: 3}, picked = [], cats = new Map();
+    for (const pass of esp ? [98, 99] : [1, 2, 99]) for (const q of order){
       if (picked.length >= 10) break;
       if (picked.includes(q)) continue;
       const dq = q.diff || "media";
