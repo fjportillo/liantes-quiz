@@ -78,7 +78,7 @@ def evento(cfg, salida):
         t = leer(os.path.join(AQUI, pagina))
         t = re.sub(r'const SUPABASE_URL = "[^"]*";', 'const SUPABASE_URL = %s;' % json.dumps(c["SUPABASE_URL"]), t)
         t = re.sub(r'const SUPABASE_KEY = "[^"]*";', 'const SUPABASE_KEY = %s;' % json.dumps(c["SUPABASE_KEY"]), t)
-        for k in ("ev-host", "ev-player", "ev-ultima"):
+        for k in ("ev-host", "ev-player", "ev-ultima", "ev-nombre"):
             t = t.replace('"%s"' % k, '"%s%s"' % (pre, k))
         t = t.replace('"ev-ans-"', '"%sev-ans-"' % pre)
         t = t.replace('<script src="i18n/i18n.js', '<script src="i18n/marca.js?v=%s"></script>\n<script src="i18n/i18n.js' % v, 1)
