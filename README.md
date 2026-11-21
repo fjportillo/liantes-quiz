@@ -54,7 +54,7 @@ Para previsualizar un tema: añadir `#tema-halloween` (o `navidad`, `dimoni`, `s
 
 - `reglas.sql` — guarda en la sala cómo será la partida para que los móviles enseñen las reglas («Cómo se juega») en la sala de espera. En la pantalla grande, al pulsar «¡Empezar!» se muestran las reglas antes de la primera pregunta.
 
-**Avance automático** (activado por defecto al crear la sala): tras presentar la ronda (8 s), revelar la respuesta (6-7 s) y enseñar la clasificación (6-7 s), la partida sigue sola. Hay un botón de pausa abajo y la barra espaciadora sigue adelantando.
+**Avance automático** (activado por defecto al crear la sala): las reglas salen 12 s (8 en la clásica), la presentación de cada ronda 6 s y el resultado de cada pregunta 4-5 s; la clasificación sale solo al acabar cada ronda (en la clásica, cada 3 preguntas) y dura 5 s. La partida sigue sola. Hay un botón de pausa abajo y la barra espaciadora sigue adelantando.
 
 Hay dos tipos de partida:
 - **Concurso por rondas** (por defecto): el presentador elige las rondas y cuántas preguntas tiene cada una. Antes de cada ronda la pantalla grande presenta sus reglas.
