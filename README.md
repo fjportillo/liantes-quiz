@@ -46,7 +46,20 @@ Para previsualizar un tema: añadir `#tema-halloween` (o `navidad`, `dimoni`, `s
 - `evento.html` — pantalla del presentador: se proyecta, crea la sala, muestra el QR y el código, las preguntas, el reparto de votos, la clasificación y el podio. Atajo: barra espaciadora para avanzar.
 - `jugar.html` — pantalla del jugador en el móvil (se abre con el QR o con `jugar.html?sala=CODIGO`).
 - `evento.sql` — tablas y funciones en Supabase (hay que ejecutarlo una vez).
-Puntuación: 100 puntos por acierto + hasta 100 por rapidez. Las salas se borran solas a los 2 días.
+- `concurso.sql` — puntuación por rondas del modo concurso (ejecutarlo una vez, después de `evento.sql`).
+- `concurso.js` — nombres, reglas y emojis de las rondas (lo usan las dos páginas).
+
+Hay dos tipos de partida:
+- **Concurso por rondas** (por defecto): el presentador elige las rondas y cuántas preguntas tiene cada una. Antes de cada ronda la pantalla grande presenta sus reglas.
+  - 🔥 Calentamiento: +100 por acierto.
+  - ⏱️ Contrarreloj: de 200 a 20 puntos según la rapidez.
+  - ⚡ El más rápido: solo puntúa el primero que acierta (+200); fallar resta 100.
+  - 🦹 Roba puntos: acertar da 50 y el más rápido roba hasta 150 al líder (si es él, al segundo).
+  - 💣 La gran final: de 300 a 60 según la rapidez; fallar resta 150.
+  Nadie baja de 0 puntos. La rapidez se mide con el reloj del servidor.
+- **Clásica**: 100 puntos por acierto + hasta 100 por rapidez.
+
+Los puntos de cada pregunta los reparte la base de datos al revelar la respuesta (función `ev_revelar`; el tipo de ronda viaja en la pregunta). Las salas se borran solas a los 2 días.
 
 ## Idiomas (castellano, català, English)
 
