@@ -48,6 +48,9 @@ Para previsualizar un tema: añadir `#tema-halloween` (o `navidad`, `dimoni`, `s
 - `evento.sql` — tablas y funciones en Supabase (hay que ejecutarlo una vez).
 - `concurso.sql` — puntuación por rondas del modo concurso (ejecutarlo una vez, después de `evento.sql`).
 - `concurso.js` — nombres, reglas y emojis de las rondas (lo usan las dos páginas).
+- `sonido.js` — música y efectos sintetizados en el navegador (Web Audio, sin archivos ni derechos de autor). En la pantalla grande suenan música de fondo (espera, pregunta y una más intensa en la final) y efectos; en los móviles, solo efectos. Botones 🎵 y 🔊 para silenciarlos.
+
+**Avance automático** (activado por defecto al crear la sala): tras presentar la ronda (8 s), revelar la respuesta (6-7 s) y enseñar la clasificación (6-7 s), la partida sigue sola. Hay un botón de pausa abajo y la barra espaciadora sigue adelantando.
 
 Hay dos tipos de partida:
 - **Concurso por rondas** (por defecto): el presentador elige las rondas y cuántas preguntas tiene cada una. Antes de cada ronda la pantalla grande presenta sus reglas.

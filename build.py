@@ -72,7 +72,8 @@ def evento(cfg, salida):
     i18n = leer(os.path.join(AQUI, "i18n", "i18n.js")).replace('"rmq-lang"', '"%srmq-lang"' % pre)
     open(os.path.join(salida, "i18n", "i18n.js"), "w", encoding="utf-8").write(i18n)
     v = hashlib.md5(js.encode()).hexdigest()[:8]
-    shutil.copy(os.path.join(AQUI, "concurso.js"), os.path.join(salida, "concurso.js"))
+    for f in ("concurso.js", "sonido.js"):
+        shutil.copy(os.path.join(AQUI, f), os.path.join(salida, f))
     for pagina in ("evento.html", "jugar.html"):
         t = leer(os.path.join(AQUI, pagina))
         t = re.sub(r'const SUPABASE_URL = "[^"]*";', 'const SUPABASE_URL = %s;' % json.dumps(c["SUPABASE_URL"]), t)
