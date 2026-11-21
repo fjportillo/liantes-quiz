@@ -122,3 +122,6 @@ Se puede editar directamente en GitHub: la web lee el archivo al abrirse (y adem
 - `python3 build.py sabelotodo` → Sabelotodo, a partir de `quizzes/sabelotodo/` (`config.json` generado con `gen_config.py` desde `marca.py`; preguntas y traducciones propias). Se genera en la carpeta indicada en `"salida"` (el repositorio `sabelotodo`).
 
 Cada quiz tiene su propio proyecto de Supabase (`quizzes/sabelotodo/supabase.sql`), sus textos (`MARCA`) y guarda sus datos del navegador con su prefijo (`STORE_PREFIX`), así que usuarios y rankings no se mezclan aunque compartan dominio.
+
+### Preguntas sin repetir
+La pantalla del presentador recuerda (en su navegador, 60 días) qué preguntas han salido en el modo evento. Al preparar cada partida elige primero las que nunca han salido y, cuando se acaban, las que salieron hace más tiempo. Una pregunta cuenta como salida solo cuando llega a mostrarse.
