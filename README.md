@@ -52,6 +52,8 @@ Para previsualizar un tema: añadir `#tema-halloween` (o `navidad`, `dimoni`, `s
 
 - `salas_partidas.sql` — varias partidas en la misma sala (botón «🔁 Otra partida en esta sala» al terminar: los jugadores siguen conectados y los puntos vuelven a cero) y lobby para quien entra con la partida empezada: espera viendo la clasificación y entra en la siguiente.
 
+- `reglas.sql` — guarda en la sala cómo será la partida para que los móviles enseñen las reglas («Cómo se juega») en la sala de espera. En la pantalla grande, al pulsar «¡Empezar!» se muestran las reglas antes de la primera pregunta.
+
 **Avance automático** (activado por defecto al crear la sala): tras presentar la ronda (8 s), revelar la respuesta (6-7 s) y enseñar la clasificación (6-7 s), la partida sigue sola. Hay un botón de pausa abajo y la barra espaciadora sigue adelantando.
 
 Hay dos tipos de partida:
