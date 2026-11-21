@@ -50,6 +50,8 @@ Para previsualizar un tema: añadir `#tema-halloween` (o `navidad`, `dimoni`, `s
 - `concurso.js` — nombres, reglas y emojis de las rondas (lo usan las dos páginas).
 - `sonido.js` — música y efectos sintetizados en el navegador (Web Audio, sin archivos ni derechos de autor). En la pantalla grande suenan música de fondo (espera, pregunta y una más intensa en la final) y efectos; en los móviles, solo efectos. Botones 🎵 y 🔊 para silenciarlos.
 
+- `salas_partidas.sql` — varias partidas en la misma sala (botón «🔁 Otra partida en esta sala» al terminar: los jugadores siguen conectados y los puntos vuelven a cero) y lobby para quien entra con la partida empezada: espera viendo la clasificación y entra en la siguiente.
+
 **Avance automático** (activado por defecto al crear la sala): tras presentar la ronda (8 s), revelar la respuesta (6-7 s) y enseñar la clasificación (6-7 s), la partida sigue sola. Hay un botón de pausa abajo y la barra espaciadora sigue adelantando.
 
 Hay dos tipos de partida:
