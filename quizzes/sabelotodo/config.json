@@ -273,7 +273,77 @@
   "hero": "<div class=\"pre\" data-t>El quiz diario de cultura general</div>\n  <h1 class=\"logo\"><a href=\"#\" id=\"home-link\" title=\"Volver al inicio\" data-t-title>Sabelo<span>todo</span></a></h1>",
   "lema": "<div class=\"tag\" data-t>¿Cuánto sabes de todo un poco? Diez preguntas al día, las mismas para todos.</div>",
   "socio": "",
-  "evento": "",
   "pie": "<p class=\"motto\" data-t>Pon a prueba tu cultura general.</p>\n  <p><button class=\"deco-toggle hidden\" id=\"deco-toggle\"></button></p>\n  <p class=\"foot-install hidden\" id=\"foot-install-p\"><a class=\"web-link\" href=\"#instalar\" id=\"foot-install\" data-t>📲 Descarga la app Liantes Quiz</a></p>"
+ },
+ "evento": {
+  "textos": {
+   "jugadores conectados": [
+    "jugadors connectats",
+    "players connected"
+   ],
+   "Tu nombre": [
+    "El teu nom",
+    "Your name"
+   ],
+   "¡Campeones! 🏆": [
+    "Campions! 🏆",
+    "Champions! 🏆"
+   ]
+  },
+  "reemplazos": [
+   [
+    "<title>Modo evento · Liantes Quiz Metalero</title>",
+    "<title>Modo evento · Sabelotodo</title>"
+   ],
+   [
+    "<title>Jugar · Liantes Quiz Metalero</title>",
+    "<title>Jugar · Sabelotodo</title>"
+   ],
+   [
+    "alt=\"Liantes Metaleros\"",
+    "alt=\"Sabelotodo\""
+   ],
+   [
+    "<div class=\"t\">LIANTES<span data-t>MODO EVENTO</span></div>",
+    "<div class=\"t\">Sabelo<em>todo</em><span data-t>MODO EVENTO</span></div>"
+   ],
+   [
+    "<div class=\"t\">LIANTES</div>",
+    "<div class=\"t\">Sabelo<em>todo</em></div>"
+   ],
+   [
+    "<h1>LIANTES</h1>",
+    "<h1>Sabelo<em>todo</em></h1>"
+   ],
+   [
+    "<span data-t>Liantes conectados</span>",
+    "<span data-t>jugadores conectados</span>"
+   ],
+   [
+    "placeholder=\"Tu nombre de Liante\"",
+    "placeholder=\"Tu nombre\""
+   ],
+   [
+    "<h1 data-t>¡Campeones! 🤘</h1>",
+    "<h1 data-t>¡Campeones! 🏆</h1>"
+   ],
+   [
+    "<div class=\"wait-emoji\">🤘</div>",
+    "<div class=\"wait-emoji\">🧠</div>"
+   ],
+   [
+    "ok ? \"🤘\" : \"💀\"",
+    "ok ? \"🎉\" : \"❌\""
+   ],
+   [
+    ": \"🤘\";",
+    ": \"🧠\";"
+   ],
+   [
+    "family=Rubik+Dirt",
+    "family=Fraunces:wght@600;800"
+   ]
+  ],
+  "css": "\n  :root{--bg:#0b1324;--panel:#121c33;--line:#26365a;--text:#f1f5f9;--muted:#94a3b8;--grey:#e2e8f0;--blue:#0d9488;--blue2:#5eead4;--gold:#ffd166}\n  header{background:linear-gradient(90deg,#0f172a,#0d9488);border-bottom:3px solid var(--blue2)}\n  header img{background:transparent}\n  header .t,h1{font-family:\"Fraunces\",Georgia,serif !important;font-weight:800 !important;color:var(--text) !important;letter-spacing:0}\n  header .t em,h1 em{font-style:normal;color:var(--gold)}\n  .btn:hover{background:var(--blue2);color:#0b1324}\n  .lang-sw button.on{background:var(--blue2);color:#0b1324}\n"
  }
 }

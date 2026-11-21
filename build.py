@@ -54,6 +54,37 @@ def liantes():
         open(ruta, "w", encoding="utf-8").write(s)
     print("index.html generado")
 
+def evento(cfg, salida):
+    """Modo evento (evento.html = pantalla del presentador, jugar.html = móvil del jugador) para otro quiz:
+    mismas páginas que Liantes, con su Supabase, su prefijo de almacenamiento, sus colores y sus textos."""
+    ev = cfg.get("evento")
+    if not ev: return
+    c = cfg["cfg"]; pre = c.get("STORE_PREFIX", "")
+    # traducciones de los textos propios del quiz (categorías, marca y textos del modo evento) para las páginas sueltas
+    marca = c.get("MARCA", {})
+    extra = {"ca": dict(marca.get("ca", {})), "en": dict(marca.get("en", {}))}
+    for es, (ca, en) in ev.get("textos", {}).items():
+        extra["ca"][es] = ca; extra["en"][es] = en
+    js = ("/* Generado por build.py: textos propios de este quiz para evento.html y jugar.html */\n"
+          "(function(){ const X = " + json.dumps(extra, ensure_ascii=False) + ";\n"
+          "  window.I18N = window.I18N || {}; for (const l in X) window.I18N[l] = Object.assign(window.I18N[l] || {}, X[l]); })();\n")
+    open(os.path.join(salida, "i18n", "marca.js"), "w", encoding="utf-8").write(js)
+    i18n = leer(os.path.join(AQUI, "i18n", "i18n.js")).replace('"rmq-lang"', '"%srmq-lang"' % pre)
+    open(os.path.join(salida, "i18n", "i18n.js"), "w", encoding="utf-8").write(i18n)
+    v = hashlib.md5(js.encode()).hexdigest()[:8]
+    for pagina in ("evento.html", "jugar.html"):
+        t = leer(os.path.join(AQUI, pagina))
+        t = re.sub(r'const SUPABASE_URL = "[^"]*";', 'const SUPABASE_URL = %s;' % json.dumps(c["SUPABASE_URL"]), t)
+        t = re.sub(r'const SUPABASE_KEY = "[^"]*";', 'const SUPABASE_KEY = %s;' % json.dumps(c["SUPABASE_KEY"]), t)
+        for k in ("ev-host", "ev-player"):
+            t = t.replace('"%s"' % k, '"%s%s"' % (pre, k))
+        t = t.replace('"ev-ans-"', '"%sev-ans-"' % pre)
+        t = t.replace('<script src="i18n/i18n.js', '<script src="i18n/marca.js?v=%s"></script>\n<script src="i18n/i18n.js' % v, 1)
+        for a, b in ev.get("reemplazos", []):
+            t = t.replace(a, b)
+        t = t.replace("</style>", ev.get("css", "") + "\n</style>", 1)
+        open(os.path.join(salida, pagina), "w", encoding="utf-8").write(t)
+
 def otro(nombre):
     base = os.path.join(AQUI, "quizzes", nombre)
     cfg = json.loads(leer(os.path.join(base, "config.json")))
@@ -69,6 +100,7 @@ def otro(nombre):
             shutil.copytree(origen, destino, dirs_exist_ok=True)
         else:
             shutil.copy(origen, destino)
+    evento(cfg, salida)
     # service worker con su propia caché
     sw = leer(os.path.join(AQUI, "sw.js")).replace('const CACHE = "liantes-quiz-', 'const CACHE = "%s-' % nombre)
     # en la caché sin conexión, solo los archivos que existen en este quiz
