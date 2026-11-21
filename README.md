@@ -56,6 +56,8 @@ Para previsualizar un tema: añadir `#tema-halloween` (o `navidad`, `dimoni`, `s
 
 - `reingreso.sql` — quien sale por error vuelve a entrar con el mismo nombre y conserva sus puntos y su partida. Además el móvil recuerda al jugador aunque se cierre la página: al volver a abrir el enlace o el QR, sigue dentro.
 
+- `reclamar.sql` — botón «🔑 Soy yo, recuperar mi sitio» cuando el nombre ya está en la sala (por ejemplo, si el jugador vuelve desde otro navegador o móvil): recupera sus puntos y el dispositivo anterior queda desconectado.
+
 **Avance automático** (activado por defecto al crear la sala): las reglas salen 12 s (8 en la clásica), la presentación de cada ronda 6 s y el resultado de cada pregunta 4-5 s; la clasificación sale solo al acabar cada ronda (en la clásica, cada 3 preguntas) y dura 5 s. La partida sigue sola. Hay un botón de pausa abajo y la barra espaciadora sigue adelantando.
 
 Hay dos tipos de partida:
