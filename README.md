@@ -125,3 +125,8 @@ Cada quiz tiene su propio proyecto de Supabase (`quizzes/sabelotodo/supabase.sql
 
 ### Preguntas sin repetir
 La pantalla del presentador recuerda (en su navegador, 60 días) qué preguntas han salido en el modo evento. Al preparar cada partida elige primero las que nunca han salido y, cuando se acaban, las que salieron hace más tiempo. Una pregunta cuenta como salida solo cuando llega a mostrarse.
+
+### Reparto por categorías
+El campeonato, la práctica con «todas las categorías» y el reto diario (desde el 22-11-2026) reparten las preguntas por igual entre categorías: una categoría con muchas preguntas (p. ej. Hair metal 80's) no sale más a menudo que una pequeña. En la dificultad automática se sortea primero la categoría (entre las que menos han salido en la partida) y luego la pregunta. Funciones `porCategorias` y `autoPick` en `plantilla.html`; en el reto, `RETO_REPARTO_DESDE`.
+
+Objetivo del banco: unas 2.500 preguntas, al menos 1.000 difíciles y un mínimo de 120-150 por categoría (salvo las de Liantes). La renovación semanal añade unas 90 y retira unas 40.
