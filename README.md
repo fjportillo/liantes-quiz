@@ -130,3 +130,8 @@ La pantalla del presentador recuerda (en su navegador, 60 días) qué preguntas 
 El campeonato, la práctica con «todas las categorías» y el reto diario (desde el 22-11-2026) reparten las preguntas por igual entre categorías: una categoría con muchas preguntas (p. ej. Hair metal 80's) no sale más a menudo que una pequeña. En la dificultad automática se sortea primero la categoría (entre las que menos han salido en la partida) y luego la pregunta. Funciones `porCategorias` y `autoPick` en `plantilla.html`; en el reto, `RETO_REPARTO_DESDE`.
 
 Objetivo del banco: unas 2.500 preguntas, al menos 1.000 difíciles y un mínimo de 120-150 por categoría (salvo las de Liantes). La renovación semanal añade unas 90 y retira unas 40.
+
+### Descarga de las preguntas y caché
+`index.html` ya no lleva el banco incrustado: la web descarga `preguntas.csv` (y `i18n/preguntas_ca.csv` / `preguntas_en.csv` según el idioma) con `cache: "no-cache"`, así que el navegador solo pregunta si han cambiado y, si no, el servidor responde 304 sin volver a enviarlas. El service worker (`sw.js`) guarda una copia para jugar sin conexión. Para abrir `index.html` directamente desde el disco (file://), genera con `python3 build.py --embebido`.
+
+Cada dispositivo recuerda hasta 12.000 preguntas vistas (`SEEN_MAX`) para no repetirlas, suficiente para un banco de 10.000.

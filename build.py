@@ -11,6 +11,8 @@ La plantilla tiene dos tipos de marcas:
 import hashlib, json, os, re, shutil, sys
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
+EMBEBIDO = "--embebido" in sys.argv
+sys.argv = [a for a in sys.argv if a != "--embebido"]
 VALOR = r'("(?:[^"\\]|\\.)*"|\'(?:[^\'\\]|\\.)*\'|\[[^\]]*\]|\{[^{}]*\}|true|false|-?\d+(?:\.\d+)?)'
 
 def leer(ruta, defecto=None):
@@ -36,8 +38,11 @@ def generar(cfg, base, salida):
     t = re.sub(r'/\*#cfg:(\w+)\*/' + VALOR, const, t)
     faltan = set(re.findall(r'/\*#cfg:(\w+)\*/', t))
     if faltan: raise SystemExit("Marcas cfg sin valor reconocible: %s" % faltan)
-    preguntas = leer(os.path.join(base, cfg.get("preguntas", "preguntas.csv")))
-    t = t.replace('/*__PREGUNTAS_CSV__*/""', json.dumps(preguntas, ensure_ascii=False))
+    # Las preguntas ya no van dentro de index.html: la web descarga preguntas.csv (y el service worker lo guarda para jugar
+    # sin conexión). Solo se incrustan con --embebido, para abrir index.html directamente desde el disco (file://).
+    if EMBEBIDO:
+        preguntas = leer(os.path.join(base, cfg.get("preguntas", "preguntas.csv")))
+        t = t.replace('/*__PREGUNTAS_CSV__*/""', json.dumps(preguntas, ensure_ascii=False))
     esp = leer(os.path.join(base, "retos_especiales.csv"), "")
     t = t.replace('/*__RETOS_ESPECIALES__*/""', json.dumps(esp, ensure_ascii=False))
     # versión en los scripts de traducción (para que el navegador no use copias antiguas)

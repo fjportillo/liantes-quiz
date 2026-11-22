@@ -1001,15 +1001,21 @@ function toQuestions(rows){
 async function loadBank(){
   const attempts = [];
   if (SHEET_CSV_URL) attempts.push(["Google Sheets", SHEET_CSV_URL + (SHEET_CSV_URL.includes("?")?"&":"?") + "t=" + Date.now()]);
-  if (location.protocol.startsWith("http")) attempts.push(["preguntas.csv", "preguntas.csv?t=" + Date.now()]);
+  // Sin "?t=": el navegador pregunta al servidor si el archivo ha cambiado y, si no, no lo vuelve a descargar (304)
+  if (location.protocol.startsWith("http")) attempts.push(["preguntas.csv", "preguntas.csv"]);
   for (const [label, url] of attempts){
     try{
-      const res = await fetch(url, {cache:"no-store"});
+      const res = await fetch(url, {cache:"no-cache"});
       if (!res.ok) throw new Error(res.status);
       const qs = toQuestions(parseCSV(await res.text()));
       if (qs.length) return {qs: await translateBank(qs), label};
     }catch(e){ console.warn("No se pudo cargar", label, e); }
   }
+  // Sin conexión: la copia que guardó el service worker (por si aún no controla la página) o la incrustada (--embebido)
+  try{
+    const hit = "caches" in window && await caches.match("preguntas.csv");
+    if (hit){ const qs = toQuestions(parseCSV(await hit.text())); if (qs.length) return {qs: await translateBank(qs), label: "preguntas.csv"}; }
+  }catch(e){}
   return {qs: await translateBank(toQuestions(parseCSV(EMBEDDED_CSV))), label: T("preguntas incluidas")};
 }
 
@@ -1019,7 +1025,7 @@ async function translateBank(qs){
   qs.forEach(q => { q.key = q.q; q.cEs = q.c; });
   if (LANG === "es" || !location.protocol.startsWith("http")) return qs;
   try{
-    const res = await fetch(`i18n/preguntas_${LANG}.csv?t=${Date.now()}`, {cache: "no-store"});
+    const res = await fetch(`i18n/preguntas_${LANG}.csv`, {cache: "no-cache"});
     if (!res.ok) throw new Error(res.status);
     const rows = parseCSV(await res.text()), head = rows[0].map(norm), ix = k => head.indexOf(k);
     const iK = ix("preguntaes"), iV = ix("visual"), iCE = ix("correctaes"), iQ = ix("pregunta"), iC = ix("correcta");
@@ -1039,6 +1045,7 @@ async function translateBank(qs){
   return qs;
 }
 
+const SEEN_MAX = 12000;   // preguntas vistas que recuerda cada dispositivo para no repetirlas (cabe un banco de 10.000)
 function qid(q){ let h = 0; const s = (q.key || q.q) + "|" + (q.vis || ""); for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return h.toString(36); }
 
 function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
@@ -1229,14 +1236,15 @@ function startGame(){
   const need = n || pool.length;
   if (fresh.length < need && old.length){            // casi todo visto: empezar ronda nueva
     const keep = new Set(fresh.map(qid));
-    store("rmq-seen", [...seen].filter(id => !pool.some(q => qid(q) === id) || keep.has(id)));
+    const enPool = new Set(pool.map(qid));
+    store("rmq-seen", [...seen].filter(id => !enPool.has(id) || keep.has(id)));
   }
   pool = shuffle(fresh).concat(shuffle(old));
   if (!cat) pool = porCategorias(pool);       // todas las categorías: que cada una pese lo mismo, tenga las preguntas que tenga
   if (n) pool = pool.slice(0, n);
   const nowSeen = new Set(store("rmq-seen") || []);
   pool.forEach(q => nowSeen.add(qid(q)));
-  store("rmq-seen", [...nowSeen].slice(-3000));
+  store("rmq-seen", [...nowSeen].slice(-SEEN_MAX));
   store("rmq-opts", champ ? {...(store("rmq-opts") || {}), name, kind: KIND, v: 2} : {name, cat, diff, n, v: 2, kind: KIND});
   game = { name, list: pool.map(q => ({...q, options: shuffle([q.c, ...q.wrong])})),
            i: 0, score: 0, ok: 0, streak: 0, best: 0, misses: [], cat, diff, mode: "normal", grid: [], det: {}, kind: NEW_RULES ? KIND : null };
@@ -1277,7 +1285,7 @@ function autoPick(i){
     }
     const fresh = c.filter(q => !seen.has(qid(q)));
     const q = shuffle(fresh.length ? fresh : c)[0];
-    seen.add(qid(q)); store("rmq-seen", [...seen].slice(-3000));
+    seen.add(qid(q)); store("rmq-seen", [...seen].slice(-SEEN_MAX));
     return {...q, options: shuffle([q.c, ...q.wrong])};
   }
   return game.list[i];
