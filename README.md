@@ -48,6 +48,7 @@ Para previsualizar un tema: añadir `#tema-halloween` (o `navidad`, `dimoni`, `s
 - `jugar.html` — pantalla del jugador en el móvil (se abre con el QR o con `jugar.html?sala=CODIGO`).
 - `evento.sql` — tablas y funciones en Supabase (hay que ejecutarlo una vez).
 - `concurso.sql` — puntuación por rondas del modo concurso (ejecutarlo una vez, después de `evento.sql`).
+- `golpe_final.sql` — **💀 Golpe final** (casilla al crear la sala, en partida clásica o por rondas): se añade una última pregunta muy difícil y el primero que la acierta roba hasta 300 puntos a cada uno de los demás jugadores (nadie baja de 0; si nadie acierta, no pasa nada). La pregunta es difícil, sin imagen y, si hay estadísticas en `preguntas_ranking`, de las que acierta como mucho el 30 % de la gente. Antes de esa pregunta siempre se enseña la clasificación. Ejecutarlo en los dos proyectos (en Sabelotodo ya va dentro de su `supabase.sql`).
 - `concurso.js` — nombres, reglas y emojis de las rondas (lo usan las dos páginas).
 - `sonido.js` — música y efectos sintetizados en el navegador (Web Audio, sin archivos ni derechos de autor). En la pantalla grande suenan música de fondo (espera, pregunta y una más intensa en la final) y efectos; en los móviles, solo efectos. Botones 🎵 y 🔊 para silenciarlos.
 

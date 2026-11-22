@@ -13,7 +13,7 @@ create table if not exists public.sala_puntos (
   idx      integer not null,
   jugador  uuid not null references public.sala_jugadores(id) on delete cascade,
   puntos   integer not null,
-  motivo   text not null,               -- acierto | primero | fallo | robo | robado
+  motivo   text not null,               -- acierto | primero | fallo | robo | robado | golpe | golpeado
   primary key (codigo, idx, jugador)
 );
 alter table public.sala_puntos enable row level security;   -- sin políticas: solo a través de las funciones y vistas
@@ -80,6 +80,18 @@ begin
       from sala_respuestas r where r.codigo = s.codigo and r.idx = s.idx and r.opcion = p_correcta;
     insert into sala_puntos select r.codigo, r.idx, r.jugador, -least(150, ev_total(s.codigo, r.jugador, s.idx)), 'fallo'
       from sala_respuestas r where r.codigo = s.codigo and r.idx = s.idx and r.opcion <> p_correcta;
+
+  elsif tipo = 'golpe' then               -- golpe final: el primero que acierta roba hasta 300 a cada uno de los demás
+    select r.jugador into ladron from sala_respuestas r
+      where r.codigo = s.codigo and r.idx = s.idx and r.opcion = p_correcta order by r.ms, r.creado limit 1;
+    if ladron is not null then
+      insert into sala_puntos
+        select s.codigo, s.idx, j.id, -least(300, ev_total(s.codigo, j.id, s.idx)), 'golpeado'
+        from sala_jugadores j
+        where j.codigo = s.codigo and j.partida = s.partida and j.id <> ladron and ev_total(s.codigo, j.id, s.idx) > 0;
+      select coalesce(-sum(puntos), 0)::int into botin from sala_puntos where codigo = s.codigo and idx = s.idx and motivo = 'golpeado';
+      insert into sala_puntos values (s.codigo, s.idx, ladron, botin, 'golpe');
+    end if;
 
   else                                    -- modo evento clásico: 100 por acierto + hasta 100 por rapidez
     insert into sala_puntos select r.codigo, r.idx, r.jugador, 100 + round(100.0 * greatest(0, seg - r.ms) / seg)::int, 'acierto'
