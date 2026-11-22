@@ -111,7 +111,7 @@ fecha,tema,palabras,reparto
 
 - **fecha**: AAAA-MM-DD (hora de Madrid).
 - **tema**: el nombre que se muestra («Reto diario #3 · 🤘 Especial Metallica»).
-- **palabras**: separadas por `|`. Entran las preguntas que contengan alguna de ellas en la pregunta o en la respuesta correcta (sin importar mayúsculas ni tildes). Usa palabras precisas: «eddie» también encontraría a Eddie Vedder.
+- **palabras**: separadas por `|`. También se puede meter una categoría entera con `cat:` (p. ej. `cat:Punk internacional|cat:Punk rock español`). Si el ciclo sin repeticiones está activo, salen primero las del tema que aún no han salido en el reto. Entran las preguntas que contengan alguna de ellas en la pregunta o en la respuesta correcta (sin importar mayúsculas ni tildes). Usa palabras precisas: «eddie» también encontraría a Eddie Vedder.
 - **reparto** (opcional): cuántas fáciles-medias-difíciles; por defecto `1-2-7`.
 - Hacen falta al menos 10 preguntas que coincidan; si no, ese día el reto es normal.
 
