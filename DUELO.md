@@ -36,12 +36,17 @@ No se publica nada en `main` hasta que esté terminado y probado.
    un Postgres local con los SQL del repo + un mini servidor PostgREST simulado (o interceptando fetch con page.route).
 
 ## Estado (actualizar al final de cada sesión)
-- [ ] 1. anfitrion.js extraído y evento.html funcionando igual
-- [ ] 2. modo anfitrión en jugar.html
-- [ ] 3. duelo.html (creación, QR, invitar)
-- [ ] 4. menú, README, i18n, build.py (Liantes y Sabelotodo)
-- [ ] 5. pruebas completas con varios jugadores, incluido anfitrión que recarga
-- [ ] 6. merge a main, build de los dos quizzes, push y aviso al usuario
+- [x] 1. lógica del presentador reutilizada (decisión: en vez de extraer anfitrion.js, evento.html?duelo con jugar.html en un iframe)
+- [x] 2. el anfitrión juega desde su móvil (iframe) y la partida avanza sola
+- [x] 3. creación de la sala en el móvil, código, QR, compartir/WhatsApp/copiar
+- [x] 4. menú, README, i18n, build.py (Liantes y Sabelotodo)
+- [x] 5. pruebas completas con varios jugadores, anfitrión que recarga, anfitrión que se va y otra partida en la misma sala
+- [x] 6. merge a main, build de los dos quizzes, push y aviso al usuario
 
 ## Diario
 - 2026-11-23: plan creado (sesión interactiva).
+- 2026-11-23 (sesión interactiva de ~2 h): hecho entero. evento.html?duelo + iframe de jugar.html, barra del anfitrión,
+  invitación, Wake Lock, reanudar tras recargar, aviso «Esperando al anfitrión» en jugar.html, claves propias, menú, i18n, build.py.
+  Arreglado de paso un fallo de jugar.html: al recargar, el jugador no se recuperaba (start() antes de definir poll()).
+  Probado con Playwright (2 móviles) contra un Postgres local con todos los SQL del modo evento y un imitador de PostgREST.
+  Publicado en main. Pendiente solo probarlo en móviles reales.

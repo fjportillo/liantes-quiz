@@ -75,6 +75,15 @@ Hay dos tipos de partida:
 
 Los puntos de cada pregunta los reparte la base de datos al revelar la respuesta (función `ev_revelar`; el tipo de ronda viaja en la pregunta). Las salas se borran solas a los 2 días.
 
+## ⚔️ Duelo (sala desde el móvil, sin pantalla grande)
+
+Botón «⚔️ Duelo (sala desde tu móvil)» del menú → `evento.html?duelo`. Quien abre la sala lo hace desde su móvil con las mismas opciones que el modo evento (clásica o por rondas, tiempo, categoría, dificultad, golpe final), comparte el código, el QR o el enlace (Compartir / WhatsApp / Copiar) y **juega desde el mismo móvil**.
+
+- Cómo está hecho: es el mismo `evento.html` (misma lógica del presentador, mismas funciones de Supabase, sin SQL nuevo) con la pantalla de jugador (`jugar.html?sala=XXXX&duelo=1`) en un iframe a pantalla completa y una barra de anfitrión arriba (código, Invitar, Empezar, Otra partida, Salir). El avance es siempre automático; el sonido lo pone la pantalla de jugador.
+- La pantalla no se apaga mientras se juega (Wake Lock). Si el anfitrión recarga o vuelve a abrir el duelo en los 30 minutos siguientes, la partida sigue: si la pregunta estaba en juego se repite y, si ya se había resuelto, pasa a la siguiente.
+- Si la partida se queda parada (el anfitrión ha cerrado la app o se le ha apagado el móvil), los demás ven «Esperando al anfitrión…» (solo en duelos: `config.duelo`).
+- Guarda su estado en claves propias (`duelo-host`, `duelo-ultima`), así un mismo móvil puede presentar un evento y un duelo sin mezclarlos.
+
 ## Idiomas (castellano, català, English)
 
 - El idioma se elige con los botones **ES · CA · EN** de la cabecera (se recuerda en cada dispositivo). También se puede forzar con `?lang=ca` o `?lang=en` en la dirección.
