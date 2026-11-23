@@ -1,0 +1,18 @@
+# Grupos que el quiz de Liantes NO incluye (pop y Movida de los 80, decidido por el administrador el 23-11-2026).
+# tools/check_i18n.py da error si alguna pregunta los nombra en el texto o en la respuesta correcta.
+# Una banda por línea (sin distinguir mayúsculas ni tildes). Como respuesta falsa sí pueden salir.
+Hombres G
+Duncan Dhu
+La Unión
+Radio Futura
+Los Secretos
+Nacha Pop
+Gabinete Caligari
+El Último de la Fila
+Alaska
+Los Ronaldos
+Golpes Bajos
+Los Rodríguez
+Tequila
+Celtas Cortos
+Mecano

@@ -63,7 +63,20 @@ def main():
             buf = io.StringIO(); csv.writer(buf, lineterminator="\n").writerows(keep)
             open(path, "w", encoding="utf-8").write(buf.getvalue())
             print(f"   -> borradas {len(orphan)} huérfanas y {len(dup)} duplicadas")
-    print("OK: traducciones completas" if ok_all else "HAY QUE COMPLETAR TRADUCCIONES")
+    # Bandas excluidas por el administrador (bandas_excluidas.txt): no pueden ser tema de ninguna pregunta
+    excl = os.path.join(ROOT, "bandas_excluidas.txt")
+    if os.path.exists(excl):
+        import unicodedata
+        nn = lambda t: unicodedata.normalize("NFKD", t.lower()).encode("ascii", "ignore").decode()
+        bandas = [nn(l.strip()) for l in open(excl, encoding="utf-8") if l.strip() and not l.startswith("#")]
+        with open(os.path.join(ROOT, "preguntas.csv"), encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                t = " " + nn(r["pregunta"] + " | " + r["correcta"]) + " "
+                hit = [b for b in bandas if b in t]
+                if hit:
+                    ok_all = False
+                    print(f"  BANDA EXCLUIDA ({', '.join(hit)}): quita esta pregunta de preguntas.csv -> {r['pregunta']} {r['visual']}")
+    print("OK: traducciones completas" if ok_all else "HAY QUE COMPLETAR TRADUCCIONES (o quitar preguntas de bandas excluidas)")
     sys.exit(0 if ok_all else 1)
 
 if __name__ == "__main__":

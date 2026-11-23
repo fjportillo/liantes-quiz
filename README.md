@@ -84,6 +84,10 @@ Botón «⚔️ Duelo (sala desde tu móvil)» del menú → `evento.html?duelo`
 - Si la partida se queda parada (el anfitrión ha cerrado la app o se le ha apagado el móvil), los demás ven «Esperando al anfitrión…» (solo en duelos: `config.duelo`).
 - Guarda su estado en claves propias (`duelo-host`, `duelo-ultima`), así un mismo móvil puede presentar un evento y un duelo sin mezclarlos.
 
+## Bandas excluidas
+
+`bandas_excluidas.txt` lista los grupos que el quiz no incluye (pop y Movida de los 80: Hombres G, Duncan Dhu, Radio Futura, Los Secretos…). `tools/check_i18n.py` da error si alguna pregunta los nombra en el texto o en la respuesta correcta, así que las tareas nocturnas y la renovación semanal no pueden volver a añadirlos. Como respuesta falsa sí pueden salir.
+
 ## Idiomas (castellano, català, English)
 
 - El idioma se elige con los botones **ES · CA · EN** de la cabecera (se recuerda en cada dispositivo). También se puede forzar con `?lang=ca` o `?lang=en` en la dirección.
